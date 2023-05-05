@@ -2,13 +2,13 @@
 title: D&D AoE Calculator
 description: Work out which squares a cone hits per the rules in XGtE
 author: David Severwright
-image: http://davidsev.github.io/dndaoe/banner.png
-icon: http://davidsev.github.io/dndaoe/icon.svg
+image: https://dndaoe.davidsev.co.uk/banner.png
+icon: https://dndaoe.davidsev.co.uk/icon.svg
 tags:
     - tool
     - combat
     - drawing
-manifest: http://davidsev.github.io/dndaoe/manifest.json
+manifest: https://dndaoe.davidsev.co.uk/manifest.json
 learn-more: https://github.com/davidsev/dndaoe
 ---
 
