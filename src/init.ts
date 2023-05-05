@@ -11,7 +11,7 @@ export default function init () {
             shortcut: 'a',
             icons: [
                 {
-                    icon: '/icon.svg',
+                    icon: '/icons/cone.svg',
                     label: 'D&D AoE',
                 },
             ],
