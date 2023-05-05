@@ -1,5 +1,6 @@
-<svg width="320" height="320" fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round"
+<svg width="460" height="460" fill="#70F0B4" fill-opacity="75%" stroke="black" stroke-linecap="round"
+     stroke-linejoin="round"
      xmlns="http://www.w3.org/2000/svg">
-    <path d="M10,10H110V110H210V210H310V310H10V10" stroke-width="20"/>
-    <path d="M10,110H110M10,210H210M110,110V310M210,210V310" stroke-width="12"/>
+    <path d="M80,80H180V180H280V280H380V380H80V80" stroke-width="20"/>
+    <path d="M80,180H180M80,280H280M180,180V380M280,280V380" stroke-width="12"/>
 </svg>
