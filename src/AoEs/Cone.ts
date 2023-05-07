@@ -95,7 +95,10 @@ export default class Cone extends AoEShape {
         for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
             for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
                 const square = new Square(x, y, this.dpi, this.dpi);
-                if (triangle.intersectsSquareAmount(square) > 33) {
+                let threshold = this.metadata.coneOverlapThreshold;
+                if (!Number.isFinite(threshold))
+                    threshold = 0;
+                if (triangle.intersectsSquareAmount(square) > (threshold as number)) {
                     commands.push([Command.MOVE, x, y]);
                     commands.push([Command.LINE, x + this.dpi, y]);
                     commands.push([Command.LINE, x + this.dpi, y + this.dpi]);

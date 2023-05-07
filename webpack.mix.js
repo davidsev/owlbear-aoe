@@ -17,4 +17,19 @@ mix.ts('src/index.ts', 'dist/app.js')
             extractComments: false,
         },
         clearConsole: false,
+    })
+    .webpackConfig({
+        module: {
+            rules: [
+                {
+                    test: /\.handlebars$/,
+                    loader: 'handlebars-loader',
+                    options: {
+                        knownHelpers: [],
+                        knownHelpersOnly: true,
+                        strict: true,
+                    }
+                }
+            ],
+        },
     });

@@ -1,4 +1,12 @@
-import OBR, { InteractionManager, Item, ToolContext, ToolEvent, ToolIcon, ToolMode } from '@owlbear-rodeo/sdk';
+import OBR, {
+    InteractionManager,
+    Item,
+    Metadata,
+    ToolContext,
+    ToolEvent,
+    ToolIcon,
+    ToolMode,
+} from '@owlbear-rodeo/sdk';
 import getId from './Util/getId';
 import Vector from './Util/Vector';
 import { roundTo } from './Util/roundTo';
@@ -12,6 +20,7 @@ export default abstract class AoEShape implements ToolMode {
     protected center: Vector = new Vector({ x: 0, y: 0 });
     protected currentPosition: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
+    protected metadata: Metadata = {};
 
     constructor () {
     }
@@ -51,12 +60,15 @@ export default abstract class AoEShape implements ToolMode {
         this.dpi = await OBR.scene.grid.getDpi();
         this.center = new Vector(event.pointerPosition);
         this.currentPosition = new Vector(event.pointerPosition);
+        this.metadata = context.metadata;
 
         // Start drawing.
         this.interaction = await OBR.interaction.startItemInteraction(this.createItems(new Vector(event.pointerPosition)));
     }
 
     async onToolDragMove (context: ToolContext, event: ToolEvent) {
+        this.metadata = context.metadata;
+
         if (this.interaction) {
             const [update] = this.interaction;
             update((items: Item[]) => {
@@ -67,6 +79,8 @@ export default abstract class AoEShape implements ToolMode {
     }
 
     onToolDragEnd (context: ToolContext, event: ToolEvent) {
+        this.metadata = context.metadata;
+
         if (this.interaction) {
             const [update, stop] = this.interaction;
             const items = update((items: Item[]) => {

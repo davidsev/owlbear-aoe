@@ -1,0 +1,27 @@
+html, body {
+  margin: 0;
+  padding: 0.5em;
+  color: white;
+  font-family: sans-serif;
+}
+
+div.form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 0.5em;
+  vertical-align: center;
+
+  label {
+    width: 50%;
+  }
+
+  input {
+    width: 50%;
+  }
+
+  small {
+    margin-top: 0.5em;
+    display: block;
+  }
+}
