@@ -3,7 +3,7 @@
   "version" : "0.0.1",
   "description" : "Draw cones as per the D&D rules",
   "manifest_version" : 1,
-  "background_url" : "/background.html",
+  "background_url" : "/frame.html#background",
   "icon" : "/icon.svg",
   "homepage_url" : "https://github.com/davidsev/dndaoe"
 }

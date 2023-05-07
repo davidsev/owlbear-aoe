@@ -1,25 +1,11 @@
-import OBR from '@owlbear-rodeo/sdk';
-import getId from './Util/getId';
-import Cone from './AoEs/Cone';
-import Circle from './AoEs/Circle';
-import Cube from './AoEs/Cube';
+let functions: Map<string, Function> = new Map<string, Function>();
 
-export default function init () {
-    OBR.onReady(() => {
-        OBR.tool.create({
-            id: getId('tool'),
-            shortcut: 'a',
-            icons: [
-                {
-                    icon: '/icons/cone.svg',
-                    label: 'AoE',
-                },
-            ],
-        });
+export function registerInitFunction (name: string, callback: Function) {
+    functions.set(name, callback);
+}
 
-        OBR.tool.createMode(new Cone());
-        OBR.tool.createMode(new Circle());
-        OBR.tool.createMode(new Cube());
-
-    });
+export function init () {
+    const id = window.location.hash.slice(1);
+    const callback = functions.get(id);
+    if (callback) callback();
 }

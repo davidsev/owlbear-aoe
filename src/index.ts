@@ -1,3 +1,6 @@
-import init from './init';
+import { init, registerInitFunction } from './init';
+import { initBackground } from './background';
 
-(window as any).initBackground = init;
+(window as any).init = init;
+
+registerInitFunction('background', initBackground);
