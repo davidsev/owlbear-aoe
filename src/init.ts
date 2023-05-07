@@ -12,7 +12,7 @@ export default function init () {
             icons: [
                 {
                     icon: '/icons/cone.svg',
-                    label: 'D&D AoE',
+                    label: 'AoE',
                 },
             ],
         });

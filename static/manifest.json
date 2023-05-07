@@ -1,6 +1,7 @@
 {
-  "name" : "D&D AoE Calculator",
+  "name" : "AoE Shapes",
   "version" : "0.0.1",
+  "description" : "Draw cones as per the D&D rules",
   "manifest_version" : 1,
   "background_url" : "/background.html",
   "icon" : "/icon.svg",
