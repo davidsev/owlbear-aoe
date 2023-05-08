@@ -9,7 +9,7 @@ export function initBackground () {
     OBR.onReady(() => {
         OBR.tool.create({
             id: getId('tool'),
-            shortcut: 'a',
+            shortcut: 'A',
             icons: [
                 {
                     icon: '/icons/cone.svg',

@@ -12,5 +12,5 @@ manifest: https://dndaoe.davidsev.co.uk/manifest.json
 learn-more: https://github.com/davidsev/dndaoe
 ---
 
-Automatically work out which squares a cone hits per the rules in the DMG and Xanathar's Guide to Everything .
+Automatically work out which squares a cone hits per the rules in the DMG and Xanathar's Guide to Everything.
 

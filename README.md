@@ -13,3 +13,7 @@ An [Owlbear Rodeo](https://www.owlbear.app/) extension to work out which squares
 A new icon should appear on the toolbar at the right. Click it and then click and drag somewhere to draw a cone. The
 squares it hits will be highlighted.
 
+The top toolbar lets you choose between cone/sphere/cube, and access settings. \
+Currently the only setting is what percentage of a square needs to be covered to count as being hit. By RAW any overlap
+is enough, so the default is 0.
+
