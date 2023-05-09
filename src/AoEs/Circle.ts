@@ -1,7 +1,7 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
 import { buildLabel, buildPath, buildShape, Command, Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
-import Square from '../Util/Square';
+import AABB from '../Util/AABB';
 
 export default class Circle extends AoEShape {
 
@@ -60,7 +60,7 @@ export default class Circle extends AoEShape {
 
     private buildAreaPath (): PathCommand[] {
         // Work out the bounding square for our search area.
-        const bounds = new Square(
+        const bounds = new AABB(
             this.roundedCenter.x - this.roundedDistance,
             this.roundedCenter.y - this.roundedDistance,
             this.roundedDistance * 2,
@@ -72,7 +72,7 @@ export default class Circle extends AoEShape {
         for (let x = bounds.minX; x <= bounds.maxX; x += this.dpi) {
             for (let y = bounds.minY; y <= bounds.maxY; y += this.dpi) {
                 // See if the center of this square is inside the circle.
-                const square = new Square(x, y, this.dpi, this.dpi);
+                const square = new AABB(x, y, this.dpi, this.dpi);
                 const distance = this.roundedCenter.distanceTo(square.center);
                 if (distance <= this.roundedDistance) {
                     commands.push([Command.MOVE, x, y]);

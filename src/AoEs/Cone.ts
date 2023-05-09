@@ -2,7 +2,7 @@ import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
 import { buildLabel, buildPath, Command, Item, Label, Path, PathCommand } from '@owlbear-rodeo/sdk';
 import Triangle from '../Util/Triangle';
-import Square from '../Util/Square';
+import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
 
 export default class Cone extends AoEShape {
@@ -94,7 +94,7 @@ export default class Cone extends AoEShape {
         const commands: PathCommand[] = [];
         for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
             for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
-                const square = new Square(x, y, this.dpi, this.dpi);
+                const square = new AABB(x, y, this.dpi, this.dpi);
                 let threshold = this.metadata.coneOverlapThreshold;
                 if (!Number.isFinite(threshold))
                     threshold = 0;

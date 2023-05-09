@@ -1,7 +1,7 @@
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
 import rotate from './rotate';
 import { roundDownTo, roundUpTo } from './roundTo';
-import Square from './Square';
+import AABB from './AABB';
 import { Line } from './Line';
 import Vector from './Vector';
 
@@ -44,7 +44,7 @@ export default class Triangle {
         return Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
 
-    public intersectsSquareAmount (square: Square): number {
+    public intersectsSquareAmount (square: AABB): number {
         // Work out the polygon that intersects the two.
         const newPolygon: Vector2[] = [];
 
@@ -122,11 +122,11 @@ export default class Triangle {
         });
     }
 
-    public getBounds (chunk: number = 1): Square {
+    public getBounds (chunk: number = 1): AABB {
         const minX = roundDownTo(Math.min(this.p1.x, this.p2.x, this.p3.x), chunk);
         const maxX = roundUpTo(Math.max(this.p1.x, this.p2.x, this.p3.x), chunk);
         const minY = roundDownTo(Math.min(this.p1.y, this.p2.y, this.p3.y), chunk);
         const maxY = roundUpTo(Math.max(this.p1.y, this.p2.y, this.p3.y), chunk);
-        return new Square(minX, minY, maxX - minX, maxY - minY);
+        return new AABB(minX, minY, maxX - minX, maxY - minY);
     }
 }

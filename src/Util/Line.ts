@@ -1,5 +1,5 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import Square from './Square';
+import AABB from './AABB';
 import Vector from './Vector';
 
 export class Line {
@@ -15,8 +15,8 @@ export class Line {
         return [this.p1, this.p2];
     }
 
-    public get boundingBox (): Square {
-        return new Square(
+    public get boundingBox (): AABB {
+        return new AABB(
             Math.min(this.p1.x, this.p2.x),
             Math.min(this.p1.y, this.p2.y),
             Math.abs(this.p1.x - this.p2.x),

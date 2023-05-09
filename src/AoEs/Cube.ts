@@ -1,7 +1,7 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
 import { buildLabel, buildPath, Item, Label, Path } from '@owlbear-rodeo/sdk';
-import Square from '../Util/Square';
+import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
 
 export default class Cube extends AoEShape {
@@ -46,7 +46,7 @@ export default class Cube extends AoEShape {
         }
 
         // Calculate the square.
-        const square = new Square(this.roundedCenter.x, this.roundedCenter.y, vector.x, vector.y);
+        const square = new AABB(this.roundedCenter.x, this.roundedCenter.y, vector.x, vector.y);
 
         // Update the drawn triangle.
         cube.commands = square.pathCommand;
