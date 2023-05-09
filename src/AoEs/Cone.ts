@@ -26,6 +26,9 @@ export default class Cone extends AoEShape {
             .fillOpacity(0)
             .commands([])
             .attachedTo(area.id)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT')
             .build();
 
         const label: Label = buildLabel()
@@ -35,6 +38,9 @@ export default class Cone extends AoEShape {
             .strokeColor('#FFFFFF')
             .position(this.currentPosition)
             .attachedTo(area.id)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT')
             .build();
 
         return [area, outline, label];

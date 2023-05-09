@@ -25,6 +25,10 @@ export default class Cube extends AoEShape {
             .position(this.currentPosition)
             .pointerWidth(0)
             .pointerHeight(0)
+            .attachedTo(cube.id)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT')
             .build();
 
         return [cube, label];

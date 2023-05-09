@@ -23,8 +23,11 @@ export default class Circle extends AoEShape {
             .strokeColor('red')
             .strokeWidth(5)
             .fillOpacity(0)
-            .attachedTo(area.id)
             .position(this.currentPosition.roundToNearest(this.dpi))
+            .attachedTo(area.id)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT')
             .build();
 
         const label: Label = buildLabel()
@@ -33,6 +36,9 @@ export default class Circle extends AoEShape {
             .pointerWidth(0)
             .pointerHeight(0)
             .attachedTo(area.id)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT')
             .build();
 
         return [area, outline, label];
