@@ -1,9 +1,10 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
-import { buildLabel, buildPath, Command, Item, Label, Path, PathCommand } from '@owlbear-rodeo/sdk';
+import { buildLabel, buildPath, Item, Label, Path } from '@owlbear-rodeo/sdk';
 import Triangle from '../Util/Triangle';
 import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
+import PathSimplifier from '../Util/PathSimplifier';
 
 export default class Cone extends AoEShape {
 
@@ -60,7 +61,7 @@ export default class Cone extends AoEShape {
         outline.commands = triangle.pathCommand;
 
         // Update the area
-        area.commands = this.buildAreaPath(triangle);
+        area.commands = this.buildAreaPath(triangle).commands;
 
         // And the text
         label.text.plainText = `${this.roundedDistance / this.dpi * 5}ft`;
@@ -89,15 +90,29 @@ export default class Cone extends AoEShape {
         //     }
         // }
 
+        // let i = 1;
+        // const points = this.buildAreaPath((this.getTriangle())).simplify();
+        // for (const point of points) {
+        //     labels.push(buildLabel()
+        //         .plainText(`${i++}: ${point}`)
+        //         .pointerWidth(0)
+        //         .pointerHeight(0)
+        //         .strokeColor('#FFFFFF')
+        //         .position(point)
+        //         .attachedTo(area.id)
+        //         .fontSize(10)
+        //         .build());
+        // }
+
         return [area, outline, ...labels];
     }
 
-    private buildAreaPath (triangle: Triangle): PathCommand[] {
+    private buildAreaPath (triangle: Triangle): PathSimplifier {
         // Work out the bounding square for our search area.
         const bounds = triangle.getBounds(this.dpi);
 
         // Check every square.
-        const commands: PathCommand[] = [];
+        const path = new PathSimplifier();
         for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
             for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
                 const square = new AABB(x, y, this.dpi, this.dpi);
@@ -105,15 +120,11 @@ export default class Cone extends AoEShape {
                 if (!Number.isFinite(threshold))
                     threshold = 0;
                 if (triangle.intersectsSquareAmount(square) > (threshold as number)) {
-                    commands.push([Command.MOVE, x, y]);
-                    commands.push([Command.LINE, x + this.dpi, y]);
-                    commands.push([Command.LINE, x + this.dpi, y + this.dpi]);
-                    commands.push([Command.LINE, x, y + this.dpi]);
-                    commands.push([Command.CLOSE]);
+                    path.addSquare(square);
                 }
             }
         }
 
-        return commands;
+        return path;
     }
 }

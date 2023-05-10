@@ -1,7 +1,8 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
-import { buildLabel, buildPath, buildShape, Command, Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
+import { buildLabel, buildPath, buildShape, Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
 import AABB from '../Util/AABB';
+import PathSimplifier from '../Util/PathSimplifier';
 
 export default class Circle extends AoEShape {
 
@@ -74,22 +75,17 @@ export default class Circle extends AoEShape {
         );
 
         // Check every square.
-        const commands: PathCommand[] = [];
-        for (let x = bounds.minX; x <= bounds.maxX; x += this.dpi) {
-            for (let y = bounds.minY; y <= bounds.maxY; y += this.dpi) {
-                // See if the center of this square is inside the circle.
+        const path = new PathSimplifier();
+        for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
+            for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
                 const square = new AABB(x, y, this.dpi, this.dpi);
                 const distance = this.roundedCenter.distanceTo(square.center);
                 if (distance <= this.roundedDistance) {
-                    commands.push([Command.MOVE, x, y]);
-                    commands.push([Command.LINE, x + this.dpi, y]);
-                    commands.push([Command.LINE, x + this.dpi, y + this.dpi]);
-                    commands.push([Command.LINE, x, y + this.dpi]);
-                    commands.push([Command.CLOSE]);
+                    path.addSquare(square);
                 }
             }
         }
 
-        return commands;
+        return path.commands;
     }
 }

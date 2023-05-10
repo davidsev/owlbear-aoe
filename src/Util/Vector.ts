@@ -60,4 +60,12 @@ export default class Vector implements Vector2 {
     public angleTo (rhs: Vector2): number {
         return Math.atan2(rhs.y - this.y, rhs.x - this.x);
     }
+
+    public equals (rhs: Vector2): boolean {
+        return this.x === rhs.x && this.y === rhs.y;
+    }
+
+    public toString (): string {
+        return `(${this.x}, ${this.y})`;
+    }
 }

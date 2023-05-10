@@ -107,6 +107,23 @@ export class Line {
     public toString (): string {
         return `Line(${this.p1.x},${this.p1.y} -> ${this.p2.x},${this.p2.y})`;
     }
+
+    // Returns a new line with the same direction, but pointing up or right.
+    public normaliseDirection (): Line {
+        // If it's a horizontal line, make it point right
+        if (this.p1.y === this.p2.y) {
+            if (this.p1.x < this.p2.x) {
+                return new Line(this.p2, this.p1);
+            }
+        }
+
+        // Otherwise, make it point up
+        if (this.p1.y < this.p2.y) {
+            return new Line(this.p2, this.p1);
+        }
+
+        return this;
+    }
 }
 
 function isZeroIsh (x: number) {
