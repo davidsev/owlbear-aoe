@@ -1,6 +1,6 @@
 import { Line } from './Line';
 import Vector from './Vector';
-import { Command, PathCommand } from '@owlbear-rodeo/sdk';
+import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
 
 export default class AABB {
 
@@ -14,6 +14,16 @@ export default class AABB {
         this.y = y;
         this.w = w;
         this.h = h;
+    }
+
+    public static boundingBox (points: Vector2[]): AABB {
+        const xs = points.map(p => p.x);
+        const ys = points.map(p => p.y);
+        const minX = Math.min(...xs);
+        const maxX = Math.max(...xs);
+        const minY = Math.min(...ys);
+        const maxY = Math.max(...ys);
+        return new AABB(minX, minY, maxX - minX, maxY - minY);
     }
 
     public get p1 (): Vector {

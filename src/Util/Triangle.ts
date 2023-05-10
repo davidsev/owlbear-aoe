@@ -4,6 +4,7 @@ import { roundDownTo, roundUpTo } from './roundTo';
 import AABB from './AABB';
 import { Line } from './Line';
 import Vector from './Vector';
+import sortPointsClockwise from './sortPointsClockwise';
 
 export default class Triangle {
     public readonly p1: Vector2;
@@ -69,23 +70,14 @@ export default class Triangle {
         }
 
         // Then sort our points to be in order.
-        const center = {
-            x: newPolygon.map((point) => point.x).reduce((a, b) => a + b, 0) / newPolygon.length,
-            y: newPolygon.map((point) => point.y).reduce((a, b) => a + b, 0) / newPolygon.length,
-        };
-        newPolygon.sort((a, b) => {
-            const aAngle = new Line(center, a).angle;
-            const bAngle = new Line(center, b).angle;
-            if (aAngle === bAngle)
-                return 0;
-            return aAngle < bAngle ? -1 : 1;
-        });
+        const sortedPoints = sortPointsClockwise(newPolygon);
 
         // Split it into triangles and calculate the area.
+        const center = this.center;
         let polygonArea = 0.0;
-        for (let i = 0; i < newPolygon.length; i++) {
-            const p1 = newPolygon[i];
-            const p2 = newPolygon[(i + 1) % newPolygon.length];
+        for (let i = 0; i < sortedPoints.length; i++) {
+            const p1 = sortedPoints[i];
+            const p2 = sortedPoints[(i + 1) % sortedPoints.length];
 
             const triangle = new Triangle(center, p1, p2);
             polygonArea += triangle.area;
