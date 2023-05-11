@@ -18,7 +18,7 @@ export function initBackground () {
             ],
             defaultMode: getId('cone'),
             defaultMetadata: {
-                coneOverlapThreshold: 0,
+                coneOverlapThreshold: 10,
             },
         });
 
