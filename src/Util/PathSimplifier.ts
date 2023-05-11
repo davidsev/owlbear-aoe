@@ -1,5 +1,5 @@
 import AABB from './AABB';
-import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
+import { Command, PathCommand } from '@owlbear-rodeo/sdk';
 import Vector from './Vector';
 import { Line } from './Line';
 
@@ -14,11 +14,6 @@ export default class PathSimplifier {
     public add (x: number, y: number, w: number, h: number): this {
         this.addSquare(new AABB(x, y, w, h));
         return this;
-    }
-
-    // Turn a point into something that we can use as a map key.
-    private pointKey (vector: Vector2): string {
-        return `${vector.x},${vector.y}`;
     }
 
     public simplify (): Vector[] {
