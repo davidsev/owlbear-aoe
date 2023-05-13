@@ -1,4 +1,5 @@
 import OBR, {
+    GridScale,
     InteractionManager,
     Item,
     Metadata,
@@ -17,6 +18,7 @@ export default abstract class AoEShape implements ToolMode {
     abstract readonly icon: string;
     abstract readonly id: string;
     protected dpi: number = 0;
+    protected gridScale: GridScale | null = null;
     protected center: Vector = new Vector({ x: 0, y: 0 });
     protected currentPosition: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
@@ -58,6 +60,7 @@ export default abstract class AoEShape implements ToolMode {
     async onToolDragStart (context: ToolContext, event: ToolEvent) {
         // Save the center and DPI that we are going to use for the whole interaction.
         this.dpi = await OBR.scene.grid.getDpi();
+        this.gridScale = await OBR.scene.grid.getScale();
         this.center = new Vector(event.pointerPosition);
         this.currentPosition = new Vector(event.pointerPosition);
         this.metadata = context.metadata;

@@ -56,7 +56,7 @@ export default class Cube extends AoEShape {
         cube.commands = square.pathCommand;
 
         // And the text.
-        label.text.plainText = `${this.roundedDistance / this.dpi * 5}ft`;
+        label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
         label.position = square.center;
     }
 

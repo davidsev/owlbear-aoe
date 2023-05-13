@@ -56,7 +56,7 @@ export default class Circle extends AoEShape {
         area.commands = this.buildAreaPath();
 
         // And the text
-        label.text.plainText = `${this.roundedDistance / this.dpi * 5}ft`;
+        label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
     }
 
     protected finalItems (items: Item[]): Item[] {
