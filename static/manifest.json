@@ -5,5 +5,5 @@
   "manifest_version" : 1,
   "background_url" : "/frame.html#background",
   "icon" : "/icon.svg",
-  "homepage_url" : "https://github.com/davidsev/dndaoe"
+  "homepage_url" : "https://github.com/davidsev/owlbear-aoe"
 }
