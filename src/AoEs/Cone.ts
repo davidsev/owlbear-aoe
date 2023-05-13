@@ -76,14 +76,14 @@ export default class Cone extends AoEShape {
         // const bounds = triangle.getBounds(this.dpi);
         // for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
         //     for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
-        //         const square = new Square(x, y, this.dpi, this.dpi);
+        //         const square = new AABB(x, y, this.dpi, this.dpi);
         //         const overlap = triangle.intersectsSquareAmount(square);
         //         labels.push(buildLabel()
         //             .plainText(overlap.toString())
         //             .pointerWidth(0)
         //             .pointerHeight(0)
         //             .strokeColor('#FFFFFF')
-        //             .position({x: x + this.dpi / 2, y: y + this.dpi / 2})
+        //             .position({ x: x + this.dpi / 2, y: y + this.dpi / 2 })
         //             .attachedTo(area.id)
         //             .fontSize(10)
         //             .build());

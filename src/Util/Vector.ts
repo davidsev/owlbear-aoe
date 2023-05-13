@@ -66,6 +66,6 @@ export default class Vector implements Vector2 {
     }
 
     public toString (): string {
-        return `(${this.x}, ${this.y})`;
+        return `(${this.x.toFixed(0)}, ${this.y.toFixed(0)})`;
     }
 }

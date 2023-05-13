@@ -73,7 +73,7 @@ export default class Triangle {
         const sortedPoints = sortPointsClockwise(newPolygon);
 
         // Split it into triangles and calculate the area.
-        const center = this.center;
+        const center = AABB.boundingBox(sortedPoints).center;
         let polygonArea = 0.0;
         for (let i = 0; i < sortedPoints.length; i++) {
             const p1 = sortedPoints[i];
@@ -120,5 +120,9 @@ export default class Triangle {
         const minY = roundDownTo(Math.min(this.p1.y, this.p2.y, this.p3.y), chunk);
         const maxY = roundUpTo(Math.max(this.p1.y, this.p2.y, this.p3.y), chunk);
         return new AABB(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    public toString (): string {
+        return `Triangle(${this.p1}, ${this.p2}, ${this.p3})`;
     }
 }

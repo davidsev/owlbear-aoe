@@ -95,4 +95,8 @@ export default class AABB {
     public containsPoint (x: number, y: number): boolean {
         return x >= this.x && x <= this.x + this.w && y >= this.y && y <= this.y + this.h;
     }
+
+    public toString (): string {
+        return `AABB(${this.x}, ${this.y}, ${this.w}, ${this.h})`;
+    }
 }
