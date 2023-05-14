@@ -1,4 +1,4 @@
-export const baseId = 'uk.co.davidsev.dndaoe';
+export const baseId = 'uk.co.davidsev.owlbear-aoe';
 
 export default function getId (id ?: string): string {
     if (id)
