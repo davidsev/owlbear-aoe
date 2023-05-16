@@ -2,7 +2,7 @@ let mix = require('laravel-mix');
 
 mix.ts('src/index.ts', 'dist/app.js')
     .sourceMaps(false, 'source-map')
-    .disableSuccessNotifications()
+    .disableNotifications()
     .copy('static', 'dist')
     .options({
         terser: {
