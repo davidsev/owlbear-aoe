@@ -69,6 +69,10 @@ export default class Cone extends AoEShape {
     }
 
     protected finalItems (items: Item[], position: Vector): Item[] {
+        if (this.roundedDistance === 0) {
+            return [];
+        }
+        
         const [area, outline, label] = items as [Path, Path, Label];
 
         const labels: Label[] = [];

@@ -61,6 +61,10 @@ export default class Cube extends AoEShape {
     }
 
     protected finalItems (items: Item[]): Item[] {
+        if (this.roundedDistance === 0) {
+            return [];
+        }
+
         const [cube, label] = items as [Path, Label];
         return [cube];
     }

@@ -60,8 +60,10 @@ export default class Circle extends AoEShape {
     }
 
     protected finalItems (items: Item[]): Item[] {
+        if (this.roundedDistance === 0) {
+            return [];
+        }
         const [area, outline, label] = items as [Path, Shape, Label];
-
         return [area, outline];
     }
 
