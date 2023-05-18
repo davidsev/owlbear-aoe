@@ -25,7 +25,13 @@ export default class Cone extends AoEShape {
             .attachedTo(area.id)
             .build();
 
-        return [area, outline, label];
+        const ret: Item[] = [area];
+        if (this.metadata.shapeDisplayMode != 'never')
+            ret.push(outline);
+        if (this.metadata.labelDisplayMode != 'never')
+            ret.push(label);
+
+        return ret;
     }
 
     private getTriangle (): Triangle {
@@ -33,20 +39,33 @@ export default class Cone extends AoEShape {
         return Triangle.fromDirectionAndSize(this.roundedCenter, angle, this.roundedDistance);
     }
 
+    private getItems (items: Item[]): [Path, Path?, Label?] {
+        const ret: [Path, Path?, Label?] = [items.shift() as Path, undefined, undefined];
+        if (this.metadata.shapeDisplayMode != 'never')
+            ret[1] = items.shift() as Path;
+        if (this.metadata.labelDisplayMode != 'never')
+            ret[2] = items.shift() as Label;
+
+        return ret;
+    }
+
     protected updateItems (items: Item[], position: Vector): void {
-        const [area, outline, label] = items as [Path, Path, Label];
+        const [area, outline, label] = this.getItems(Array.from(items));
 
         const triangle = this.getTriangle();
 
         // Update the outline
-        outline.commands = triangle.pathCommand;
+        if (outline)
+            outline.commands = triangle.pathCommand;
 
         // Update the area
         area.commands = this.buildAreaPathCommand(triangle).commands;
 
         // And the text
-        label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
-        label.position = triangle.center;
+        if (label) {
+            label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
+            label.position = triangle.center;
+        }
     }
 
     protected finalItems (items: Item[], position: Vector): Item[] {
@@ -54,7 +73,7 @@ export default class Cone extends AoEShape {
             return [];
         }
 
-        const [area, outline, label] = items as [Path, Path, Label];
+        const [area, outline, label] = this.getItems(Array.from(items));
 
         const labels: Label[] = [];
         // const triangle = this.getTriangle();
@@ -89,7 +108,13 @@ export default class Cone extends AoEShape {
         //         .build());
         // }
 
-        return [area, outline, ...labels];
+        const ret: Item[] = [area, ...labels];
+        if (this.metadata.shapeDisplayMode == 'always' && outline)
+            ret.push(outline);
+        if (this.metadata.labelDisplayMode == 'always' && label)
+            ret.push(label);
+
+        return ret;
     }
 
     private buildAreaPathCommand (triangle: Triangle): PathSimplifier {

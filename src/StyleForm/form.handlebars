@@ -6,7 +6,20 @@
             <button id="SaveButton">Save</button>
         </div>
     </div>
-    <h2>shape:</h2>
+
+    <h2 style="margin-top: 5px">affected squares:</h2>
+    <div class="form-row two-columns">
+        <label for="areaFillColor">Fill:</label>
+        <div class="input">
+            <div class="color-box" id="areaFillColor"></div>
+        </div>
+        <label for="areaStrokeColor">Outline:</label>
+        <div class="input">
+            <div class="color-box" id="areaStrokeColor"></div>
+        </div>
+    </div>
+
+    <h2>original shape:</h2>
     <div class="form-row two-columns">
         <label for="shapeFillColor">Fill:</label>
         <div class="input">
@@ -17,15 +30,22 @@
             <div class="color-box" id="shapeStrokeColor"></div>
         </div>
     </div>
-    <h2>affected squares:</h2>
-    <div class="form-row two-columns">
-        <label for="areaFillColor">Fill:</label>
-        <div class="input">
-            <div class="color-box" id="areaFillColor"></div>
-        </div>
-        <label for="areaStrokeColor">Outline:</label>
-        <div class="input">
-            <div class="color-box" id="areaStrokeColor"></div>
-        </div>
+    <div class="form-row">
+        <label for="shapeDisplayMode">Show:</label>
+        <select id="shapeDisplayMode" style="width: 40%;">
+            <option value="always">Always</option>
+            <option value="drawing">While Drawing</option>
+            <option value="never">Never</option>
+        </select>
+    </div>
+
+    <h2>label:</h2>
+    <div class="form-row">
+        <label for="labelDisplayMode">Show:</label>
+        <select id="labelDisplayMode" style="width: 40%;">
+            <option value="always">Always</option>
+            <option value="drawing">While Drawing</option>
+            <option value="never">Never</option>
+        </select>
     </div>
 </div>

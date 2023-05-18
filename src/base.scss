@@ -13,11 +13,11 @@ div.form-row {
   vertical-align: center;
 
   label {
-    width: 50%;
+    width: 25%;
   }
 
   input, .input, select {
-    width: 50%;
+    width: 75%;
   }
 
   small {
@@ -26,10 +26,6 @@ div.form-row {
   }
 
   &.two-columns {
-    label {
-      width: 25%;
-    }
-
     input, .input, select {
       width: 25%;
     }
@@ -37,6 +33,6 @@ div.form-row {
 }
 
 h2 {
-  margin: 10px 0 5px 0;
+  margin: 25px 0 5px 0;
   font-variant: small-caps;
 }

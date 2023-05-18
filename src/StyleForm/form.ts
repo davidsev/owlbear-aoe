@@ -45,6 +45,8 @@ export async function initStyleForm () {
         setupColorField('areaStroke');
         setupColorField('shapeFill');
         setupColorField('shapeStroke');
+        setupSelect('shapeDisplayMode');
+        setupSelect('labelDisplayMode');
     });
 
 }
@@ -101,5 +103,22 @@ function setupColorField (prefix: string) {
             popup.picker.color = makeColor(defaultColor, defaultOpacity);
         }, { signal: abortController.signal });
     });
+}
 
+function setupSelect (name: string) {
+    const select = findNode(document.body, `select#${name}`, HTMLSelectElement);
+
+    // Set the current value.
+    const currentValue = metadata[name];
+    if (typeof (currentValue) != 'string')
+        throw new Error(`Invalid metadata for ${name}`);
+
+    select.value = currentValue;
+
+    // Save the value when it changes.
+    select.addEventListener('change', () => {
+        const toSave: Metadata = {};
+        toSave[name] = select.value;
+        OBR.tool.setMetadata(getId('tool'), toSave);
+    });
 }

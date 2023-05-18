@@ -11,6 +11,8 @@ export interface AoEMetadata extends Metadata {
     shapeFillOpacity: number,
     shapeStrokeColor: string,
     shapeStrokeOpacity: number,
+    shapeDisplayMode: 'always' | 'drawing' | 'never',
+    labelDisplayMode: 'always' | 'drawing' | 'never',
 }
 
 export const defaultMetadata: AoEMetadata = {
@@ -23,6 +25,8 @@ export const defaultMetadata: AoEMetadata = {
     shapeFillOpacity: 0,
     shapeStrokeColor: '#FF0000',
     shapeStrokeOpacity: 1,
+    shapeDisplayMode: 'always',
+    labelDisplayMode: 'drawing',
 };
 
 export async function getMetadata (): Promise<AoEMetadata> {

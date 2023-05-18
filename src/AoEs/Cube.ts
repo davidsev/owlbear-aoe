@@ -22,11 +22,23 @@ export default class Cube extends AoEShape {
             .attachedTo(cube.id)
             .build();
 
-        return [cube, label];
+        const ret: Item[] = [cube];
+        if (this.metadata.labelDisplayMode != 'never')
+            ret.push(label);
+
+        return ret;
+    }
+
+    private getItems (items: Item[]): [Path, Label?] {
+        const ret: [Path, Label?] = [items.shift() as Path, undefined];
+        if (this.metadata.labelDisplayMode != 'never')
+            ret[1] = items.shift() as Label;
+
+        return ret;
     }
 
     protected updateItems (items: Item[]): void {
-        const [cube, label] = items as [Path, Label];
+        const [cube, label] = this.getItems(Array.from(items));
 
         // Turn the distance into a direction.
         let vector: Vector = new Vector({ x: 0, y: 0 });
@@ -47,8 +59,10 @@ export default class Cube extends AoEShape {
         cube.commands = square.pathCommand;
 
         // And the text.
-        label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
-        label.position = square.center;
+        if (label) {
+            label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
+            label.position = square.center;
+        }
     }
 
     protected finalItems (items: Item[]): Item[] {
@@ -56,7 +70,11 @@ export default class Cube extends AoEShape {
             return [];
         }
 
-        const [cube, label] = items as [Path, Label];
-        return [cube];
+        const [cube, label] = this.getItems(Array.from(items));
+        const ret: Item[] = [cube];
+        if (this.metadata.labelDisplayMode == 'always' && label)
+            ret.push(label);
+
+        return ret;
     }
 }
