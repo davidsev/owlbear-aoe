@@ -1,0 +1,29 @@
+
+div#StyleForm {
+  overflow: hidden;
+
+  div#Popup {
+    display: none;
+    position: absolute;
+    width: 320px;
+
+    hex-alpha-color-picker {
+      width: 320px;
+      height: 300px;
+    }
+
+    div#Buttons {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px;
+    }
+  }
+
+  div.color-box {
+    min-height: 1em;
+    border-radius: 6px;
+    width: 50px;
+    border: 2px solid #444;
+    background: red;
+  }
+}

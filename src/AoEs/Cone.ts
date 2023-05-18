@@ -1,6 +1,6 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
-import { buildLabel, buildPath, Item, Label, Path } from '@owlbear-rodeo/sdk';
+import { Item, Label, Path } from '@owlbear-rodeo/sdk';
 import Triangle from '../Util/Triangle';
 import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
@@ -14,34 +14,15 @@ export default class Cone extends AoEShape {
 
     protected createItems (): Item[] {
 
-        const area: Path = buildPath()
-            .strokeWidth(0)
-            .fillColor('#000000')
-            .fillOpacity(0.5)
-            .commands([])
+        const area: Path = this.buildAreaPath()
             .build();
 
-        const outline: Path = buildPath()
-            .strokeColor('red')
-            .strokeWidth(5)
-            .fillOpacity(0)
-            .commands([])
+        const outline: Path = this.buildOutlinePath()
             .attachedTo(area.id)
-            .locked(true)
-            .disableHit(true)
-            .layer('ATTACHMENT')
             .build();
 
-        const label: Label = buildLabel()
-            .plainText('')
-            .pointerWidth(0)
-            .pointerHeight(0)
-            .strokeColor('#FFFFFF')
-            .position(this.currentPosition)
+        const label: Label = this.buildLabel()
             .attachedTo(area.id)
-            .locked(true)
-            .disableHit(true)
-            .layer('ATTACHMENT')
             .build();
 
         return [area, outline, label];
@@ -61,7 +42,7 @@ export default class Cone extends AoEShape {
         outline.commands = triangle.pathCommand;
 
         // Update the area
-        area.commands = this.buildAreaPath(triangle).commands;
+        area.commands = this.buildAreaPathCommand(triangle).commands;
 
         // And the text
         label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
@@ -72,7 +53,7 @@ export default class Cone extends AoEShape {
         if (this.roundedDistance === 0) {
             return [];
         }
-        
+
         const [area, outline, label] = items as [Path, Path, Label];
 
         const labels: Label[] = [];
@@ -95,7 +76,7 @@ export default class Cone extends AoEShape {
         // }
 
         // let i = 1;
-        // const points = this.buildAreaPath((this.getTriangle())).simplify();
+        // const points = this.buildAreaPathCommand((this.getTriangle())).simplify();
         // for (const point of points) {
         //     labels.push(buildLabel()
         //         .plainText(`${i++}: ${point}`)
@@ -111,7 +92,7 @@ export default class Cone extends AoEShape {
         return [area, outline, ...labels];
     }
 
-    private buildAreaPath (triangle: Triangle): PathSimplifier {
+    private buildAreaPathCommand (triangle: Triangle): PathSimplifier {
         // Work out the bounding square for our search area.
         const bounds = triangle.getBounds(this.dpi);
 

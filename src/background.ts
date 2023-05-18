@@ -4,22 +4,20 @@ import Cone from './AoEs/Cone';
 import Circle from './AoEs/Circle';
 import Cube from './AoEs/Cube';
 import SettingsForm from './SettingsForm';
+import StyleForm from './StyleForm';
+import { defaultMetadata } from './Metadata';
 
 export function initBackground () {
     OBR.onReady(() => {
         OBR.tool.create({
             id: getId('tool'),
             shortcut: 'A',
-            icons: [
-                {
-                    icon: '/icons/cone.svg',
-                    label: 'AoE',
-                },
-            ],
+            icons: [{
+                icon: '/icons/cone.svg',
+                label: 'AoE',
+            }],
             defaultMode: getId('cone'),
-            defaultMetadata: {
-                coneOverlapThreshold: 10,
-            },
+            defaultMetadata: defaultMetadata,
         });
 
         OBR.tool.createMode(new Cone());
@@ -27,5 +25,6 @@ export function initBackground () {
         OBR.tool.createMode(new Cube());
 
         OBR.tool.createAction(new SettingsForm());
+        OBR.tool.createAction(new StyleForm());
     });
 }

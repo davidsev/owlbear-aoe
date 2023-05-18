@@ -1,6 +1,6 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
-import { buildLabel, buildPath, Item, Label, Path } from '@owlbear-rodeo/sdk';
+import { Item, Label, Path } from '@owlbear-rodeo/sdk';
 import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
 
@@ -12,23 +12,14 @@ export default class Cube extends AoEShape {
 
     protected createItems (): Item[] {
 
-        const cube: Path = buildPath()
-            .strokeColor('red')
-            .strokeWidth(5)
-            .fillColor('#000000')
-            .fillOpacity(0.5)
-            .commands([])
+        const cube: Path = this.buildAreaPath()
+            // Use the area stuff, but use the outline color.
+            .strokeColor(this.metadata.shapeStrokeColor)
+            .strokeOpacity(this.metadata.shapeStrokeOpacity)
             .build();
 
-        const label: Label = buildLabel()
-            .plainText('')
-            .position(this.currentPosition)
-            .pointerWidth(0)
-            .pointerHeight(0)
+        const label: Label = this.buildLabel()
             .attachedTo(cube.id)
-            .locked(true)
-            .disableHit(true)
-            .layer('ATTACHMENT')
             .build();
 
         return [cube, label];

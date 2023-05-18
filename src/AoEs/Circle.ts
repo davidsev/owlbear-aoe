@@ -1,6 +1,6 @@
 import getId from '../Util/getId';
 import AoEShape from '../AoEShape';
-import { buildLabel, buildPath, buildShape, Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
+import { Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
 import AABB from '../Util/AABB';
 import PathSimplifier from '../Util/PathSimplifier';
 
@@ -12,34 +12,17 @@ export default class Circle extends AoEShape {
 
     protected createItems (): Item[] {
 
-        const area: Path = buildPath()
-            .strokeWidth(0)
-            .fillColor('#000000')
-            .fillOpacity(0.5)
-            .commands([])
+        const area: Path = this.buildAreaPath()
             .build();
 
-        const outline: Shape = buildShape()
+        const outline: Shape = this.buildOutlineShape()
             .shapeType('CIRCLE')
-            .strokeColor('red')
-            .strokeWidth(5)
-            .fillOpacity(0)
             .position(this.currentPosition.roundToNearest(this.dpi))
             .attachedTo(area.id)
-            .locked(true)
-            .disableHit(true)
-            .layer('ATTACHMENT')
             .build();
 
-        const label: Label = buildLabel()
-            .plainText('')
-            .position(this.currentPosition)
-            .pointerWidth(0)
-            .pointerHeight(0)
+        const label: Label = this.buildLabel()
             .attachedTo(area.id)
-            .locked(true)
-            .disableHit(true)
-            .layer('ATTACHMENT')
             .build();
 
         return [area, outline, label];
@@ -53,7 +36,7 @@ export default class Circle extends AoEShape {
         outline.height = this.roundedDistance * 2;
 
         // Update the area
-        area.commands = this.buildAreaPath();
+        area.commands = this.buildAreaPathCommand();
 
         // And the text
         label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
@@ -67,7 +50,7 @@ export default class Circle extends AoEShape {
         return [area, outline];
     }
 
-    private buildAreaPath (): PathCommand[] {
+    private buildAreaPathCommand (): PathCommand[] {
         // Work out the bounding square for our search area.
         const bounds = new AABB(
             this.roundedCenter.x - this.roundedDistance,

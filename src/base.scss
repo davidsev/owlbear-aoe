@@ -16,7 +16,7 @@ div.form-row {
     width: 50%;
   }
 
-  input {
+  input, .input, select {
     width: 50%;
   }
 
@@ -24,4 +24,19 @@ div.form-row {
     margin-top: 0.5em;
     display: block;
   }
+
+  &.two-columns {
+    label {
+      width: 25%;
+    }
+
+    input, .input, select {
+      width: 25%;
+    }
+  }
+}
+
+h2 {
+  margin: 10px 0 5px 0;
+  font-variant: small-caps;
 }

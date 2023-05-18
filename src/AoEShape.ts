@@ -1,8 +1,10 @@
 import OBR, {
+    buildLabel,
+    buildPath,
+    buildShape,
     GridScale,
     InteractionManager,
     Item,
-    Metadata,
     ToolContext,
     ToolEvent,
     ToolIcon,
@@ -11,6 +13,10 @@ import OBR, {
 import getId from './Util/getId';
 import Vector from './Util/Vector';
 import { roundTo } from './Util/roundTo';
+import { AoEMetadata, cleanMetadata, defaultMetadata } from './Metadata';
+import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
+import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
+import { ShapeBuilder } from '@owlbear-rodeo/sdk/lib/builders/ShapeBuilder';
 
 export default abstract class AoEShape implements ToolMode {
 
@@ -22,7 +28,7 @@ export default abstract class AoEShape implements ToolMode {
     protected center: Vector = new Vector({ x: 0, y: 0 });
     protected currentPosition: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
-    protected metadata: Metadata = {};
+    protected metadata: AoEMetadata = defaultMetadata;
 
     constructor () {
     }
@@ -63,14 +69,14 @@ export default abstract class AoEShape implements ToolMode {
         this.gridScale = await OBR.scene.grid.getScale();
         this.center = new Vector(event.pointerPosition);
         this.currentPosition = new Vector(event.pointerPosition);
-        this.metadata = context.metadata;
+        this.metadata = cleanMetadata(context.metadata);
 
         // Start drawing.
         this.interaction = await OBR.interaction.startItemInteraction(this.createItems(new Vector(event.pointerPosition)));
     }
 
     async onToolDragMove (context: ToolContext, event: ToolEvent) {
-        this.metadata = context.metadata;
+        this.metadata = cleanMetadata(context.metadata);
 
         if (this.interaction) {
             const [update] = this.interaction;
@@ -82,7 +88,7 @@ export default abstract class AoEShape implements ToolMode {
     }
 
     onToolDragEnd (context: ToolContext, event: ToolEvent) {
-        this.metadata = context.metadata;
+        this.metadata = cleanMetadata(context.metadata);
 
         if (this.interaction) {
             const [update, stop] = this.interaction;
@@ -103,5 +109,50 @@ export default abstract class AoEShape implements ToolMode {
             stop();
         }
         this.interaction = undefined;
+    }
+
+    protected buildAreaPath (): PathBuilder {
+        return buildPath()
+            .commands([])
+            .fillColor(this.metadata.areaFillColor)
+            .fillOpacity(this.metadata.areaFillOpacity)
+            .strokeWidth(5)
+            .strokeColor(this.metadata.areaStrokeColor)
+            .strokeOpacity(this.metadata.areaStrokeOpacity);
+    }
+
+    protected buildOutlineShape (): ShapeBuilder {
+        return buildShape()
+            .fillColor(this.metadata.shapeFillColor)
+            .fillOpacity(this.metadata.shapeFillOpacity)
+            .strokeWidth(5)
+            .strokeColor(this.metadata.shapeStrokeColor)
+            .strokeOpacity(this.metadata.shapeStrokeOpacity)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT');
+    }
+
+    protected buildOutlinePath (): PathBuilder {
+        return buildPath()
+            .commands([])
+            .fillColor(this.metadata.shapeFillColor)
+            .fillOpacity(this.metadata.shapeFillOpacity)
+            .strokeWidth(5)
+            .strokeColor(this.metadata.shapeStrokeColor)
+            .strokeOpacity(this.metadata.shapeStrokeOpacity)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT');
+    }
+
+    protected buildLabel (): LabelBuilder {
+        return buildLabel()
+            .plainText('')
+            .pointerWidth(0)
+            .pointerHeight(0)
+            .locked(true)
+            .disableHit(true)
+            .layer('ATTACHMENT');
     }
 }
