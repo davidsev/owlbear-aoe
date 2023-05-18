@@ -65,6 +65,7 @@ function setupColorField (prefix: string) {
     // Update the button.
     button.style.backgroundColor = currentColor;
     button.setAttribute('data-color', makeColor(currentColor, currentOpacity));
+    button.innerText = `${(currentOpacity * 100).toFixed(0)}%`;
 
     // Show the popup when it's clicked.
     button.addEventListener('click', () => {
@@ -82,6 +83,7 @@ function setupColorField (prefix: string) {
             // Update the button
             button.style.backgroundColor = color;
             button.setAttribute('data-color', popup.picker.color);
+            button.innerText = `${(opacity * 100).toFixed(0)}%`;
 
             // Save it
             const toSave: Metadata = {};
