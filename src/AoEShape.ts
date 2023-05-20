@@ -114,6 +114,7 @@ export default abstract class AoEShape implements ToolMode {
     protected buildAreaPath (): PathBuilder {
         return buildPath()
             .commands([])
+            .metadata({ createdBy: getId() })
             .fillColor(this.metadata.areaFillColor)
             .fillOpacity(this.metadata.areaFillOpacity)
             .strokeWidth(5)
@@ -123,6 +124,7 @@ export default abstract class AoEShape implements ToolMode {
 
     protected buildOutlineShape (): ShapeBuilder {
         return buildShape()
+            .metadata({ createdBy: getId() })
             .fillColor(this.metadata.shapeFillColor)
             .fillOpacity(this.metadata.shapeFillOpacity)
             .strokeWidth(5)
@@ -136,6 +138,7 @@ export default abstract class AoEShape implements ToolMode {
     protected buildOutlinePath (): PathBuilder {
         return buildPath()
             .commands([])
+            .metadata({ createdBy: getId() })
             .fillColor(this.metadata.shapeFillColor)
             .fillOpacity(this.metadata.shapeFillOpacity)
             .strokeWidth(5)
@@ -149,6 +152,7 @@ export default abstract class AoEShape implements ToolMode {
     protected buildLabel (): LabelBuilder {
         return buildLabel()
             .plainText('')
+            .metadata({ createdBy: getId() })
             .pointerWidth(0)
             .pointerHeight(0)
             .locked(true)

@@ -1,7 +1,7 @@
 import loadTemplate from '../UI/loadTemplate';
 import template from './form.handlebars';
 import findNode from '../UI/findNode';
-import OBR from '@owlbear-rodeo/sdk';
+import OBR, { Item } from '@owlbear-rodeo/sdk';
 import getId from '../Util/getId';
 
 export function initSettingsForm () {
@@ -14,6 +14,14 @@ export function initSettingsForm () {
     coneOverlapThreshold.addEventListener('change', () => {
         const value = parseInt(coneOverlapThreshold.value, 10);
         OBR.tool.setMetadata(getId('tool'), { coneOverlapThreshold: value });
+    });
+
+    // Delete button
+    const deleteButton = findNode(document.body, 'button#deleteAll', HTMLButtonElement);
+    deleteButton.addEventListener('click', async () => {
+        const itemsToDelete = await OBR.scene.items.getItems((item: Item) => item.metadata?.createdBy === getId());
+        const idsToDelete = itemsToDelete.map((item: Item) => item.id);
+        await OBR.scene.items.deleteItems(idsToDelete);
     });
 
     OBR.onReady(() => {
