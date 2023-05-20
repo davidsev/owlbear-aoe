@@ -49,6 +49,17 @@ export async function initStyleForm () {
         setupSelect('labelDisplayMode');
     });
 
+    // Reset button
+    const resetButton = findNode(document.body, 'button#resetStyles', HTMLButtonElement);
+    resetButton.addEventListener('click', async () => {
+        const styleMetadata = Object.entries(defaultMetadata).filter((entry) => {
+            if (entry[0].startsWith('area') || entry[0].startsWith('shape') || entry[0].startsWith('label')) {
+                return entry;
+            }
+        });
+        await OBR.tool.setMetadata(getId('tool'), Object.fromEntries(styleMetadata));
+        location.reload();
+    });
 }
 
 function setupColorField (prefix: string) {
