@@ -10,6 +10,7 @@ export default class SettingsForm implements ToolAction {
         label: 'Settings',
         filter: {
             activeTools: [getId('tool')],
+            roles: ['GM'],
         },
     }];
 
