@@ -14,8 +14,8 @@ export default class Cube extends AoEShape {
 
         const cube: Path = this.buildAreaPath()
             // Use the area stuff, but use the outline color.
-            .strokeColor(this.metadata.shapeStrokeColor)
-            .strokeOpacity(this.metadata.shapeStrokeOpacity)
+            .strokeColor(this.toolMetadata.shapeStrokeColor)
+            .strokeOpacity(this.toolMetadata.shapeStrokeOpacity)
             .build();
 
         const label: Label = this.buildLabel()
@@ -23,7 +23,7 @@ export default class Cube extends AoEShape {
             .build();
 
         const ret: Item[] = [cube];
-        if (this.metadata.labelDisplayMode != 'never')
+        if (this.toolMetadata.labelDisplayMode != 'never')
             ret.push(label);
 
         return ret;
@@ -31,7 +31,7 @@ export default class Cube extends AoEShape {
 
     private getItems (items: Item[]): [Path, Label?] {
         const ret: [Path, Label?] = [items.shift() as Path, undefined];
-        if (this.metadata.labelDisplayMode != 'never')
+        if (this.toolMetadata.labelDisplayMode != 'never')
             ret[1] = items.shift() as Label;
 
         return ret;
@@ -72,7 +72,7 @@ export default class Cube extends AoEShape {
 
         const [cube, label] = this.getItems(Array.from(items));
         const ret: Item[] = [cube];
-        if (this.metadata.labelDisplayMode == 'always' && label)
+        if (this.toolMetadata.labelDisplayMode == 'always' && label)
             ret.push(label);
 
         return ret;

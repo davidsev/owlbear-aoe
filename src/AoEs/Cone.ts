@@ -26,9 +26,9 @@ export default class Cone extends AoEShape {
             .build();
 
         const ret: Item[] = [area];
-        if (this.metadata.shapeDisplayMode != 'never')
+        if (this.toolMetadata.shapeDisplayMode != 'never')
             ret.push(outline);
-        if (this.metadata.labelDisplayMode != 'never')
+        if (this.toolMetadata.labelDisplayMode != 'never')
             ret.push(label);
 
         return ret;
@@ -41,9 +41,9 @@ export default class Cone extends AoEShape {
 
     private getItems (items: Item[]): [Path, Path?, Label?] {
         const ret: [Path, Path?, Label?] = [items.shift() as Path, undefined, undefined];
-        if (this.metadata.shapeDisplayMode != 'never')
+        if (this.toolMetadata.shapeDisplayMode != 'never')
             ret[1] = items.shift() as Path;
-        if (this.metadata.labelDisplayMode != 'never')
+        if (this.toolMetadata.labelDisplayMode != 'never')
             ret[2] = items.shift() as Label;
 
         return ret;
@@ -109,9 +109,9 @@ export default class Cone extends AoEShape {
         // }
 
         const ret: Item[] = [area, ...labels];
-        if (this.metadata.shapeDisplayMode == 'always' && outline)
+        if (this.toolMetadata.shapeDisplayMode == 'always' && outline)
             ret.push(outline);
-        if (this.metadata.labelDisplayMode == 'always' && label)
+        if (this.toolMetadata.labelDisplayMode == 'always' && label)
             ret.push(label);
 
         return ret;
@@ -126,7 +126,7 @@ export default class Cone extends AoEShape {
         for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
             for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
                 const square = new AABB(x, y, this.dpi, this.dpi);
-                let threshold = this.metadata.coneOverlapThreshold;
+                let threshold = this.roomMetadata.coneOverlapThreshold;
                 if (!Number.isFinite(threshold))
                     threshold = 0;
                 if (triangle.intersectsSquareAmount(square) > (threshold as number)) {

@@ -5,7 +5,7 @@ import Circle from './AoEs/Circle';
 import Cube from './AoEs/Cube';
 import SettingsForm from './SettingsForm';
 import StyleForm from './StyleForm';
-import { defaultMetadata } from './Metadata';
+import { defaultToolMetadata } from './Metadata';
 
 export function initBackground () {
     OBR.onReady(() => {
@@ -17,7 +17,7 @@ export function initBackground () {
                 label: 'AoE',
             }],
             defaultMode: getId('cone'),
-            defaultMetadata: defaultMetadata,
+            defaultMetadata: defaultToolMetadata,
         });
 
         OBR.tool.createMode(new Cone());

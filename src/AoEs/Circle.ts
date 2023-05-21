@@ -27,9 +27,9 @@ export default class Circle extends AoEShape {
             .build();
 
         const ret: Item[] = [area];
-        if (this.metadata.shapeDisplayMode != 'never')
+        if (this.toolMetadata.shapeDisplayMode != 'never')
             ret.push(outline);
-        if (this.metadata.labelDisplayMode != 'never')
+        if (this.toolMetadata.labelDisplayMode != 'never')
             ret.push(label);
 
         return ret;
@@ -37,9 +37,9 @@ export default class Circle extends AoEShape {
 
     private getItems (items: Item[]): [Path, Shape?, Label?] {
         const ret: [Path, Shape?, Label?] = [items.shift() as Path, undefined, undefined];
-        if (this.metadata.shapeDisplayMode != 'never')
+        if (this.toolMetadata.shapeDisplayMode != 'never')
             ret[1] = items.shift() as Shape;
-        if (this.metadata.labelDisplayMode != 'never')
+        if (this.toolMetadata.labelDisplayMode != 'never')
             ret[2] = items.shift() as Label;
 
         return ret;
@@ -70,9 +70,9 @@ export default class Circle extends AoEShape {
         const [area, outline, label] = this.getItems(Array.from(items));
 
         const ret: Item[] = [area];
-        if (this.metadata.shapeDisplayMode == 'always' && outline)
+        if (this.toolMetadata.shapeDisplayMode == 'always' && outline)
             ret.push(outline);
-        if (this.metadata.labelDisplayMode == 'always' && label)
+        if (this.toolMetadata.labelDisplayMode == 'always' && label)
             ret.push(label);
 
         return ret;

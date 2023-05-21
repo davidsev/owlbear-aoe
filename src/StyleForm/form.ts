@@ -1,12 +1,11 @@
 import loadTemplate from '../UI/loadTemplate';
 import template from './form.handlebars';
 import OBR, { Metadata } from '@owlbear-rodeo/sdk';
-import getId from '../Util/getId';
 import 'vanilla-colorful/hex-alpha-color-picker.js';
 import './StyleForm.scss';
 import findNode from '../UI/findNode';
 import { HexAlphaBase } from 'vanilla-colorful/lib/entrypoints/hex-alpha';
-import { AoEMetadata, defaultMetadata, getMetadata } from '../Metadata';
+import { defaultToolMetadata, getToolMetadata, setToolMetadata, ToolMetadata } from '../Metadata';
 
 function makeColor (color: string, opacity: number) {
     return `${color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`;
@@ -23,7 +22,7 @@ let popup: {
     saveButton: HTMLButtonElement;
     defaultButton: HTMLButtonElement;
 };
-let metadata: AoEMetadata;
+let metadata: ToolMetadata;
 
 export async function initStyleForm () {
     // Load the form.
@@ -38,7 +37,7 @@ export async function initStyleForm () {
             saveButton: findNode(document.body, 'button#SaveButton', HTMLButtonElement),
             defaultButton: findNode(document.body, 'button#DefaultButton', HTMLButtonElement),
         };
-        metadata = await getMetadata();
+        metadata = await getToolMetadata();
 
         // Enable the fields.
         setupColorField('areaFill');
@@ -52,12 +51,12 @@ export async function initStyleForm () {
     // Reset button
     const resetButton = findNode(document.body, 'button#resetStyles', HTMLButtonElement);
     resetButton.addEventListener('click', async () => {
-        const styleMetadata = Object.entries(defaultMetadata).filter((entry) => {
+        const styleMetadata = Object.entries(defaultToolMetadata).filter((entry) => {
             if (entry[0].startsWith('area') || entry[0].startsWith('shape') || entry[0].startsWith('label')) {
                 return entry;
             }
         });
-        await OBR.tool.setMetadata(getId('tool'), Object.fromEntries(styleMetadata));
+        await setToolMetadata(Object.fromEntries(styleMetadata));
         location.reload();
     });
 }
@@ -70,8 +69,8 @@ function setupColorField (prefix: string) {
     // Get the current and default colours and add it to the button.
     const currentColor = metadata[prefix + 'Color'];
     const currentOpacity = metadata[prefix + 'Opacity'];
-    const defaultColor = defaultMetadata[prefix + 'Color'];
-    const defaultOpacity = defaultMetadata[prefix + 'Opacity'];
+    const defaultColor = defaultToolMetadata[prefix + 'Color'];
+    const defaultOpacity = defaultToolMetadata[prefix + 'Opacity'];
     if (typeof (currentColor) != 'string' || typeof (currentOpacity) != 'number' || typeof (defaultColor) != 'string' || typeof (defaultOpacity) != 'number')
         throw new Error(`Invalid metadata for ${prefix}`);
 
@@ -102,7 +101,7 @@ function setupColorField (prefix: string) {
             const toSave: Metadata = {};
             toSave[`${prefix}Color`] = color;
             toSave[`${prefix}Opacity`] = opacity;
-            OBR.tool.setMetadata(getId('tool'), toSave);
+            setToolMetadata(toSave);
 
             // Close
             popup.div.style.display = 'none';
@@ -130,6 +129,6 @@ function setupSelect (name: string) {
     select.addEventListener('change', () => {
         const toSave: Metadata = {};
         toSave[name] = select.value;
-        OBR.tool.setMetadata(getId('tool'), toSave);
+        setToolMetadata(toSave);
     });
 }

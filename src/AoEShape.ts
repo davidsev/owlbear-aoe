@@ -13,7 +13,14 @@ import OBR, {
 import getId from './Util/getId';
 import Vector from './Util/Vector';
 import { roundTo } from './Util/roundTo';
-import { AoEMetadata, cleanMetadata, defaultMetadata } from './Metadata';
+import {
+    cleanToolMetadata,
+    defaultRoomMetadata,
+    defaultToolMetadata,
+    getRoomMetadata,
+    RoomMetadata,
+    ToolMetadata,
+} from './Metadata';
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
 import { ShapeBuilder } from '@owlbear-rodeo/sdk/lib/builders/ShapeBuilder';
@@ -28,7 +35,8 @@ export default abstract class AoEShape implements ToolMode {
     protected center: Vector = new Vector({ x: 0, y: 0 });
     protected currentPosition: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
-    protected metadata: AoEMetadata = defaultMetadata;
+    protected toolMetadata: ToolMetadata = defaultToolMetadata;
+    protected roomMetadata: RoomMetadata = defaultRoomMetadata;
 
     constructor () {
     }
@@ -69,14 +77,15 @@ export default abstract class AoEShape implements ToolMode {
         this.gridScale = await OBR.scene.grid.getScale();
         this.center = new Vector(event.pointerPosition);
         this.currentPosition = new Vector(event.pointerPosition);
-        this.metadata = cleanMetadata(context.metadata);
+        this.toolMetadata = cleanToolMetadata(context.metadata);
+        this.roomMetadata = await getRoomMetadata();
 
         // Start drawing.
         this.interaction = await OBR.interaction.startItemInteraction(this.createItems(new Vector(event.pointerPosition)));
     }
 
     async onToolDragMove (context: ToolContext, event: ToolEvent) {
-        this.metadata = cleanMetadata(context.metadata);
+        this.toolMetadata = cleanToolMetadata(context.metadata);
 
         if (this.interaction) {
             const [update] = this.interaction;
@@ -88,7 +97,7 @@ export default abstract class AoEShape implements ToolMode {
     }
 
     onToolDragEnd (context: ToolContext, event: ToolEvent) {
-        this.metadata = cleanMetadata(context.metadata);
+        this.toolMetadata = cleanToolMetadata(context.metadata);
 
         if (this.interaction) {
             const [update, stop] = this.interaction;
@@ -115,21 +124,21 @@ export default abstract class AoEShape implements ToolMode {
         return buildPath()
             .commands([])
             .metadata({ createdBy: getId() })
-            .fillColor(this.metadata.areaFillColor)
-            .fillOpacity(this.metadata.areaFillOpacity)
+            .fillColor(this.toolMetadata.areaFillColor)
+            .fillOpacity(this.toolMetadata.areaFillOpacity)
             .strokeWidth(5)
-            .strokeColor(this.metadata.areaStrokeColor)
-            .strokeOpacity(this.metadata.areaStrokeOpacity);
+            .strokeColor(this.toolMetadata.areaStrokeColor)
+            .strokeOpacity(this.toolMetadata.areaStrokeOpacity);
     }
 
     protected buildOutlineShape (): ShapeBuilder {
         return buildShape()
             .metadata({ createdBy: getId() })
-            .fillColor(this.metadata.shapeFillColor)
-            .fillOpacity(this.metadata.shapeFillOpacity)
+            .fillColor(this.toolMetadata.shapeFillColor)
+            .fillOpacity(this.toolMetadata.shapeFillOpacity)
             .strokeWidth(5)
-            .strokeColor(this.metadata.shapeStrokeColor)
-            .strokeOpacity(this.metadata.shapeStrokeOpacity)
+            .strokeColor(this.toolMetadata.shapeStrokeColor)
+            .strokeOpacity(this.toolMetadata.shapeStrokeOpacity)
             .locked(true)
             .disableHit(true)
             .layer('ATTACHMENT');
@@ -139,11 +148,11 @@ export default abstract class AoEShape implements ToolMode {
         return buildPath()
             .commands([])
             .metadata({ createdBy: getId() })
-            .fillColor(this.metadata.shapeFillColor)
-            .fillOpacity(this.metadata.shapeFillOpacity)
+            .fillColor(this.toolMetadata.shapeFillColor)
+            .fillOpacity(this.toolMetadata.shapeFillOpacity)
             .strokeWidth(5)
-            .strokeColor(this.metadata.shapeStrokeColor)
-            .strokeOpacity(this.metadata.shapeStrokeOpacity)
+            .strokeColor(this.toolMetadata.shapeStrokeColor)
+            .strokeOpacity(this.toolMetadata.shapeStrokeOpacity)
             .locked(true)
             .disableHit(true)
             .layer('ATTACHMENT');
