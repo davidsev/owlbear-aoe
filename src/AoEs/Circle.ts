@@ -59,7 +59,7 @@ export default class Circle extends AoEShape {
 
         // And the text
         if (label)
-            label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
+            label.text.plainText = `radius: ${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
     }
 
     protected finalItems (items: Item[]): Item[] {
