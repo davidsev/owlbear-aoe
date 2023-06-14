@@ -5,6 +5,7 @@ import Triangle from '../Util/Triangle';
 import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
 import PathSimplifier from '../Util/PathSimplifier';
+import { Line } from '../Util/Line';
 
 export default class Cone extends AoEShape {
 
@@ -35,7 +36,8 @@ export default class Cone extends AoEShape {
     }
 
     private getTriangle (): Triangle {
-        const angle = this.currentPosition.angleTo(this.roundedCenter);
+        const line = new Line(this.currentPosition, this.roundedCenter);
+        const angle = line.angle;
         return Triangle.fromDirectionAndSize(this.roundedCenter, angle, this.roundedDistance);
     }
 

@@ -57,10 +57,6 @@ export default class Vector implements Vector2 {
         return Math.sqrt(Math.pow(this.x - rhs.x, 2) + Math.pow(this.y - rhs.y, 2));
     }
 
-    public angleTo (rhs: Vector2): number {
-        return Math.atan2(rhs.y - this.y, rhs.x - this.x);
-    }
-
     public equals (rhs: Vector2): boolean {
         return this.x === rhs.x && this.y === rhs.y;
     }
