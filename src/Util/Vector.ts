@@ -25,7 +25,7 @@ export default class Vector implements Vector2 {
     }
 
     public dot (rhs: Vector2): number {
-        return this.x * rhs.x + this.y + rhs.y;
+        return this.x * rhs.x + this.y * rhs.y;
     }
 
     public cross (rhs: Vector2): number {
