@@ -28,6 +28,9 @@ export class Line {
         return Math.sqrt(Math.pow(this.p2.x - this.p1.x, 2) + Math.pow(this.p2.y - this.p1.y, 2));
     }
 
+    /** Returns the angle of the line in radians, from -PI to PI
+     *  Right is 0, positive is counter-clockwise, so 0.5PI is up and -0.5PI is down
+     */
     public get angle (): number {
         return Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
     }
@@ -61,13 +64,13 @@ export class Line {
 
         if (isZeroIsh(r_s) && isZeroIsh(q_p_r)) {
             // t0 = (q − p) · r / (r · r)
-            //  const t0 = q.sub(p).dot(r) / r.dot(r);
+            const t0 = q.sub(p).dot(r) / r.dot(r);
 
             // t1 = (q + s − p) · r / (r · r) = t0 + s · r / (r · r)
-            //  const t1 = t0 + s.dot(r) / r.dot(r);
+            const t1 = t0 + s.dot(r) / r.dot(r);
 
-            const t1 = q.add(s.sub(p)).dot(r) / r.dot(r);
-            const t0 = t1 - s.dot(r) / r.dot(r);
+            //const t1 = q.add(s.sub(p)).dot(r) / r.dot(r);
+            //const t0 = t1 - s.dot(r) / r.dot(r);
 
             // Overlap:  return the middle of the shortest line because that's probably not too bad?
             // Should really return both ends of the overlap, but that's a major PITA
@@ -108,17 +111,19 @@ export class Line {
         return `Line(${this.p1.x},${this.p1.y} -> ${this.p2.x},${this.p2.y})`;
     }
 
-    // Returns a new line with the same direction, but pointing up or right.
+    /** Returns a new line with the same direction, but pointing up or right.
+     *  Only works for lines that are horizontal or vertical.
+     */
     public normaliseDirection (): Line {
         // If it's a horizontal line, make it point right
         if (this.p1.y === this.p2.y) {
-            if (this.p1.x < this.p2.x) {
+            if (this.p1.x > this.p2.x) {
                 return new Line(this.p2, this.p1);
             }
         }
 
         // Otherwise, make it point up
-        if (this.p1.y < this.p2.y) {
+        if (this.p1.y > this.p2.y) {
             return new Line(this.p2, this.p1);
         }
 
