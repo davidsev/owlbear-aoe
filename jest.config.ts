@@ -1,6 +1,7 @@
 module.exports = {
-    transform: { '^.+\\.ts$': 'ts-jest' },
-    testEnvironment: 'node',
+    transform: { '^.+\\.[tj]s$': 'ts-jest' },
+    testEnvironment: 'jsdom',
     testRegex: '/tests/.*\\.test\\.ts$',
     moduleFileExtensions: ['ts', 'js'],
+    transformIgnorePatterns: ['node_modules/(?!@owlbear-rodeo)/'],
 };
