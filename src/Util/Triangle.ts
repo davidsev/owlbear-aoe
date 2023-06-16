@@ -37,12 +37,7 @@ export default class Triangle {
     }
 
     public get area (): number {
-        const a = this.lines[0].length;
-        const b = this.lines[1].length;
-        const c = this.lines[2].length;
-
-        const s = (a + b + c) / 2;
-        return Math.sqrt(s * (s - a) * (s - b) * (s - c));
+        return this.getBounds().area / 2;
     }
 
     public intersectsSquareAmount (square: AABB): number {

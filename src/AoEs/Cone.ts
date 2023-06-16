@@ -84,7 +84,7 @@ export default class Cone extends AoEShape {
         //     for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
         //         const square = new AABB(x, y, this.dpi, this.dpi);
         //         const overlap = triangle.intersectsSquareAmount(square);
-        //         labels.push(buildLabel()
+        //         labels.push(this.buildLabel()
         //             .plainText(overlap.toString())
         //             .pointerWidth(0)
         //             .pointerHeight(0)
@@ -131,7 +131,7 @@ export default class Cone extends AoEShape {
                 let threshold = this.roomMetadata.coneOverlapThreshold;
                 if (!Number.isFinite(threshold))
                     threshold = 0;
-                if (triangle.intersectsSquareAmount(square) > (threshold as number)) {
+                if (triangle.intersectsSquareAmount(square) > threshold) {
                     path.addSquare(square);
                 }
             }

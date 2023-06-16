@@ -161,6 +161,13 @@ describe('testing Line', () => {
             p3: { x: 5, y: 20 },
             p4: { x: 10, y: 10 },
         },
+        {
+            p1: { x: 450, y: -300 },
+            p2: { x: 921, y: -475 },
+            p3: { x: 900, y: -300 },
+            p4: { x: 900, y: -450 },
+            expected: { x: 7.5, y: 15 },
+        },
     ];
     test.each(intersectionNullTestCases)(
         'intersection(($p1.x, $p1.y),($p2.x,$p2.y),($p3.x,$p3.y),($p4.x,$p4.y)) => null',
