@@ -79,9 +79,20 @@ export default class Triangle {
         // Then sort our points to be in order.
         const sortedPoints = sortPointsClockwise(newPolygon);
 
-        // Split it into triangles and calculate the area.
-        const center = AABB.boundingBox(sortedPoints).center;
+        // If there's not enough / any overlap, then no intersection.
+        if (sortedPoints.length < 3) {
+            return 0;
+        }
+
+        // Otherwise we need the area of the polygon.
+        // If it's a triangle just do that.
         let polygonArea = 0.0;
+        if (sortedPoints.length === 3) {
+            polygonArea = (new Triangle(sortedPoints[0], sortedPoints[1], sortedPoints[2])).area;
+        }
+
+        // Otherwise we need to split it into triangles and add the areas.
+        const center = AABB.boundingBox(sortedPoints).center;
         for (let i = 0; i < sortedPoints.length; i++) {
             const p1 = sortedPoints[i];
             const p2 = sortedPoints[(i + 1) % sortedPoints.length];
