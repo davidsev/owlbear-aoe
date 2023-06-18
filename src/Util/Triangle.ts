@@ -36,8 +36,20 @@ export default class Triangle {
         ];
     }
 
+    // Our triangles aren't axis aligned, so we can't just use the AABB's.
+    // Instead, we use Heron's formula https://www.mathsisfun.com/geometry/herons-formula.html
     public get area (): number {
-        return this.getBounds().area / 2;
+        const a = this.lines[0].length;
+        const b = this.lines[1].length;
+        const c = this.lines[2].length;
+
+        const s = (a + b + c) / 2;
+        const area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+        // Check if the points are all a straight line.
+        if (isNaN(area)) {
+            return 0;
+        }
+        return area;
     }
 
     public intersectsSquareAmount (square: AABB): number {
