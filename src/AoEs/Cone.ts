@@ -35,9 +35,11 @@ export default class Cone extends AoEShape {
         return ret;
     }
 
-    private getTriangle (): Triangle {
+    private getTriangle (): Triangle | null {
         const line = new Line(this.currentPosition, this.roundedCenter);
         const angle = line.angle;
+        if (!angle || !this.roundedDistance)
+            return null;
         return Triangle.fromDirectionAndSize(this.roundedCenter, angle, this.roundedDistance);
     }
 
@@ -56,6 +58,16 @@ export default class Cone extends AoEShape {
 
         const triangle = this.getTriangle();
 
+        // If there's no triangle, clear everything (eg if the distance is 0)
+        if (!triangle) {
+            if (outline)
+                outline.commands = [];
+            area.commands = [];
+            if (label)
+                label.visible = false;
+            return;
+        }
+
         // Update the outline
         if (outline)
             outline.commands = triangle.pathCommand;
@@ -67,6 +79,7 @@ export default class Cone extends AoEShape {
         if (label) {
             label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
             label.position = triangle.center;
+            label.visible = true;
         }
     }
 

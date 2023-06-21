@@ -31,7 +31,9 @@ export class Line {
     /** Returns the angle of the line in radians, from -PI to PI
      *  Right is 0, positive is counter-clockwise, so 0.5PI is up and -0.5PI is down
      */
-    public get angle (): number {
+    public get angle (): number | null {
+        if (this.p1.equals(this.p2))
+            return null;
         return Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
     }
 

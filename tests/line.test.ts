@@ -40,7 +40,7 @@ describe('testing Line', () => {
     const angleTestCases = [
         { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: 1.107 },
         { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: -2.034 },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: 0 },
+        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: null },
         { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: 1.571 },
         { p1: { x: 5, y: 0 }, p2: { x: 10, y: 0 }, expected: 0 },
         { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: 0 },
@@ -50,7 +50,10 @@ describe('testing Line', () => {
     ];
     test.each(angleTestCases)('angle(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
         const line = new Line(p1, p2);
-        expect(line.angle).toBeCloseTo(expected);
+        if (expected === null)
+            expect(line.angle).toBeNull();
+        else
+            expect(line.angle).toBeCloseTo(expected);
     });
 
     const vectorTestCases = [
