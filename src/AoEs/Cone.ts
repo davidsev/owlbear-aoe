@@ -202,7 +202,8 @@ export default class Cone extends AoEShape {
         // Find the most intersected squares on each row.
         const path = new PathSimplifier();
         for (const [rowIndex, row] of squares.entries()) {
-            const bestSquares = this.maxNofArray(row, square => triangle.intersectsSquareAmount(square), rowIndex + 1);
+            const intersection = (square: AABB) => triangle.intersectsSquareAmount(square);
+            const bestSquares = this.maxNofArray(row.filter(intersection), intersection, rowIndex + 1);
             path.addSquares(bestSquares);
         }
 
