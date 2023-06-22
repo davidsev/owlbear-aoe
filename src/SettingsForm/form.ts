@@ -3,11 +3,13 @@ import template from './form.handlebars';
 import findNode from '../UI/findNode';
 import OBR, { Item } from '@owlbear-rodeo/sdk';
 import getId from '../Util/getId';
-import { getRoomMetadata, setRoomMetadata } from '../Metadata';
+import { ConeMode, getRoomMetadata, setRoomMetadata } from '../Metadata';
 
 export function initSettingsForm () {
     // Laad the form.
-    const html = loadTemplate(template());
+    const html = loadTemplate(template({
+        coneModes: Object.values(ConeMode),
+    }));
     document.body.replaceChildren(html);
 
     // Add event listeners.
@@ -15,6 +17,10 @@ export function initSettingsForm () {
     coneOverlapThreshold.addEventListener('change', () => {
         const value = parseInt(coneOverlapThreshold.value, 10);
         setRoomMetadata({ coneOverlapThreshold: value });
+    });
+    const coneMode = findNode(document.body, 'select#coneMode', HTMLSelectElement);
+    coneMode.addEventListener('change', () => {
+        setRoomMetadata({ coneMode: coneMode.value as ConeMode });
     });
 
     // Delete button
@@ -37,4 +43,6 @@ async function updateForm () {
 
     const coneOverlapThreshold = findNode(document.body, 'input#coneOverlapThreshold', HTMLInputElement);
     coneOverlapThreshold.value = metadata.coneOverlapThreshold?.toString() || '0';
+    const coneMode = findNode(document.body, 'select#coneMode', HTMLSelectElement);
+    coneMode.value = metadata.coneMode || ConeMode.TEMPLATE;
 }

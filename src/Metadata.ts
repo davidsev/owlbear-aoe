@@ -15,11 +15,18 @@ function cleanMetadata<T extends Metadata> (metadata: Metadata, defaultValues: T
 // Room Metadata
 //
 
+export enum ConeMode {
+    TEMPLATE = 'Template',
+    TOKEN = 'Token',
+}
+
 export interface RoomMetadata extends Metadata {
+    coneMode: ConeMode,
     coneOverlapThreshold: number,
 }
 
 export const defaultRoomMetadata: RoomMetadata = {
+    coneMode: ConeMode.TEMPLATE,
     coneOverlapThreshold: 10,
 };
 

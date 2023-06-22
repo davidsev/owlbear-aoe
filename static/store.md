@@ -32,7 +32,15 @@ Currently only square grids are supported.
 ### Settings
 
 The cog button opens the settings, which are set by the GM for the whole room. \
-Currently the only setting is what percentage of a square needs to be covered to count as being hit by a cone. By RAW
+For cones, we support two methods of calculating which squares are hit, both
+from  [XGtE 67/68](https://www.dndbeyond.com/sources/xgte/dungeon-masters-tools#Spellcasting):
+
+- The default "template" method, draws a triangle and then sees which squares are covered by more than the configured
+  percentage.
+- The "token" method hits one square on the first row, two on the second row, and so on. This results in a consistent
+  number of affected squares, but the shape can be strange.
+
+The only other setting is what percentage of a square needs to be covered to count as being hit by a cone. By RAW
 any overlap is enough so it should be 0, however the default is 1 as setting it to zero can match some squares that
 don't look like they should.
 

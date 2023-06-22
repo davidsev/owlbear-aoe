@@ -2,6 +2,13 @@ import { Vector2 } from '@owlbear-rodeo/sdk';
 import AABB from './AABB';
 import Vector from './Vector';
 
+export enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+}
+
 export class Line {
     public readonly p1: Vector;
     public readonly p2: Vector;
@@ -29,12 +36,25 @@ export class Line {
     }
 
     /** Returns the angle of the line in radians, from -PI to PI
-     *  Right is 0, positive is counter-clockwise, so 0.5PI is up and -0.5PI is down
+     *  Right is 0, positive is counter-clockwise, so 0.5PI is down and -0.5PI is up
      */
     public get angle (): number | null {
         if (this.p1.equals(this.p2))
             return null;
         return Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
+    }
+
+    public get direction (): Direction | null {
+        const angle = this.angle;
+        if (angle === null)
+            return null;
+        if (Math.abs(angle) < Math.PI * 0.25)
+            return Direction.RIGHT;
+        if (Math.abs(angle) > Math.PI * 0.75)
+            return Direction.LEFT;
+        if (angle < 0)
+            return Direction.UP;
+        return Direction.DOWN;
     }
 
     public get vector (): Vector {

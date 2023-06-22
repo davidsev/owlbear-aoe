@@ -11,6 +11,11 @@ export default class PathSimplifier {
         return this;
     }
 
+    public addSquares (squares: AABB[]): this {
+        this.squares.push(...squares);
+        return this;
+    }
+
     public add (x: number, y: number, w: number, h: number): this {
         this.addSquare(new AABB(x, y, w, h));
         return this;

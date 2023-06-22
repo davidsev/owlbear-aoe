@@ -5,7 +5,8 @@ import Triangle from '../Util/Triangle';
 import AABB from '../Util/AABB';
 import Vector from '../Util/Vector';
 import PathSimplifier from '../Util/PathSimplifier';
-import { Line } from '../Util/Line';
+import { Direction, Line } from '../Util/Line';
+import { ConeMode } from '../Metadata';
 
 export default class Cone extends AoEShape {
 
@@ -133,17 +134,24 @@ export default class Cone extends AoEShape {
     }
 
     private buildAreaPathCommand (triangle: Triangle): PathSimplifier {
+        if (this.roomMetadata.coneMode == ConeMode.TOKEN)
+            return this.buildAreaPathCommandToken(triangle);
+        else
+            return this.buildAreaPathCommandIntersection(triangle);
+    }
+
+    private buildAreaPathCommandIntersection (triangle: Triangle): PathSimplifier {
         // Work out the bounding square for our search area.
         const bounds = triangle.getBounds(this.dpi);
 
         // Check every square.
         const path = new PathSimplifier();
+        let threshold = this.roomMetadata.coneOverlapThreshold;
+        if (!Number.isFinite(threshold))
+            threshold = 0;
         for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
             for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
                 const square = new AABB(x, y, this.dpi, this.dpi);
-                let threshold = this.roomMetadata.coneOverlapThreshold;
-                if (!Number.isFinite(threshold))
-                    threshold = 0;
                 if (triangle.intersectsSquareAmount(square) > threshold) {
                     path.addSquare(square);
                 }
@@ -151,5 +159,67 @@ export default class Cone extends AoEShape {
         }
 
         return path;
+    }
+
+    private buildAreaPathCommandToken (triangle: Triangle): PathSimplifier {
+
+        // Work out which direction to look in.
+        const line = new Line(this.roundedCenter, this.currentPosition);
+        const direction = line.direction;
+
+        // Get the squares to check.
+        let squares: AABB[][] = [];
+        if (direction == Direction.RIGHT) {
+            for (let x = this.roundedCenter.x; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi) {
+                let row: AABB[] = [];
+                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
+                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                squares.push(row);
+            }
+        } else if (direction == Direction.LEFT) {
+            for (let x = this.roundedCenter.x - this.dpi; x >= this.roundedCenter.x - this.roundedDistance; x -= this.dpi) {
+                let row: AABB[] = [];
+                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
+                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                squares.push(row);
+            }
+        } else if (direction == Direction.DOWN) {
+            for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi) {
+                let row: AABB[] = [];
+                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
+                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                squares.push(row);
+            }
+        } else if (direction == Direction.UP) {
+            for (let y = this.roundedCenter.y - this.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= this.dpi) {
+                let row: AABB[] = [];
+                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
+                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                squares.push(row);
+            }
+        }
+
+        // Find the most intersected squares on each row.
+        const path = new PathSimplifier();
+        for (const [rowIndex, row] of squares.entries()) {
+            const bestSquares = this.maxNofArray(row, square => triangle.intersectsSquareAmount(square), rowIndex + 1);
+            path.addSquares(bestSquares);
+        }
+
+        return path;
+    }
+
+    private maxNofArray<T> (items: T[], getValue: (item: T) => number, count: number = 1): T[] {
+
+        // Get the value of each item.
+        const values = new Map<T, number>();
+        for (const item of items)
+            values.set(item, getValue(item));
+
+        // Sort the items by their value.
+        const sortedValues = [...values.entries()].sort((a, b) => b[1] - a[1]);
+
+        // Return the top n items.
+        return sortedValues.slice(0, count).map(x => x[0]);
     }
 }

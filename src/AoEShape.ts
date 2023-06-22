@@ -70,6 +70,10 @@ export default abstract class AoEShape implements ToolMode {
         return roundTo(this.distance, this.dpi);
     }
 
+    protected get roundedDistanceInSquares (): number {
+        return this.roundedDistance / this.dpi;
+    }
+
     // When they start drawing, create the shape.
     async onToolDragStart (context: ToolContext, event: ToolEvent) {
         // Save the center and DPI that we are going to use for the whole interaction.

@@ -1,8 +1,21 @@
 <div>
     <div class="form-row">
-        <label for="coneOverlapPc" style="width: 75%">Cone Overlap threshhold (%)</label>
+        <label for="coneMode" style="width: 50%">Cone Mode</label>
+        <select id="coneMode" style="width: 50%">
+            {{#each coneModes}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <small>
+            Template: all squares that the triangle covers by more than the threshold below<br>
+            Token: one square from the first row, two from the next, etc.
+        </small>
+    </div>
+    <div class="form-row">
+        <label for="coneOverlapThreshold" style="width: 75%">Cone Overlap threshhold (%)</label>
         <input type="number" min="0" max="100" value="30" id="coneOverlapThreshold" style="width: 50px">
-        <small>How much of a square needs to be covered by a cone to be hit.&ensp;By RAW this should be 0.</small>
+        <small>If mode is template, how much of a square needs to be covered by a cone to be hit.&ensp;By RAW this
+            should be 0.</small>
     </div>
     <div style="text-align: right; margin-top: 10px">
         <button id="deleteAll">Delete All AoE's</button>
