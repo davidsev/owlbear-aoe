@@ -36,7 +36,7 @@ export class Line {
     }
 
     /** Returns the angle of the line in radians, from -PI to PI
-     *  Right is 0, positive is counter-clockwise, so 0.5PI is down and -0.5PI is up
+     *  Right is 0, positive is counter-clockwise, so 0.5PI is +ve y (down) and -0.5PI is -ve y (up)
      */
     public get angle (): number | null {
         if (this.p1.equals(this.p2))
@@ -53,8 +53,8 @@ export class Line {
         if (Math.abs(angle) > Math.PI * 0.75)
             return Direction.LEFT;
         if (angle < 0)
-            return Direction.UP;
-        return Direction.DOWN;
+            return Direction.DOWN;
+        return Direction.UP;
     }
 
     public get vector (): Vector {
