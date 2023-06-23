@@ -1,4 +1,5 @@
 import Vector from '../src/Util/Vector';
+import { Direction } from '../src/Util/Line';
 
 describe('testing Vector', () => {
     test('creation', () => {
@@ -124,6 +125,39 @@ describe('testing Vector', () => {
         const v1 = new Vector(data.a);
         const answer = v1.toString();
         expect(answer).toBe(data.expected);
+    });
+
+    const angleTestCases = [
+        { x: 5, y: 10, expected: 1.107 },
+        { x: -5, y: -10, expected: -2.034 },
+        { x: 0, y: 0, expected: null },
+        { x: 0, y: 10, expected: 1.571 },
+        { x: 5, y: 0, expected: 0 },
+        { x: 5, y: 0, expected: 0 },
+        { x: 5, y: 10, expected: 1.107 },
+        { x: 5, y: -10, expected: -1.107 },
+    ];
+    test.each(angleTestCases)('($x, $y).angle() => $expected', ({ x, y, expected }) => {
+        const vector = new Vector({ x, y });
+        if (expected === null)
+            expect(vector.angle).toBeNull();
+        else
+            expect(vector.angle).toBeCloseTo(expected);
+    });
+
+    const directionTestCases = [
+        { x: 5, y: 10, expected: Direction.UP },
+        { x: -5, y: -10, expected: Direction.DOWN },
+        { x: 0, y: 0, expected: null },
+        { x: -25, y: 10, expected: Direction.LEFT },
+        { x: 5, y: 0, expected: Direction.RIGHT },
+        { x: 5, y: 0, expected: Direction.RIGHT },
+        { x: 5, y: 10, expected: Direction.UP },
+        { x: 5, y: -10, expected: Direction.DOWN },
+    ];
+    test.each(directionTestCases)('($x, $y).direction() => $expected', ({ x, y, expected }) => {
+        const vector = new Vector({ x, y });
+        expect(vector.direction).toBe(expected);
     });
 
 });

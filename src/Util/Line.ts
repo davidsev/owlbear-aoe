@@ -35,28 +35,6 @@ export class Line {
         return Math.sqrt(Math.pow(this.p2.x - this.p1.x, 2) + Math.pow(this.p2.y - this.p1.y, 2));
     }
 
-    /** Returns the angle of the line in radians, from -PI to PI
-     *  Right is 0, positive is counter-clockwise, so 0.5PI is +ve y (down) and -0.5PI is -ve y (up)
-     */
-    public get angle (): number | null {
-        if (this.p1.equals(this.p2))
-            return null;
-        return Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
-    }
-
-    public get direction (): Direction | null {
-        const angle = this.angle;
-        if (angle === null)
-            return null;
-        if (Math.abs(angle) < Math.PI * 0.25)
-            return Direction.RIGHT;
-        if (Math.abs(angle) > Math.PI * 0.75)
-            return Direction.LEFT;
-        if (angle < 0)
-            return Direction.DOWN;
-        return Direction.UP;
-    }
-
     public get vector (): Vector {
         return new Vector({
             x: this.p2.x - this.p1.x,

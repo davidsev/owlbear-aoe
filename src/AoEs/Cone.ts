@@ -38,7 +38,7 @@ export default class Cone extends AoEShape {
 
     private getTriangle (): Triangle | null {
         const line = new Line(this.currentPosition, this.roundedCenter);
-        const angle = line.angle;
+        const angle = line.vector.angle;
         if (!angle || !this.roundedDistance)
             return null;
         return Triangle.fromDirectionAndSize(this.roundedCenter, angle, this.roundedDistance);
@@ -165,7 +165,7 @@ export default class Cone extends AoEShape {
 
         // Work out which direction to look in.
         const line = new Line(this.roundedCenter, this.currentPosition);
-        const direction = line.direction;
+        const direction = line.vector.direction;
 
         // Get the squares to check.
         let squares: AABB[][] = [];

@@ -51,9 +51,9 @@ describe('testing Line', () => {
     test.each(angleTestCases)('angle(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
         const line = new Line(p1, p2);
         if (expected === null)
-            expect(line.angle).toBeNull();
+            expect(line.vector.angle).toBeNull();
         else
-            expect(line.angle).toBeCloseTo(expected);
+            expect(line.vector.angle).toBeCloseTo(expected);
     });
 
     const directionTestCases = [
@@ -69,7 +69,7 @@ describe('testing Line', () => {
     ];
     test.each(directionTestCases)('direction(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
         const line = new Line(p1, p2);
-        expect(line.direction).toBe(expected);
+        expect(line.vector.direction).toBe(expected);
     });
 
     const vectorTestCases = [
