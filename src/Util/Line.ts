@@ -1,13 +1,6 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import AABB from './AABB';
-import Vector from './Vector';
-
-export enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-}
+import { Vector } from './Vector';
 
 export class Line {
     public readonly p1: Vector;

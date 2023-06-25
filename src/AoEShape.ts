@@ -11,7 +11,7 @@ import OBR, {
     ToolMode,
 } from '@owlbear-rodeo/sdk';
 import getId from './Util/getId';
-import Vector from './Util/Vector';
+import { Vector } from './Util/Vector';
 import { roundTo } from './Util/roundTo';
 import {
     cleanToolMetadata,

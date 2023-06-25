@@ -1,4 +1,5 @@
-import { Direction, Line } from '../src/Util/Line';
+import { Line } from '../src/Util/Line';
+import { Direction } from '../src/Util/Vector';
 
 describe('testing Line', () => {
     test('creation', () => {
@@ -69,7 +70,7 @@ describe('testing Line', () => {
     ];
     test.each(directionTestCases)('direction(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
         const line = new Line(p1, p2);
-        expect(line.vector.direction).toBe(expected);
+        expect(line.vector.direction4).toBe(expected);
     });
 
     const vectorTestCases = [

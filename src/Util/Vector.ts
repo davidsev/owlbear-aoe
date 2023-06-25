@@ -1,7 +1,13 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import { Direction } from './Line';
 
-export default class Vector implements Vector2 {
+export enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+}
+
+export class Vector implements Vector2 {
 
     public readonly x: number;
     public readonly y: number;
@@ -67,7 +73,7 @@ export default class Vector implements Vector2 {
     }
 
     /** Returns the angle of the vector in radians, from -PI to PI
-     *  Right is 0, positive is counter-clockwise, so 0.5PI is +ve y (down) and -0.5PI is -ve y (up)
+     *  Right is 0, positive is counter-clockwise, so 0.5PI is -ve y (up) and -0.5PI is +ve y (down)
      */
     public get angle (): number | null {
         if (this.x == 0 && this.y == 0)
@@ -75,7 +81,7 @@ export default class Vector implements Vector2 {
         return Math.atan2(this.y, this.x);
     }
 
-    public get direction (): Direction | null {
+    public get direction4 (): Direction | null {
         const angle = this.angle;
         if (angle === null)
             return null;

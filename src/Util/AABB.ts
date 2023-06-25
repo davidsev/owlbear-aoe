@@ -1,5 +1,5 @@
 import { Line } from './Line';
-import Vector from './Vector';
+import { Vector } from './Vector';
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
 
 export default class AABB {

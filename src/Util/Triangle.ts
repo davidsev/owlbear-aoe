@@ -3,7 +3,7 @@ import rotate from './rotate';
 import { roundDownTo, roundUpTo } from './roundTo';
 import AABB from './AABB';
 import { Line } from './Line';
-import Vector from './Vector';
+import { Vector } from './Vector';
 import sortPointsClockwise from './sortPointsClockwise';
 
 export default class Triangle {

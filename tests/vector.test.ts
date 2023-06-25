@@ -1,5 +1,4 @@
-import Vector from '../src/Util/Vector';
-import { Direction } from '../src/Util/Line';
+import { Direction, Vector } from '../src/Util/Vector';
 
 describe('testing Vector', () => {
     test('creation', () => {
@@ -145,7 +144,7 @@ describe('testing Vector', () => {
             expect(vector.angle).toBeCloseTo(expected);
     });
 
-    const directionTestCases = [
+    const direction4TestCases = [
         { x: 5, y: 10, expected: Direction.UP },
         { x: -5, y: -10, expected: Direction.DOWN },
         { x: 0, y: 0, expected: null },
@@ -155,9 +154,9 @@ describe('testing Vector', () => {
         { x: 5, y: 10, expected: Direction.UP },
         { x: 5, y: -10, expected: Direction.DOWN },
     ];
-    test.each(directionTestCases)('($x, $y).direction() => $expected', ({ x, y, expected }) => {
+    test.each(direction4TestCases)('($x, $y).direction4() => $expected', ({ x, y, expected }) => {
         const vector = new Vector({ x, y });
-        expect(vector.direction).toBe(expected);
+        expect(vector.direction4).toBe(expected);
     });
-
+    
 });

@@ -3,9 +3,9 @@ import AoEShape from '../AoEShape';
 import { Item, Label, Path } from '@owlbear-rodeo/sdk';
 import Triangle from '../Util/Triangle';
 import AABB from '../Util/AABB';
-import Vector from '../Util/Vector';
+import { Direction, Vector } from '../Util/Vector';
 import PathSimplifier from '../Util/PathSimplifier';
-import { Direction, Line } from '../Util/Line';
+import { Line } from '../Util/Line';
 import { ConeMode } from '../Metadata';
 
 export default class Cone extends AoEShape {
@@ -165,7 +165,7 @@ export default class Cone extends AoEShape {
 
         // Work out which direction to look in.
         const line = new Line(this.roundedCenter, this.currentPosition);
-        const direction = line.vector.direction;
+        const direction = line.vector.direction4;
 
         // Get the squares to check.
         let squares: AABB[][] = [];

@@ -1,6 +1,6 @@
 import AABB from './AABB';
 import { Command, PathCommand } from '@owlbear-rodeo/sdk';
-import Vector from './Vector';
+import { Vector } from './Vector';
 import { Line } from './Line';
 
 export default class PathSimplifier {
