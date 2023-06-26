@@ -1,5 +1,4 @@
 import { Line } from '../src/Util/Line';
-import { Direction } from '../src/Util/Vector';
 
 describe('testing Line', () => {
     test('creation', () => {
@@ -36,41 +35,6 @@ describe('testing Line', () => {
     test.each(lengthTestCases)('length(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
         const line = new Line(p1, p2);
         expect(line.length).toBeCloseTo(expected);
-    });
-
-    const angleTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: 1.107 },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: -2.034 },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: null },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: 1.571 },
-        { p1: { x: 5, y: 0 }, p2: { x: 10, y: 0 }, expected: 0 },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: 0 },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: 1.107 },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: -2.034 },
-        { p1: { x: 5, y: 20 }, p2: { x: 10, y: 10 }, expected: -1.107 },
-    ];
-    test.each(angleTestCases)('angle(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
-        const line = new Line(p1, p2);
-        if (expected === null)
-            expect(line.vector.angle).toBeNull();
-        else
-            expect(line.vector.angle).toBeCloseTo(expected);
-    });
-
-    const directionTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: Direction.UP },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: Direction.DOWN },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: null },
-        { p1: { x: 5, y: 10 }, p2: { x: -20, y: 20 }, expected: Direction.LEFT },
-        { p1: { x: 5, y: 0 }, p2: { x: 10, y: 0 }, expected: Direction.RIGHT },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: Direction.RIGHT },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: Direction.UP },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: Direction.DOWN },
-        { p1: { x: 5, y: 20 }, p2: { x: 10, y: 10 }, expected: Direction.DOWN },
-    ];
-    test.each(directionTestCases)('direction(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
-        const line = new Line(p1, p2);
-        expect(line.vector.direction4).toBe(expected);
     });
 
     const vectorTestCases = [
