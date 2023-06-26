@@ -5,6 +5,10 @@ export enum Direction {
     DOWN,
     LEFT,
     RIGHT,
+    UPLEFT,
+    UPRIGHT,
+    DOWNLEFT,
+    DOWNRIGHT,
 }
 
 export class Vector implements Vector2 {
@@ -82,7 +86,8 @@ export class Vector implements Vector2 {
     }
 
     /** Returns the direction of the vector, or null if the vector is zero.  Returns just the four main directions.
-     *  45deg lines prioritize up and down over left and right. */
+     *  45deg lines prioritize up and down over left and right.
+     */
     public get direction4 (): Direction | null {
         const angle = this.angle;
         if (angle === null)
@@ -94,6 +99,32 @@ export class Vector implements Vector2 {
         if (angle < 0)
             return Direction.UP;
         return Direction.DOWN;
+    }
+
+    /** Returns the direction of the vector, or null if the vector is zero.  Returns all eight directions.
+     * 45deg lines prioritize up and down over left and right.
+     */
+    public get direction8 (): Direction | null {
+        const angle = this.angle;
+        if (angle === null)
+            return null;
+        if (Math.abs(angle) < Math.PI * 0.125)
+            return Direction.RIGHT;
+        if (Math.abs(angle) > Math.PI * 0.875)
+            return Direction.LEFT;
+        if (angle < 0) {
+            if (Math.abs(angle) < Math.PI * 0.375)
+                return Direction.UPRIGHT;
+            if (Math.abs(angle) > Math.PI * 0.625)
+                return Direction.UPLEFT;
+            return Direction.UP;
+        } else {
+            if (Math.abs(angle) < Math.PI * 0.375)
+                return Direction.DOWNRIGHT;
+            if (Math.abs(angle) > Math.PI * 0.625)
+                return Direction.DOWNLEFT;
+            return Direction.DOWN;
+        }
     }
 
 }

@@ -167,4 +167,27 @@ describe('testing Vector', () => {
         expect(vector.direction4).toBe(expected);
     });
 
+    const direction8TestCases = [
+        { x: 0, y: 0, expected: null },
+        { x: 5, y: 0, expected: Direction.RIGHT },
+        { x: 10, y: 5, expected: Direction.DOWNRIGHT },
+        { x: 10, y: 10, expected: Direction.DOWNRIGHT },
+        { x: 5, y: 10, expected: Direction.DOWNRIGHT },
+        { x: 0, y: 10, expected: Direction.DOWN },
+        { x: -5, y: 10, expected: Direction.DOWNLEFT },
+        { x: -10, y: 10, expected: Direction.DOWNLEFT },
+        { x: -10, y: 5, expected: Direction.DOWNLEFT },
+        { x: -10, y: 0, expected: Direction.LEFT },
+        { x: -10, y: -5, expected: Direction.UPLEFT },
+        { x: -10, y: -10, expected: Direction.UPLEFT },
+        { x: -5, y: -10, expected: Direction.UPLEFT },
+        { x: 0, y: -10, expected: Direction.UP },
+        { x: 5, y: -10, expected: Direction.UPRIGHT },
+        { x: 10, y: -10, expected: Direction.UPRIGHT },
+        { x: 10, y: -5, expected: Direction.UPRIGHT },
+    ];
+    test.each(direction8TestCases)('($x, $y).direction8() => $expected', ({ x, y, expected }) => {
+        const vector = new Vector({ x, y });
+        expect(vector.direction8).toBe(expected);
+    });
 });

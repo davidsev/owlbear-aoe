@@ -165,32 +165,56 @@ export default class Cone extends AoEShape {
 
         // Work out which direction to look in.
         const line = new Line(this.roundedCenter, this.currentPosition);
-        const direction = line.vector.direction4;
+        const direction4 = line.vector.direction4;
+        const direction8 = line.vector.direction8;
+        if (direction4 === null || direction8 === null)
+            return new PathSimplifier();
+        const isDiagonal = [Direction.UPRIGHT, Direction.UPLEFT, Direction.DOWNRIGHT, Direction.DOWNLEFT].includes(direction8);
 
-        // Get the squares to check.
+        // Work out which axis to be centered on.
+        // If it's diagonal, we want to be centered on the nearest axis, and will reduce the number of tokens as we move away.
+        // If it's not diagonal, we want to be centered on the furthest axis, and will increase the number of tokens as we move away.
+        let axis: '+x' | '+y' | '-x' | '-y' | null = null;
+        if (direction8 == Direction.UP) axis = '-y';
+        if (direction8 == Direction.DOWN) axis = '+y';
+        if (direction8 == Direction.LEFT) axis = '-x';
+        if (direction8 == Direction.RIGHT) axis = '+x';
+        if (direction8 == Direction.UPRIGHT && direction4 == Direction.UP) axis = '+x';
+        if (direction8 == Direction.UPRIGHT && direction4 == Direction.RIGHT) axis = '-y';
+        if (direction8 == Direction.UPLEFT && direction4 == Direction.UP) axis = '-x';
+        if (direction8 == Direction.UPLEFT && direction4 == Direction.LEFT) axis = '-y';
+        if (direction8 == Direction.DOWNRIGHT && direction4 == Direction.DOWN) axis = '+x';
+        if (direction8 == Direction.DOWNRIGHT && direction4 == Direction.RIGHT) axis = '+y';
+        if (direction8 == Direction.DOWNLEFT && direction4 == Direction.DOWN) axis = '-x';
+        if (direction8 == Direction.DOWNLEFT && direction4 == Direction.LEFT) axis = '+y';
+
+        if (axis === null)
+            throw new Error(`Axis is null:  direction8: ${direction8}, direction4: ${direction4}, isDiagonal: ${isDiagonal}, line: ${line}`);
+
+        // Build a grid of squares to check, in rows.  The first row is nearest the axis.
         let squares: AABB[][] = [];
-        if (direction == Direction.RIGHT) {
+        if (axis == '+x') {
             for (let x = this.roundedCenter.x; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi) {
                 let row: AABB[] = [];
                 for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
                     row.push(new AABB(x, y, this.dpi, this.dpi));
                 squares.push(row);
             }
-        } else if (direction == Direction.LEFT) {
+        } else if (axis == '-x') {
             for (let x = this.roundedCenter.x - this.dpi; x >= this.roundedCenter.x - this.roundedDistance; x -= this.dpi) {
                 let row: AABB[] = [];
                 for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
                     row.push(new AABB(x, y, this.dpi, this.dpi));
                 squares.push(row);
             }
-        } else if (direction == Direction.DOWN) {
+        } else if (axis == '+y') {
             for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi) {
                 let row: AABB[] = [];
                 for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
                     row.push(new AABB(x, y, this.dpi, this.dpi));
                 squares.push(row);
             }
-        } else if (direction == Direction.UP) {
+        } else if (axis == '-y') {
             for (let y = this.roundedCenter.y - this.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= this.dpi) {
                 let row: AABB[] = [];
                 for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
@@ -198,6 +222,11 @@ export default class Cone extends AoEShape {
                 squares.push(row);
             }
         }
+
+        // We currently have the line nearest the axis in row one, which will get one token.
+        // If it's diagonal we want it the other way around.
+        if (isDiagonal)
+            squares = squares.reverse();
 
         // Find the most intersected squares on each row.
         const path = new PathSimplifier();
