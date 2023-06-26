@@ -73,7 +73,7 @@ export class Vector implements Vector2 {
     }
 
     /** Returns the angle of the vector in radians, from -PI to PI
-     *  Right is 0, positive is counter-clockwise, so 0.5PI is -ve y (up) and -0.5PI is +ve y (down)
+     *  Right is 0, negative angles are counter-clockwise, so 0.5PI is -ve y (up) and -0.5PI is +ve y (down)
      */
     public get angle (): number | null {
         if (this.x == 0 && this.y == 0)
@@ -81,6 +81,8 @@ export class Vector implements Vector2 {
         return Math.atan2(this.y, this.x);
     }
 
+    /** Returns the direction of the vector, or null if the vector is zero.  Returns just the four main directions.
+     *  45deg lines prioritize up and down over left and right. */
     public get direction4 (): Direction | null {
         const angle = this.angle;
         if (angle === null)
@@ -90,8 +92,8 @@ export class Vector implements Vector2 {
         if (Math.abs(angle) > Math.PI * 0.75)
             return Direction.LEFT;
         if (angle < 0)
-            return Direction.DOWN;
-        return Direction.UP;
+            return Direction.UP;
+        return Direction.DOWN;
     }
 
 }

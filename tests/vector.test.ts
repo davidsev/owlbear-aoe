@@ -145,18 +145,26 @@ describe('testing Vector', () => {
     });
 
     const direction4TestCases = [
-        { x: 5, y: 10, expected: Direction.UP },
-        { x: -5, y: -10, expected: Direction.DOWN },
         { x: 0, y: 0, expected: null },
-        { x: -25, y: 10, expected: Direction.LEFT },
         { x: 5, y: 0, expected: Direction.RIGHT },
-        { x: 5, y: 0, expected: Direction.RIGHT },
-        { x: 5, y: 10, expected: Direction.UP },
-        { x: 5, y: -10, expected: Direction.DOWN },
+        { x: 10, y: 5, expected: Direction.RIGHT },
+        { x: 10, y: 10, expected: Direction.DOWN },
+        { x: 5, y: 10, expected: Direction.DOWN },
+        { x: 0, y: 10, expected: Direction.DOWN },
+        { x: -5, y: 10, expected: Direction.DOWN },
+        { x: -10, y: 10, expected: Direction.DOWN },
+        { x: -10, y: 5, expected: Direction.LEFT },
+        { x: -10, y: 0, expected: Direction.LEFT },
+        { x: -10, y: -5, expected: Direction.LEFT },
+        { x: -10, y: -10, expected: Direction.UP },
+        { x: -5, y: -10, expected: Direction.UP },
+        { x: 0, y: -10, expected: Direction.UP },
+        { x: 5, y: -10, expected: Direction.UP },
+        { x: 10, y: -10, expected: Direction.UP },
     ];
     test.each(direction4TestCases)('($x, $y).direction4() => $expected', ({ x, y, expected }) => {
         const vector = new Vector({ x, y });
         expect(vector.direction4).toBe(expected);
     });
-    
+
 });

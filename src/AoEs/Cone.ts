@@ -183,14 +183,14 @@ export default class Cone extends AoEShape {
                     row.push(new AABB(x, y, this.dpi, this.dpi));
                 squares.push(row);
             }
-        } else if (direction == Direction.UP) {
+        } else if (direction == Direction.DOWN) {
             for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi) {
                 let row: AABB[] = [];
                 for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
                     row.push(new AABB(x, y, this.dpi, this.dpi));
                 squares.push(row);
             }
-        } else if (direction == Direction.DOWN) {
+        } else if (direction == Direction.UP) {
             for (let y = this.roundedCenter.y - this.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= this.dpi) {
                 let row: AABB[] = [];
                 for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
