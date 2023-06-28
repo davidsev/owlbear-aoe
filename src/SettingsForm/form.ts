@@ -1,8 +1,8 @@
-import loadTemplate from '../UI/loadTemplate';
+import { loadTemplate } from '../UI/loadTemplate';
 import template from './form.handlebars';
-import findNode from '../UI/findNode';
+import { findNode } from '../UI/findNode';
 import OBR, { Item } from '@owlbear-rodeo/sdk';
-import getId from '../Util/getId';
+import { getId } from '../Util/getId';
 import { ConeMode, getRoomMetadata, setRoomMetadata } from '../Metadata';
 
 export function initSettingsForm () {

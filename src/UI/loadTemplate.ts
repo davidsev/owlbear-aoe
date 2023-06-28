@@ -1,5 +1,5 @@
 /** Gets a template and makes it into a div, or throws */
-export default function loadTemplate (template: string): HTMLDivElement {
+export function loadTemplate (template: string): HTMLDivElement {
     let tempDiv = document.createElement('div');
     tempDiv.innerHTML = template;
     if (!(tempDiv.firstChild instanceof HTMLDivElement))

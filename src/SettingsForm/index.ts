@@ -1,7 +1,7 @@
 import OBR, { ToolAction, ToolContext, ToolIcon } from '@owlbear-rodeo/sdk';
-import getId from '../Util/getId';
+import { getId } from '../Util/getId';
 
-export default class SettingsForm implements ToolAction {
+export class SettingsForm implements ToolAction {
 
     readonly id = getId('setting');
 

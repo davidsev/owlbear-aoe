@@ -1,14 +1,14 @@
-import getId from '../Util/getId';
-import AoEShape from '../AoEShape';
+import { getId } from '../Util/getId';
+import { AoEShape } from '../AoEShape';
 import { Item, Label, Path } from '@owlbear-rodeo/sdk';
-import Triangle from '../Util/Triangle';
-import AABB from '../Util/AABB';
+import { Triangle } from '../Util/Triangle';
+import { AABB } from '../Util/AABB';
 import { Direction, Vector } from '../Util/Vector';
-import PathSimplifier from '../Util/PathSimplifier';
+import { PathSimplifier } from '../Util/PathSimplifier';
 import { Line } from '../Util/Line';
 import { ConeMode } from '../Metadata';
 
-export default class Cone extends AoEShape {
+export class Cone extends AoEShape {
 
     readonly label = 'Cone';
     readonly icon = '/icons/cone.svg';

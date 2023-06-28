@@ -1,12 +1,12 @@
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
-import rotate from './rotate';
+import { rotate } from './rotate';
 import { roundDownTo, roundUpTo } from './roundTo';
-import AABB from './AABB';
+import { AABB } from './AABB';
 import { Line } from './Line';
 import { Vector } from './Vector';
-import sortPointsClockwise from './sortPointsClockwise';
+import { sortPointsClockwise } from './sortPointsClockwise';
 
-export default class Triangle {
+export class Triangle {
     public readonly p1: Vector2;
     public readonly p2: Vector2;
     public readonly p3: Vector2;

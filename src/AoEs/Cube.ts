@@ -1,10 +1,10 @@
-import getId from '../Util/getId';
-import AoEShape from '../AoEShape';
+import { getId } from '../Util/getId';
+import { AoEShape } from '../AoEShape';
 import { Item, Label, Path } from '@owlbear-rodeo/sdk';
-import AABB from '../Util/AABB';
+import { AABB } from '../Util/AABB';
 import { Vector } from '../Util/Vector';
 
-export default class Cube extends AoEShape {
+export class Cube extends AoEShape {
 
     readonly label = 'Cube';
     readonly icon = '/icons/cube.svg';

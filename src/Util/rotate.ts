@@ -1,7 +1,7 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import { Vector } from './Vector';
 
-export default function rotate (center: Vector2, point2: Vector2, rads: number): Vector {
+export function rotate (center: Vector2, point2: Vector2, rads: number): Vector {
 
     const cos = Math.cos(rads);
     const sin = Math.sin(rads);

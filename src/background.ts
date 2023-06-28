@@ -1,10 +1,10 @@
 import OBR from '@owlbear-rodeo/sdk';
-import getId from './Util/getId';
-import Cone from './AoEs/Cone';
-import Circle from './AoEs/Circle';
-import Cube from './AoEs/Cube';
-import SettingsForm from './SettingsForm';
-import StyleForm from './StyleForm';
+import { getId } from './Util/getId';
+import { Cone } from './AoEs/Cone';
+import { Circle } from './AoEs/Circle';
+import { Cube } from './AoEs/Cube';
+import { SettingsForm } from './SettingsForm';
+import { StyleForm } from './StyleForm';
 import { defaultToolMetadata } from './Metadata';
 
 export function initBackground () {

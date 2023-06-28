@@ -2,7 +2,7 @@ import { Line } from './Line';
 import { Vector } from './Vector';
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
 
-export default class AABB {
+export class AABB {
 
     public readonly x: number;
     public readonly y: number;

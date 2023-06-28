@@ -1,5 +1,5 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import AABB from './AABB';
+import { AABB } from './AABB';
 import { Vector } from './Vector';
 
 export class Line {

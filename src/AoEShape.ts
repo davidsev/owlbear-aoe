@@ -10,7 +10,7 @@ import OBR, {
     ToolIcon,
     ToolMode,
 } from '@owlbear-rodeo/sdk';
-import getId from './Util/getId';
+import { getId } from './Util/getId';
 import { Vector } from './Util/Vector';
 import { roundTo } from './Util/roundTo';
 import {
@@ -25,7 +25,7 @@ import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
 import { ShapeBuilder } from '@owlbear-rodeo/sdk/lib/builders/ShapeBuilder';
 
-export default abstract class AoEShape implements ToolMode {
+export abstract class AoEShape implements ToolMode {
 
     abstract readonly label: string;
     abstract readonly icon: string;

@@ -1,8 +1,8 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import AABB from './AABB';
+import { AABB } from './AABB';
 
 // Adapted from https://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order/6989383#6989383
-export default function sortPointsClockwise<T extends Vector2> (points: T[]): T[] {
+export function sortPointsClockwise<T extends Vector2> (points: T[]): T[] {
     const center = AABB.boundingBox(points).center.add({ x: 10, y: 10 });
 
     points.sort((a, b) => {
