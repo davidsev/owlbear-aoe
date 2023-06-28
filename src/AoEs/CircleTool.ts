@@ -4,7 +4,7 @@ import { Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Util/AABB';
 import { PathSimplifier } from '../Util/PathSimplifier';
 
-export class Circle extends AoEShape {
+export class CircleTool extends AoEShape {
 
     readonly label = 'Circle';
     readonly icon = '/icons/circle.svg';

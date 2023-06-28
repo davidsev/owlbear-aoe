@@ -1,8 +1,8 @@
 import OBR from '@owlbear-rodeo/sdk';
 import { getId } from './Util/getId';
-import { Cone } from './AoEs/Cone';
-import { Circle } from './AoEs/Circle';
-import { Cube } from './AoEs/Cube';
+import { ConeTool } from './AoEs/ConeTool';
+import { CircleTool } from './AoEs/CircleTool';
+import { CubeTool } from './AoEs/CubeTool';
 import { SettingsForm } from './SettingsForm';
 import { StyleForm } from './StyleForm';
 import { defaultToolMetadata } from './Metadata';
@@ -20,9 +20,9 @@ export function initBackground () {
             defaultMetadata: defaultToolMetadata,
         });
 
-        OBR.tool.createMode(new Cone());
-        OBR.tool.createMode(new Circle());
-        OBR.tool.createMode(new Cube());
+        OBR.tool.createMode(new ConeTool());
+        OBR.tool.createMode(new CircleTool());
+        OBR.tool.createMode(new CubeTool());
 
         OBR.tool.createAction(new SettingsForm());
         OBR.tool.createAction(new StyleForm());

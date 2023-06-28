@@ -4,7 +4,7 @@ import { Item, Label, Path } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Util/AABB';
 import { Vector } from '../Util/Vector';
 
-export class Cube extends AoEShape {
+export class CubeTool extends AoEShape {
 
     readonly label = 'Cube';
     readonly icon = '/icons/cube.svg';

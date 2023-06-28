@@ -8,7 +8,7 @@ import { PathSimplifier } from '../Util/PathSimplifier';
 import { Line } from '../Util/Line';
 import { ConeMode } from '../Metadata';
 
-export class Cone extends AoEShape {
+export class ConeTool extends AoEShape {
 
     readonly label = 'Cone';
     readonly icon = '/icons/cone.svg';
