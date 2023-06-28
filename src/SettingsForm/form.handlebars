@@ -1,6 +1,6 @@
 <div>
     <div class="form-row">
-        <label for="coneMode" style="width: 50%">ConeTool Mode</label>
+        <label for="coneMode" style="width: 50%">Cone Mode</label>
         <select id="coneMode" style="width: 50%">
             {{#each coneModes}}
                 <option value="{{this}}">{{this}}</option>
@@ -12,7 +12,7 @@
         </small>
     </div>
     <div class="form-row">
-        <label for="coneOverlapThreshold" style="width: 75%">ConeTool Overlap threshhold (%)</label>
+        <label for="coneOverlapThreshold" style="width: 75%">Cone Overlap threshold (%)</label>
         <input type="number" min="0" max="100" value="30" id="coneOverlapThreshold" style="width: 50px">
         <small>If mode is template, how much of a square needs to be covered by a cone to be hit.&ensp;By RAW this
             should be 0.</small>
