@@ -1,20 +1,26 @@
-import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
+import { Vector2 } from '@owlbear-rodeo/sdk';
 import { rotate } from './rotate';
-import { roundDownTo, roundUpTo } from './roundTo';
 import { AABB } from './AABB';
-import { Line } from './Line';
-import { Vector } from './Vector';
 import { sortPointsClockwise } from './sortPointsClockwise';
+import { Polygon } from './Polygon';
+import { Vector } from './Vector';
 
-export class Triangle {
-    public readonly p1: Vector2;
-    public readonly p2: Vector2;
-    public readonly p3: Vector2;
+export class Triangle extends Polygon {
 
     public constructor (p1: Vector2, p2: Vector2, p3: Vector2) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.p3 = p3;
+        super([p1, p2, p3]);
+    }
+
+    public get p1 (): Vector {
+        return this.points[0];
+    }
+
+    public get p2 (): Vector {
+        return this.points[1];
+    }
+
+    public get p3 (): Vector {
+        return this.points[2];
     }
 
     public static fromDirectionAndSize (center: Vector2, rads: number, size: number): Triangle {
@@ -24,41 +30,13 @@ export class Triangle {
         return new Triangle(center, rotate(center, p2, rads), rotate(center, p3, rads));
     }
 
-    public get points (): Vector2[] {
-        return [this.p1, this.p2, this.p3];
-    }
-
-    public get lines (): Line[] {
-        return [
-            new Line(this.p1, this.p2),
-            new Line(this.p2, this.p3),
-            new Line(this.p3, this.p1),
-        ];
-    }
-
-    // Our triangles aren't axis aligned, so we can't just use the AABB's.
-    // Instead, we use Heron's formula https://www.mathsisfun.com/geometry/herons-formula.html
-    public get area (): number {
-        const a = this.lines[0].length;
-        const b = this.lines[1].length;
-        const c = this.lines[2].length;
-
-        const s = (a + b + c) / 2;
-        const area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
-        // Check if the points are all a straight line.
-        if (isNaN(area)) {
-            return 0;
-        }
-        return area;
-    }
-
     public intersectsSquareAmount (square: AABB): number {
         // Work out the polygon that intersects the two.
         const newPolygon: Vector2[] = [];
 
         // Find any points of the triangle that are inside the square.
         for (const point of this.points) {
-            if (square.containsPoint(point.x, point.y))
+            if (square.containsPoint(point))
                 newPolygon.push(point);
         }
         // Ditto for points of the square that are inside the triangle.
@@ -105,7 +83,7 @@ export class Triangle {
         return polygonArea / square.area * 100;
     }
 
-    // Forumla from https://stackoverflow.com/questions/13300904/determine-whether-point-lies-inside-triangle/13301035#13301035
+    // Formula from https://stackoverflow.com/questions/13300904/determine-whether-point-lies-inside-triangle/13301035#13301035
     public containsPoint (point: Vector2): boolean {
         const alpha = ((this.p2.y - this.p3.y) * (point.x - this.p3.x) + (this.p3.x - this.p2.x) * (point.y - this.p3.y)) /
             ((this.p2.y - this.p3.y) * (this.p1.x - this.p3.x) + (this.p3.x - this.p2.x) * (this.p1.y - this.p3.y));
@@ -114,30 +92,6 @@ export class Triangle {
         const gamma = 1.0 - alpha - beta;
 
         return alpha > 0 && beta > 0 && gamma > 0;
-    }
-
-    public get pathCommand (): PathCommand[] {
-        return [
-            [Command.MOVE, this.p1.x, this.p1.y],
-            [Command.LINE, this.p2.x, this.p2.y],
-            [Command.LINE, this.p3.x, this.p3.y],
-            [Command.CLOSE],
-        ];
-    }
-
-    public get center (): Vector {
-        return new Vector({
-            x: (this.p1.x + this.p2.x + this.p3.x) / 3,
-            y: (this.p1.y + this.p2.y + this.p3.y) / 3,
-        });
-    }
-
-    public getBounds (chunk: number = 1): AABB {
-        const minX = roundDownTo(Math.min(this.p1.x, this.p2.x, this.p3.x), chunk);
-        const maxX = roundUpTo(Math.max(this.p1.x, this.p2.x, this.p3.x), chunk);
-        const minY = roundDownTo(Math.min(this.p1.y, this.p2.y, this.p3.y), chunk);
-        const maxY = roundUpTo(Math.max(this.p1.y, this.p2.y, this.p3.y), chunk);
-        return new AABB(minX, minY, maxX - minX, maxY - minY);
     }
 
     public toString (): string {
