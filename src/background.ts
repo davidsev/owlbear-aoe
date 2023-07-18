@@ -1,8 +1,8 @@
 import OBR from '@owlbear-rodeo/sdk';
 import { getId } from './Util/getId';
-import { ConeTool } from './AoEs/ConeTool';
-import { CircleTool } from './AoEs/CircleTool';
-import { CubeTool } from './AoEs/CubeTool';
+import { ConeTool } from './Tools/ConeTool';
+import { CircleTool } from './Tools/CircleTool';
+import { CubeTool } from './Tools/CubeTool';
 import { SettingsForm } from './SettingsForm';
 import { StyleForm } from './StyleForm';
 import { defaultToolMetadata } from './Metadata';

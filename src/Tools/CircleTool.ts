@@ -1,10 +1,10 @@
 import { getId } from '../Util/getId';
-import { AoEShape } from '../AoEShape';
+import { BaseTool } from './BaseTool';
 import { Item, Label, Path, PathCommand, Shape } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Util/AABB';
 import { PathSimplifier } from '../Util/PathSimplifier';
 
-export class CircleTool extends AoEShape {
+export class CircleTool extends BaseTool {
 
     readonly label = 'Circle';
     readonly icon = '/icons/circle.svg';

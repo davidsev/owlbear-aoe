@@ -1,10 +1,10 @@
 import { getId } from '../Util/getId';
-import { AoEShape } from '../AoEShape';
+import { BaseTool } from './BaseTool';
 import { Item, Label, Path } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Util/AABB';
 import { Vector } from '../Util/Vector';
 
-export class CubeTool extends AoEShape {
+export class CubeTool extends BaseTool {
 
     readonly label = 'Cube';
     readonly icon = '/icons/cube.svg';

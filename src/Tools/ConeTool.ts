@@ -1,5 +1,5 @@
 import { getId } from '../Util/getId';
-import { AoEShape } from '../AoEShape';
+import { BaseTool } from './BaseTool';
 import { Item, Label, Path } from '@owlbear-rodeo/sdk';
 import { Triangle } from '../Util/Triangle';
 import { AABB } from '../Util/AABB';
@@ -8,7 +8,7 @@ import { PathSimplifier } from '../Util/PathSimplifier';
 import { Line } from '../Util/Line';
 import { ConeMode } from '../Metadata';
 
-export class ConeTool extends AoEShape {
+export class ConeTool extends BaseTool {
 
     readonly label = 'Cone';
     readonly icon = '/icons/cone.svg';

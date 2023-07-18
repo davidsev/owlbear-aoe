@@ -10,9 +10,9 @@ import OBR, {
     ToolIcon,
     ToolMode,
 } from '@owlbear-rodeo/sdk';
-import { getId } from './Util/getId';
-import { Vector } from './Util/Vector';
-import { roundTo } from './Util/roundTo';
+import { getId } from '../Util/getId';
+import { Vector } from '../Util/Vector';
+import { roundTo } from '../Util/roundTo';
 import {
     cleanToolMetadata,
     defaultRoomMetadata,
@@ -20,12 +20,12 @@ import {
     getRoomMetadata,
     RoomMetadata,
     ToolMetadata,
-} from './Metadata';
+} from '../Metadata';
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
 import { ShapeBuilder } from '@owlbear-rodeo/sdk/lib/builders/ShapeBuilder';
 
-export abstract class AoEShape implements ToolMode {
+export abstract class BaseTool implements ToolMode {
 
     abstract readonly label: string;
     abstract readonly icon: string;
