@@ -35,6 +35,15 @@ export class Line {
         });
     }
 
+    public get orthogonalVector (): Vector {
+        const vector = this.vector;
+        // noinspection JSSuspiciousNameCombination
+        return new Vector({
+            x: -vector.y,
+            y: vector.x,
+        });
+    }
+
     public get midpoint (): Vector {
         return new Vector({
             x: (this.p1.x + this.p2.x) / 2,
