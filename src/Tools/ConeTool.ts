@@ -30,20 +30,16 @@ export class ConeTool extends BaseTool {
     }
 
     private buildAreaPathCommandIntersection (triangle: Triangle): PathSimplifier {
-        // Work out the bounding square for our search area.
-        const bounds = triangle.getBounds(this.dpi);
 
         // Check every square.
         const path = new PathSimplifier();
         let threshold = this.roomMetadata.coneOverlapThreshold;
         if (!Number.isFinite(threshold))
             threshold = 0;
-        for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
-            for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
-                const square = new AABB(x, y, this.dpi, this.dpi);
-                if (triangle.intersectsSquareAmount(square) > threshold) {
-                    path.addSquare(square);
-                }
+
+        for (const square of triangle.getBounds().iterateGrid(this.dpi)) {
+            if (triangle.intersectsSquareAmount(square) > threshold) {
+                path.addSquare(square);
             }
         }
 

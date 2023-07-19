@@ -75,4 +75,15 @@ export class AABB extends Polygon {
     public toString (): string {
         return `AABB(${this.x}, ${this.y}, ${this.w}, ${this.h})`;
     }
+
+    public iterateGrid (chunkSize: number): AABB[] {
+        const points: AABB[] = [];
+        const box = this.getBounds(chunkSize);
+        for (let x = box.x; x < box.x + box.w; x += chunkSize) {
+            for (let y = box.y; y < box.y + box.h; y += chunkSize) {
+                points.push(new AABB(x, y, chunkSize, chunkSize));
+            }
+        }
+        return points;
+    }
 }
