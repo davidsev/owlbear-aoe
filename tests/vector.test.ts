@@ -7,187 +7,177 @@ describe('testing Vector', () => {
         expect(v1.y).toBe(10);
     });
 
-    const subtractionTestCases = [
-        { a: { x: 5, y: 10 }, b: { x: 2, y: 3 }, expected: { x: 3, y: 7 } },
-        { a: { x: 5, y: 10 }, b: { x: 5, y: 10 }, expected: { x: 0, y: 0 } },
-        { a: { x: 5, y: 10 }, b: { x: -5, y: -10 }, expected: { x: 10, y: 20 } },
-        { a: { x: 5, y: 10 }, b: { x: 0.01, y: 9.999 }, expected: { x: 4.99, y: 0.001 } },
+    const testCases = [
+        {
+            a: { x: 5, y: 10 },
+            b: { x: 2, y: 3 },
+            sub: { x: 3, y: 7 },
+            add: { x: 7, y: 13 },
+            dot: 40,
+            cross: -5,
+            nearest5: { x: 5, y: 10 },
+            nearest7: { x: 7, y: 7 },
+            nearestUp5: { x: 5, y: 10 },
+            nearestUp7: { x: 7, y: 14 },
+            nearestDown5: { x: 5, y: 10 },
+            nearestDown7: { x: 0, y: 7 },
+            distance: 7.616,
+            equals: false,
+            string: '(5, 10)',
+            angle: 0.540,
+            direction4: Direction.RIGHT,
+            direction8: Direction.RIGHT,
+        },
+        {
+            a: { x: 5, y: 10 },
+            b: { x: 5, y: 10 },
+            sub: { x: 0, y: 0 },
+            add: { x: 10, y: 20 },
+            dot: 125,
+            cross: 0,
+            nearest5: { x: 5, y: 10 },
+            nearest7: { x: 7, y: 7 },
+            nearestUp5: { x: 5, y: 10 },
+            nearestUp7: { x: 7, y: 14 },
+            nearestDown5: { x: 5, y: 10 },
+            nearestDown7: { x: 0, y: 7 },
+            distance: 0,
+            equals: true,
+            string: '(5, 10)',
+            angle: null,
+            direction4: null,
+            direction8: null,
+        },
+        {
+            a: { x: 5, y: 10 },
+            b: { x: 0, y: 0 },
+            sub: { x: 5, y: 10 },
+            add: { x: 5, y: 10 },
+            dot: 0,
+            cross: 0,
+            nearest5: { x: 5, y: 10 },
+            nearest7: { x: 7, y: 7 },
+            nearestUp5: { x: 5, y: 10 },
+            nearestUp7: { x: 7, y: 14 },
+            nearestDown5: { x: 5, y: 10 },
+            nearestDown7: { x: 0, y: 7 },
+            distance: 11.180,
+            equals: false,
+            string: '(5, 10)',
+            angle: 1.571,
+            direction4: Direction.DOWN,
+            direction8: Direction.DOWN,
+        },
+        {
+            a: { x: 0, y: 0 },
+            b: { x: 0, y: 0 },
+            sub: { x: 0, y: 0 },
+            add: { x: 0, y: 0 },
+            dot: 0,
+            cross: 0,
+            nearest5: { x: 0, y: 0 },
+            nearest7: { x: 0, y: 0 },
+            nearestUp5: { x: 0, y: 0 },
+            nearestUp7: { x: 0, y: 0 },
+            nearestDown5: { x: 0, y: 0 },
+            nearestDown7: { x: 0, y: 0 },
+            distance: 0,
+            equals: true,
+            string: '(0, 0)',
+            angle: null,
+            direction4: null,
+            direction8: null,
+        },
+        {
+            a: { x: 5, y: 10 },
+            b: { x: -5, y: -10 },
+            sub: { x: 10, y: 20 },
+            add: { x: 0, y: 0 },
+            dot: -125,
+            cross: 0,
+            nearest5: { x: 5, y: 10 },
+            nearest7: { x: 7, y: 7 },
+            nearestUp5: { x: 5, y: 10 },
+            nearestUp7: { x: 7, y: 14 },
+            nearestDown5: { x: 5, y: 10 },
+            nearestDown7: { x: 0, y: 7 },
+            distance: 22.36,
+            equals: false,
+            string: '(5, 10)',
+            angle: -1.571,
+            direction4: Direction.UP,
+            direction8: Direction.UP,
+        },
+        {
+            a: { x: 5, y: 10 },
+            b: { x: 0.01, y: 9.999 },
+            sub: { x: 4.99, y: 0.001 },
+            add: { x: 5.01, y: 19.999 },
+            dot: 100.04,
+            cross: 49.895,
+            nearest5: { x: 5, y: 10 },
+            nearest7: { x: 7, y: 7 },
+            nearestUp5: { x: 5, y: 10 },
+            nearestUp7: { x: 7, y: 14 },
+            nearestDown5: { x: 5, y: 10 },
+            nearestDown7: { x: 0, y: 7 },
+            distance: 4.99,
+            equals: false,
+            string: '(5, 10)',
+            angle: 1.571,
+            direction4: Direction.DOWN,
+            direction8: Direction.DOWN,
+        },
     ];
-    test.each(subtractionTestCases)('($a.x, $a.y) - ($b.x, $b.y) = ($expected.x, $expected.y)', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.sub(data.b);
-        expect(answer.x).toBeCloseTo(data.expected.x);
-        expect(answer.y).toBeCloseTo(data.expected.y);
+    test.each(testCases)('$#: ($a.x, $a.y), ($b.x, $b.y) ', (testCase) => {
+        const v1 = new Vector(testCase.a);
+
+        const sub = v1.sub(testCase.b);
+        expect(sub.x).toBeCloseTo(testCase.sub.x);
+        expect(sub.y).toBeCloseTo(testCase.sub.y);
+        const add = v1.add(testCase.b);
+        expect(add.x).toBeCloseTo(testCase.add.x);
+        expect(add.y).toBeCloseTo(testCase.add.y);
+
+        const dot = v1.dot(testCase.b);
+        expect(dot).toBeCloseTo(testCase.dot);
+        const cross = v1.cross(testCase.b);
+        expect(cross).toBeCloseTo(testCase.cross);
+        const distance = v1.distanceTo(testCase.b);
+        expect(distance).toBeCloseTo(testCase.distance);
+
+        expect(v1.roundToNearest(5)).toMatchObject(testCase.nearest5);
+        expect(v1.roundToNearest(7)).toMatchObject(testCase.nearest7);
+        expect(v1.roundUpToNearest(5)).toMatchObject(testCase.nearestUp5);
+        expect(v1.roundUpToNearest(7)).toMatchObject(testCase.nearestUp7);
+        expect(v1.roundDownToNearest(5)).toMatchObject(testCase.nearestDown5);
+        expect(v1.roundDownToNearest(7)).toMatchObject(testCase.nearestDown7);
+        expect(v1.equals(testCase.b)).toBe(testCase.equals);
+        expect(v1.toString()).toBe(testCase.string);
     });
 
-    const additionTestCases = [
-        { a: { x: 5, y: 10 }, b: { x: 2, y: 3 }, expected: { x: 7, y: 13 } },
-        { a: { x: 5, y: 10 }, b: { x: 0, y: 0 }, expected: { x: 5, y: 10 } },
-        { a: { x: 5, y: 10 }, b: { x: -2, y: -3 }, expected: { x: 3, y: 7 } },
-        { a: { x: 5, y: 10 }, b: { x: 0.01, y: 9.999 }, expected: { x: 5.01, y: 19.999 } },
+    // Extra tests for direction stuff.
+    const directionTestCases = [
+        { x: 0, y: 0, expected4: null, expected8: null },
+        { x: 5, y: 0, expected4: Direction.RIGHT, expected8: Direction.RIGHT },
+        { x: 10, y: 5, expected4: Direction.RIGHT, expected8: Direction.DOWNRIGHT },
+        { x: 10, y: 10, expected4: Direction.DOWN, expected8: Direction.DOWNRIGHT },
+        { x: 5, y: 10, expected4: Direction.DOWN, expected8: Direction.DOWNRIGHT },
+        { x: 0, y: 10, expected4: Direction.DOWN, expected8: Direction.DOWN },
+        { x: -5, y: 10, expected4: Direction.DOWN, expected8: Direction.DOWNLEFT },
+        { x: -10, y: 10, expected4: Direction.DOWN, expected8: Direction.DOWNLEFT },
+        { x: -10, y: 5, expected4: Direction.LEFT, expected8: Direction.DOWNLEFT },
+        { x: -10, y: 0, expected4: Direction.LEFT, expected8: Direction.LEFT },
+        { x: -10, y: -5, expected4: Direction.LEFT, expected8: Direction.UPLEFT },
+        { x: -10, y: -10, expected4: Direction.UP, expected8: Direction.UPLEFT },
+        { x: -5, y: -10, expected4: Direction.UP, expected8: Direction.UPLEFT },
+        { x: 0, y: -10, expected4: Direction.UP, expected8: Direction.UP },
+        { x: 5, y: -10, expected4: Direction.UP, expected8: Direction.UPRIGHT },
+        { x: 10, y: -10, expected4: Direction.UP, expected8: Direction.UPRIGHT },
     ];
-    test.each(additionTestCases)('($a.x, $a.y) + ($b.x, $b.y) = ($expected.x, $expected.y)', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.add(data.b);
-        expect(answer.x).toBeCloseTo(data.expected.x);
-        expect(answer.y).toBeCloseTo(data.expected.y);
-    });
-
-    const dotTestCases = [
-        { a: { x: 5, y: 10 }, b: { x: 2, y: 3 }, expected: 40 },
-        { a: { x: 5, y: 10 }, b: { x: -2, y: -3 }, expected: -40 },
-        { a: { x: 5, y: 10 }, b: { x: 0, y: 0 }, expected: 0 },
-        { a: { x: 5, y: 10 }, b: { x: 0.01, y: 9.999 }, expected: 100.04 },
-    ];
-    test.each(dotTestCases)('($a.x, $a.y).dot($b.x, $b.y) = $expected', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.dot(data.b);
-        expect(answer).toBeCloseTo(data.expected);
-    });
-
-    const crossTestCases = [
-        { a: { x: 5, y: 10 }, b: { x: 2, y: 3 }, expected: -5 },
-        { a: { x: 5, y: 10 }, b: { x: -2, y: -3 }, expected: 5 },
-        { a: { x: 5, y: 10 }, b: { x: 0, y: 0 }, expected: 0 },
-        { a: { x: 5, y: 10 }, b: { x: 0.01, y: 9.999 }, expected: 49.895 },
-    ];
-    test.each(crossTestCases)('($a.x, $a.y).cross($b.x, $b.y) = $expected', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.cross(data.b);
-        expect(answer).toBeCloseTo(data.expected);
-    });
-
-    const roundToNearestTestCases = [
-        { a: { x: 5, y: 10 }, nearest: 5, expected: { x: 5, y: 10 } },
-        { a: { x: 5, y: 10 }, nearest: 7, expected: { x: 7, y: 7 } },
-        { a: { x: 3.5678, y: 2.5 }, nearest: 5, expected: { x: 5, y: 5 } },
-    ];
-    test.each(roundToNearestTestCases)('($a.x, $a.y).roundToNearest($nearest) = ($expected.x, $expected.y)', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.roundToNearest(data.nearest);
-        expect(answer).toMatchObject(data.expected);
-    });
-
-    const roundUpToNearestTestCases = [
-        { a: { x: 5, y: 10 }, nearest: 5, expected: { x: 5, y: 10 } },
-        { a: { x: 5, y: 10 }, nearest: 7, expected: { x: 7, y: 14 } },
-        { a: { x: 3.5678, y: 2.5 }, nearest: 5, expected: { x: 5, y: 5 } },
-    ];
-    test.each(roundUpToNearestTestCases)('($a.x, $a.y).roundUpToNearest($nearest) = ($expected.x, $expected.y)', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.roundUpToNearest(data.nearest);
-        expect(answer).toMatchObject(data.expected);
-    });
-
-    const roundDownToNearestTestCases = [
-        { a: { x: 5, y: 10 }, nearest: 5, expected: { x: 5, y: 10 } },
-        { a: { x: 5, y: 10 }, nearest: 7, expected: { x: 0, y: 7 } },
-        { a: { x: 3.5678, y: 2.5 }, nearest: 5, expected: { x: 0, y: 0 } },
-    ];
-    test.each(roundDownToNearestTestCases)('($a.x, $a.y).roundDownToNearest($nearest) = ($expected.x, $expected.y)', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.roundDownToNearest(data.nearest);
-        expect(answer).toMatchObject(data.expected);
-    });
-
-    const distanceToTestCases = [
-        { a: { x: 5, y: 10 }, b: { x: 2, y: 3 }, expected: 7.616 },
-        { a: { x: 5, y: 10 }, b: { x: -5, y: 0 }, expected: 14.142 },
-        { a: { x: 5, y: 10 }, b: { x: 5, y: 10 }, expected: 0 },
-        { a: { x: 5, y: 10 }, b: { x: 5, y: 0 }, expected: 10 },
-        { a: { x: 5, y: 10 }, b: { x: 0, y: 0 }, expected: 11.180 },
-    ];
-    test.each(distanceToTestCases)('($a.x, $a.y).distanceTo($b.x, $b.y) = $expected', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.distanceTo(data.b);
-        expect(answer).toBeCloseTo(data.expected);
-    });
-
-    const equalsTestCases = [
-        { a: { x: 5, y: 10 }, b: { x: 5, y: 10 }, expected: true },
-        { a: { x: 5, y: 10 }, b: { x: 5, y: 0 }, expected: false },
-        { a: { x: 5, y: 10 }, b: { x: 0, y: 10 }, expected: false },
-        { a: { x: 5, y: 10 }, b: { x: 0, y: 0 }, expected: false },
-    ];
-    test.each(equalsTestCases)('($a.x, $a.y).equals($b.x, $b.y) = $expected', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.equals(data.b);
-        expect(answer).toBe(data.expected);
-    });
-
-    const toStringTestCases = [
-        { a: { x: 5, y: 10 }, expected: '(5, 10)' },
-        { a: { x: 5.123, y: 10.456 }, expected: '(5, 10)' },
-        { a: { x: 5.9, y: 10.9 }, expected: '(6, 11)' },
-    ];
-    test.each(toStringTestCases)('($a.x, $a.y).toString() = $expected', (data) => {
-        const v1 = new Vector(data.a);
-        const answer = v1.toString();
-        expect(answer).toBe(data.expected);
-    });
-
-    const angleTestCases = [
-        { x: 5, y: 10, expected: 1.107 },
-        { x: -5, y: -10, expected: -2.034 },
-        { x: 0, y: 0, expected: null },
-        { x: 0, y: 10, expected: 1.571 },
-        { x: 5, y: 0, expected: 0 },
-        { x: 5, y: 0, expected: 0 },
-        { x: 5, y: 10, expected: 1.107 },
-        { x: 5, y: -10, expected: -1.107 },
-    ];
-    test.each(angleTestCases)('($x, $y).angle() => $expected', ({ x, y, expected }) => {
-        const vector = new Vector({ x, y });
-        if (expected === null)
-            expect(vector.angle).toBeNull();
-        else
-            expect(vector.angle).toBeCloseTo(expected);
-    });
-
-    const direction4TestCases = [
-        { x: 0, y: 0, expected: null },
-        { x: 5, y: 0, expected: Direction.RIGHT },
-        { x: 10, y: 5, expected: Direction.RIGHT },
-        { x: 10, y: 10, expected: Direction.DOWN },
-        { x: 5, y: 10, expected: Direction.DOWN },
-        { x: 0, y: 10, expected: Direction.DOWN },
-        { x: -5, y: 10, expected: Direction.DOWN },
-        { x: -10, y: 10, expected: Direction.DOWN },
-        { x: -10, y: 5, expected: Direction.LEFT },
-        { x: -10, y: 0, expected: Direction.LEFT },
-        { x: -10, y: -5, expected: Direction.LEFT },
-        { x: -10, y: -10, expected: Direction.UP },
-        { x: -5, y: -10, expected: Direction.UP },
-        { x: 0, y: -10, expected: Direction.UP },
-        { x: 5, y: -10, expected: Direction.UP },
-        { x: 10, y: -10, expected: Direction.UP },
-    ];
-    test.each(direction4TestCases)('($x, $y).direction4() => $expected', ({ x, y, expected }) => {
-        const vector = new Vector({ x, y });
-        expect(vector.direction4).toBe(expected);
-    });
-
-    const direction8TestCases = [
-        { x: 0, y: 0, expected: null },
-        { x: 5, y: 0, expected: Direction.RIGHT },
-        { x: 10, y: 5, expected: Direction.DOWNRIGHT },
-        { x: 10, y: 10, expected: Direction.DOWNRIGHT },
-        { x: 5, y: 10, expected: Direction.DOWNRIGHT },
-        { x: 0, y: 10, expected: Direction.DOWN },
-        { x: -5, y: 10, expected: Direction.DOWNLEFT },
-        { x: -10, y: 10, expected: Direction.DOWNLEFT },
-        { x: -10, y: 5, expected: Direction.DOWNLEFT },
-        { x: -10, y: 0, expected: Direction.LEFT },
-        { x: -10, y: -5, expected: Direction.UPLEFT },
-        { x: -10, y: -10, expected: Direction.UPLEFT },
-        { x: -5, y: -10, expected: Direction.UPLEFT },
-        { x: 0, y: -10, expected: Direction.UP },
-        { x: 5, y: -10, expected: Direction.UPRIGHT },
-        { x: 10, y: -10, expected: Direction.UPRIGHT },
-        { x: 10, y: -5, expected: Direction.UPRIGHT },
-    ];
-    test.each(direction8TestCases)('($x, $y).direction8() => $expected', ({ x, y, expected }) => {
-        const vector = new Vector({ x, y });
-        expect(vector.direction8).toBe(expected);
+    test.each(directionTestCases)('($x, $y).direction4() => $expected', (testCase) => {
+        const vector = new Vector(testCase);
+        expect(vector.direction4).toBe(testCase.expected4);
+        expect(vector.direction8).toBe(testCase.expected8);
     });
 });

@@ -7,71 +7,88 @@ describe('testing Line', () => {
         expect(l1.p2).toMatchObject({ x: 10, y: 20 });
     });
 
-    const boundingBoxTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: { x: 5, y: 10, w: 5, h: 10 } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: { x: 5, y: 10, w: 5, h: 10 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: { x: 5, y: 10, w: 0, h: 0 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: { x: 5, y: 10, w: 0, h: 10 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: { x: 5, y: 10, w: 5, h: 0 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: { x: 5, y: 10, w: 5, h: 10 } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: { x: 5, y: 10, w: 5, h: 10 } },
-        { p1: { x: 5, y: 20 }, p2: { x: 10, y: 10 }, expected: { x: 5, y: 10, w: 5, h: 10 } },
+    const testCases = [
+        {
+            p1: { x: 5, y: 10 },
+            p2: { x: 10, y: 20 },
+            box: { x: 5, y: 10, w: 5, h: 10 },
+            length: 11.180,
+            vector: { x: 5, y: 10 },
+            midpoint: { x: 7.5, y: 15 },
+            string: 'Line(5,10 -> 10,20)',
+        },
+        {
+            p1: { x: 10, y: 20 },
+            p2: { x: 5, y: 10 },
+            box: { x: 5, y: 10, w: 5, h: 10 },
+            length: 11.180,
+            vector: { x: -5, y: -10 },
+            midpoint: { x: 7.5, y: 15 },
+            string: 'Line(10,20 -> 5,10)',
+        },
+        {
+            p1: { x: 5, y: 10 },
+            p2: { x: 5, y: 10 },
+            box: { x: 5, y: 10, w: 0, h: 0 },
+            length: 0,
+            vector: { x: 0, y: 0 },
+            midpoint: { x: 5, y: 10 },
+            string: 'Line(5,10 -> 5,10)',
+        },
+        {
+            p1: { x: 5, y: 10 },
+            p2: { x: 5, y: 20 },
+            box: { x: 5, y: 10, w: 0, h: 10 },
+            length: 10,
+            vector: { x: 0, y: 10 },
+            midpoint: { x: 5, y: 15 },
+            string: 'Line(5,10 -> 5,20)',
+        },
+        {
+            p1: { x: 5, y: 10 },
+            p2: { x: 10, y: 10 },
+            box: { x: 5, y: 10, w: 5, h: 0 },
+            length: 5,
+            vector: { x: 5, y: 0 },
+            midpoint: { x: 7.5, y: 10 },
+            string: 'Line(5,10 -> 10,10)',
+        },
+        {
+            p1: { x: 5, y: 10 },
+            p2: { x: 10, y: 20 },
+            box: { x: 5, y: 10, w: 5, h: 10 },
+            length: 11.180,
+            vector: { x: 5, y: 10 },
+            midpoint: { x: 7.5, y: 15 },
+            string: 'Line(5,10 -> 10,20)',
+        },
+        {
+            p1: { x: 10, y: 20 },
+            p2: { x: 5, y: 10 },
+            box: { x: 5, y: 10, w: 5, h: 10 },
+            length: 11.180,
+            vector: { x: -5, y: -10 },
+            midpoint: { x: 7.5, y: 15 },
+            string: 'Line(10,20 -> 5,10)',
+        },
+        {
+            p1: { x: 5, y: 20 },
+            p2: { x: 10, y: 10 },
+            box: { x: 5, y: 10, w: 5, h: 10 },
+            length: 11.180,
+            vector: { x: 5, y: -10 },
+            midpoint: { x: 7.5, y: 15 },
+            string: 'Line(5,20 -> 10,10)',
+        },
     ];
-    test.each(boundingBoxTestCases)('bounding box', ({ p1, p2, expected }) => {
-        const line = new Line(p1, p2);
-        expect(line.boundingBox).toMatchObject(expected);
+    test.each(testCases)('$string', (testCase) => {
+        const line = new Line(testCase.p1, testCase.p2);
+        expect(line.boundingBox).toMatchObject(testCase.box);
+        expect(line.length).toBeCloseTo(testCase.length);
+        expect(line.vector).toMatchObject(testCase.vector);
+        expect(line.midpoint).toMatchObject(testCase.midpoint);
+        expect(line.toString()).toBe(testCase.string);
     });
-
-    const lengthTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: 11.180 },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: 11.180 },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: 0 },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: 10 },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: 5 },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: 11.180 },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: 11.180 },
-        { p1: { x: 5, y: 20 }, p2: { x: 10, y: 10 }, expected: 11.180 },
-    ];
-    test.each(lengthTestCases)('length(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected', ({ p1, p2, expected }) => {
-        const line = new Line(p1, p2);
-        expect(line.length).toBeCloseTo(expected);
-    });
-
-    const vectorTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: { x: 5, y: 10 } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: { x: -5, y: -10 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: { x: 0, y: 0 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: { x: 0, y: 10 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: { x: 5, y: 0 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: { x: 5, y: 10 } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: { x: -5, y: -10 } },
-        { p1: { x: 5, y: 20 }, p2: { x: 10, y: 10 }, expected: { x: 5, y: -10 } },
-        { p1: { x: 5, y: -10 }, p2: { x: -10, y: 20 }, expected: { x: -15, y: 30 } },
-    ];
-    test.each(vectorTestCases)(
-        'vector(($p1.x, $p1.y),($p2.x,$p2.y)) => ($expected.x, $expected.y)',
-        ({ p1, p2, expected }) => {
-            const line = new Line(p1, p2);
-            expect(line.vector).toMatchObject(expected);
-        });
-
-    const midpointTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: { x: 7.5, y: 15 } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: { x: 7.5, y: 15 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 10 }, expected: { x: 5, y: 10 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: { x: 5, y: 15 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: { x: 7.5, y: 10 } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: { x: 7.5, y: 15 } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: { x: 7.5, y: 15 } },
-        { p1: { x: 5, y: 20 }, p2: { x: 10, y: 10 }, expected: { x: 7.5, y: 15 } },
-        { p1: { x: 5, y: -10 }, p2: { x: -10, y: 20 }, expected: { x: -2.5, y: 5 } },
-    ];
-    test.each(midpointTestCases)(
-        'midpoint(($p1.x, $p1.y),($p2.x,$p2.y)) => ($expected.x, $expected.y)',
-        ({ p1, p2, expected }) => {
-            const line = new Line(p1, p2);
-            expect(line.midpoint).toMatchObject(expected);
-        });
 
     const intersectionTestCases = [
         {
@@ -159,19 +176,6 @@ describe('testing Line', () => {
             const line1 = new Line(p1, p2);
             const line2 = new Line(p3, p4);
             expect(line1.getIntersection(line2)).toBeNull();
-        });
-
-    const toStringTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 20 }, expected: 'Line(5,10 -> 10,20)' },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 10 }, expected: 'Line(10,20 -> 5,10)' },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: 'Line(5,10 -> 5,20)' },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: 'Line(5,10 -> 10,10)' },
-    ];
-    test.each(toStringTestCases)(
-        'toString(($p1.x, $p1.y),($p2.x,$p2.y)) => $expected',
-        ({ p1, p2, expected }) => {
-            const line = new Line(p1, p2);
-            expect(line.toString()).toBe(expected);
         });
 
     const normalizeDirectionTestCases = [
