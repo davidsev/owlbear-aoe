@@ -27,6 +27,10 @@ describe('testing Vector', () => {
             angle: 0.540,
             direction4: Direction.RIGHT,
             direction8: Direction.RIGHT,
+            scale2: { x: 10, y: 20 },
+            scaleMinus1: { x: -5, y: -10 },
+            magnitude: 11.180,
+            normalised: { x: 0.447, y: 0.894 },
         },
         {
             a: { x: 5, y: 10 },
@@ -47,6 +51,10 @@ describe('testing Vector', () => {
             angle: null,
             direction4: null,
             direction8: null,
+            scale2: { x: 10, y: 20 },
+            scaleMinus1: { x: -5, y: -10 },
+            magnitude: 11.180,
+            normalised: { x: 0.447, y: 0.894 },
         },
         {
             a: { x: 5, y: 10 },
@@ -67,6 +75,10 @@ describe('testing Vector', () => {
             angle: 1.571,
             direction4: Direction.DOWN,
             direction8: Direction.DOWN,
+            scale2: { x: 10, y: 20 },
+            scaleMinus1: { x: -5, y: -10 },
+            magnitude: 11.180,
+            normalised: { x: 0.447, y: 0.894 },
         },
         {
             a: { x: 0, y: 0 },
@@ -87,6 +99,10 @@ describe('testing Vector', () => {
             angle: null,
             direction4: null,
             direction8: null,
+            scale2: { x: 0, y: 0 },
+            scaleMinus1: { x: 0, y: 0 },
+            magnitude: 0,
+            normalised: { x: 0, y: 0 },
         },
         {
             a: { x: 5, y: 10 },
@@ -107,6 +123,10 @@ describe('testing Vector', () => {
             angle: -1.571,
             direction4: Direction.UP,
             direction8: Direction.UP,
+            scale2: { x: 10, y: 20 },
+            scaleMinus1: { x: -5, y: -10 },
+            magnitude: 11.180,
+            normalised: { x: 0.447, y: 0.894 },
         },
         {
             a: { x: 5, y: 10 },
@@ -127,6 +147,10 @@ describe('testing Vector', () => {
             angle: 1.571,
             direction4: Direction.DOWN,
             direction8: Direction.DOWN,
+            scale2: { x: 10, y: 20 },
+            scaleMinus1: { x: -5, y: -10 },
+            magnitude: 11.180,
+            normalised: { x: 0.447, y: 0.894 },
         },
     ];
     test.each(testCases)('$#: ($a.x, $a.y), ($b.x, $b.y) ', (testCase) => {
@@ -138,14 +162,19 @@ describe('testing Vector', () => {
         const add = v1.add(testCase.b);
         expect(add.x).toBeCloseTo(testCase.add.x);
         expect(add.y).toBeCloseTo(testCase.add.y);
+        const normalised = v1.normalised;
+        expect(normalised.x).toBeCloseTo(testCase.normalised.x);
+        expect(normalised.y).toBeCloseTo(testCase.normalised.y);
+        const scale2 = v1.scale(2);
+        expect(scale2.x).toBeCloseTo(testCase.scale2.x);
+        expect(scale2.y).toBeCloseTo(testCase.scale2.y);
+        const scaleMinus1 = v1.scale(-1);
+        expect(scaleMinus1.x).toBeCloseTo(testCase.scaleMinus1.x);
+        expect(scaleMinus1.y).toBeCloseTo(testCase.scaleMinus1.y);
 
-        const dot = v1.dot(testCase.b);
-        expect(dot).toBeCloseTo(testCase.dot);
-        const cross = v1.cross(testCase.b);
-        expect(cross).toBeCloseTo(testCase.cross);
-        const distance = v1.distanceTo(testCase.b);
-        expect(distance).toBeCloseTo(testCase.distance);
-
+        expect(v1.dot(testCase.b)).toBeCloseTo(testCase.dot);
+        expect(v1.cross(testCase.b)).toBeCloseTo(testCase.cross);
+        expect(v1.distanceTo(testCase.b)).toBeCloseTo(testCase.distance);
         expect(v1.roundToNearest(5)).toMatchObject(testCase.nearest5);
         expect(v1.roundToNearest(7)).toMatchObject(testCase.nearest7);
         expect(v1.roundUpToNearest(5)).toMatchObject(testCase.nearestUp5);
@@ -154,6 +183,7 @@ describe('testing Vector', () => {
         expect(v1.roundDownToNearest(7)).toMatchObject(testCase.nearestDown7);
         expect(v1.equals(testCase.b)).toBe(testCase.equals);
         expect(v1.toString()).toBe(testCase.string);
+        expect(v1.magnitude).toBeCloseTo(testCase.magnitude);
     });
 
     // Extra tests for direction stuff.

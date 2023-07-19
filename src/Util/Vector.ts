@@ -35,6 +35,13 @@ export class Vector implements Vector2 {
         });
     }
 
+    public scale (rhs: number): Vector {
+        return new Vector({
+            x: this.x * rhs,
+            y: this.y * rhs,
+        });
+    }
+
     public dot (rhs: Vector2): number {
         return this.x * rhs.x + this.y * rhs.y;
     }
@@ -74,6 +81,19 @@ export class Vector implements Vector2 {
 
     public toString (): string {
         return `(${this.x.toFixed(0)}, ${this.y.toFixed(0)})`;
+    }
+
+    public get magnitude (): number {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
+    public get normalised (): Vector {
+        if (this.x == 0 && this.y == 0)
+            return new Vector({ x: 0, y: 0 });
+        return new Vector({
+            x: this.x / this.magnitude,
+            y: this.y / this.magnitude,
+        });
     }
 
     /** Returns the angle of the vector in radians, from -PI to PI
