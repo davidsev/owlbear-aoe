@@ -77,19 +77,16 @@ export class PathSimplifier {
     public get commands (): PathCommand[] {
         const commands: PathCommand[] = [];
 
-        // const points = this.simplify();
-        // const firstPoint = points.shift();
-        // if (!firstPoint)
-        //     return [];
-        //
-        // commands.push([Command.MOVE, firstPoint.x, firstPoint.y]);
-        // for (const point of this.simplify()) {
-        //     commands.push([Command.LINE, point.x, point.y]);
-        // }
-        // commands.push([Command.CLOSE]);
+        const points = this.simplify();
+        const firstPoint = points.shift();
+        if (!firstPoint)
+            return [];
 
-        for (const sq of this.squares)
-            commands.push(...sq.pathCommand);
+        commands.push([Command.MOVE, firstPoint.x, firstPoint.y]);
+        for (const point of this.simplify()) {
+            commands.push([Command.LINE, point.x, point.y]);
+        }
+        commands.push([Command.CLOSE]);
 
         return commands;
     }
