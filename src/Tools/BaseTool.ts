@@ -1,10 +1,12 @@
 import OBR, {
     buildLabel,
     buildPath,
-    buildShape,
     GridScale,
     InteractionManager,
     Item,
+    Label,
+    Path,
+    PathCommand,
     ToolContext,
     ToolEvent,
     ToolIcon,
@@ -23,7 +25,7 @@ import {
 } from '../Metadata';
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
-import { ShapeBuilder } from '@owlbear-rodeo/sdk/lib/builders/ShapeBuilder';
+import { Shape } from '../Util/Shape';
 
 export abstract class BaseTool implements ToolMode {
 
@@ -37,6 +39,10 @@ export abstract class BaseTool implements ToolMode {
     private interaction?: InteractionManager<Item[]> = undefined;
     protected toolMetadata: ToolMetadata = defaultToolMetadata;
     protected roomMetadata: RoomMetadata = defaultRoomMetadata;
+
+    protected areaItem?: Path;
+    protected outlineItem?: Path;
+    protected labelItem?: Label;
 
     constructor () {
     }
@@ -52,11 +58,11 @@ export abstract class BaseTool implements ToolMode {
         }];
     }
 
-    protected abstract createItems (position: Vector): Item[];
+    /** Get a Shape representing the "original shape" the user drew (eg the triangle) */
+    protected abstract getShape (): Shape | null;
 
-    protected abstract updateItems (items: Item[], position: Vector): void;
-
-    protected abstract finalItems (items: Item[], position: Vector): Item[];
+    /** Get a PathCommand for the affected area */
+    protected abstract buildAreaPathCommand (shape: Shape): PathCommand[];
 
     protected get roundedCenter (): Vector {
         return this.center.roundToNearest(this.dpi);
@@ -84,8 +90,60 @@ export abstract class BaseTool implements ToolMode {
         this.toolMetadata = cleanToolMetadata(context.metadata);
         this.roomMetadata = await getRoomMetadata();
 
+        // Make the items.
+        this.areaItem = this.buildAreaPath().build();
+        const items: Item[] = [this.areaItem];
+        if (this.toolMetadata.shapeDisplayMode != 'never') {
+            this.outlineItem = this.buildOutlinePath().attachedTo(this.areaItem.id).build();
+            items.push(this.outlineItem);
+        }
+        if (this.toolMetadata.labelDisplayMode != 'never') {
+            this.labelItem = this.buildLabel().attachedTo(this.areaItem.id).build();
+            items.push(this.labelItem);
+        }
+
         // Start drawing.
-        this.interaction = await OBR.interaction.startItemInteraction(this.createItems(new Vector(event.pointerPosition)));
+        this.interaction = await OBR.interaction.startItemInteraction(items);
+    }
+
+    /** Get the items out of the array returned by the interaction update */
+    private getItems (items: Item[]): [Path, Path?, Label?] {
+        const ret: [Path, Path?, Label?] = [items.shift() as Path, undefined, undefined];
+        if (this.toolMetadata.shapeDisplayMode != 'never')
+            ret[1] = items.shift() as Path;
+        if (this.toolMetadata.labelDisplayMode != 'never')
+            ret[2] = items.shift() as Label;
+
+        return ret;
+    }
+
+    /** Update the items based on the current mouse position */
+    private updateItems (area: Path, outline ?: Path, label?: Label) {
+        const shape = this.getShape();
+
+        // If there's no triangle, clear everything (eg if the distance is 0)
+        if (!shape) {
+            if (outline)
+                outline.commands = [];
+            area.commands = [];
+            if (label)
+                label.visible = false;
+            return;
+        }
+
+        // Update the outline
+        if (outline)
+            outline.commands = shape.pathCommand;
+
+        // Update the area
+        area.commands = this.buildAreaPathCommand(shape);
+
+        // And the text
+        if (label) {
+            label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
+            label.position = shape.center;
+            label.visible = true;
+        }
     }
 
     async onToolDragMove (context: ToolContext, event: ToolEvent) {
@@ -95,7 +153,7 @@ export abstract class BaseTool implements ToolMode {
             const [update] = this.interaction;
             update((items: Item[]) => {
                 this.currentPosition = new Vector(event.pointerPosition);
-                this.updateItems(items, new Vector(event.pointerPosition));
+                this.updateItems(...this.getItems(Array.from(items)));
             });
         }
     }
@@ -104,16 +162,30 @@ export abstract class BaseTool implements ToolMode {
         this.toolMetadata = cleanToolMetadata(context.metadata);
 
         if (this.interaction) {
+            // Do a final update of the shape.
             const [update, stop] = this.interaction;
             const items = update((items: Item[]) => {
-                this.updateItems(items, new Vector(event.pointerPosition));
+                this.currentPosition = new Vector(event.pointerPosition);
+                this.updateItems(...this.getItems(Array.from(items)));
             });
-            // Properly add the items.
-            OBR.scene.items.addItems(this.finalItems(items, new Vector(event.pointerPosition)));
+
+            // Save the items we want to keep.
+            if (this.roundedDistance) {
+                const [area, outline, label] = this.getItems(Array.from(items));
+                const itemsToKeep: Item[] = [area];
+                if (this.toolMetadata.shapeDisplayMode == 'always' && outline)
+                    itemsToKeep.push(outline);
+                if (this.toolMetadata.labelDisplayMode == 'always' && label)
+                    itemsToKeep.push(label);
+                OBR.scene.items.addItems(itemsToKeep);
+            }
+
             // Stop the interaction.
             stop();
         }
-        this.interaction = undefined;
+
+        // Clean up the references to the shapes we don't need any more.
+        this.onToolDragCancel();
     }
 
     onToolDragCancel () {
@@ -133,19 +205,6 @@ export abstract class BaseTool implements ToolMode {
             .strokeWidth(5)
             .strokeColor(this.toolMetadata.areaStrokeColor)
             .strokeOpacity(this.toolMetadata.areaStrokeOpacity);
-    }
-
-    protected buildOutlineShape (): ShapeBuilder {
-        return buildShape()
-            .metadata({ createdBy: getId() })
-            .fillColor(this.toolMetadata.shapeFillColor)
-            .fillOpacity(this.toolMetadata.shapeFillOpacity)
-            .strokeWidth(5)
-            .strokeColor(this.toolMetadata.shapeStrokeColor)
-            .strokeOpacity(this.toolMetadata.shapeStrokeOpacity)
-            .locked(true)
-            .disableHit(true)
-            .layer('ATTACHMENT');
     }
 
     protected buildOutlinePath (): PathBuilder {

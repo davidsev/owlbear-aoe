@@ -1,5 +1,5 @@
 import { AABB } from './AABB';
-import { Command, PathCommand } from '@owlbear-rodeo/sdk';
+import { PathCommand } from '@owlbear-rodeo/sdk';
 import { Vector } from './Vector';
 import { Line } from './Line';
 
@@ -77,16 +77,19 @@ export class PathSimplifier {
     public get commands (): PathCommand[] {
         const commands: PathCommand[] = [];
 
-        const points = this.simplify();
-        const firstPoint = points.shift();
-        if (!firstPoint)
-            return [];
+        // const points = this.simplify();
+        // const firstPoint = points.shift();
+        // if (!firstPoint)
+        //     return [];
+        //
+        // commands.push([Command.MOVE, firstPoint.x, firstPoint.y]);
+        // for (const point of this.simplify()) {
+        //     commands.push([Command.LINE, point.x, point.y]);
+        // }
+        // commands.push([Command.CLOSE]);
 
-        commands.push([Command.MOVE, firstPoint.x, firstPoint.y]);
-        for (const point of this.simplify()) {
-            commands.push([Command.LINE, point.x, point.y]);
-        }
-        commands.push([Command.CLOSE]);
+        for (const sq of this.squares)
+            commands.push(...sq.pathCommand);
 
         return commands;
     }
