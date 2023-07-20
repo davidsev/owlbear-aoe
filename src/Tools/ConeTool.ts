@@ -16,11 +16,11 @@ export class ConeTool extends BaseTool {
     readonly id = getId('cone');
 
     protected getShape (): Triangle | null {
-        const line = new Line(this.currentPoint, this.roundedCenter);
+        const line = new Line(this.currentPoint, this.startPoint.nearestGridCorner);
         const angle = line.vector.angle;
         if (!angle || !this.roundedDistance)
             return null;
-        return Triangle.fromDirectionAndSize(this.roundedCenter, angle, this.roundedDistance);
+        return Triangle.fromDirectionAndSize(this.startPoint.nearestGridCorner, angle, this.roundedDistance);
     }
 
     protected buildAreaPathCommand (triangle: Triangle): PathCommand[] {
@@ -50,7 +50,7 @@ export class ConeTool extends BaseTool {
     private buildAreaPathCommandToken (triangle: Triangle): PathSimplifier {
 
         // Work out which direction to look in.
-        const line = new Line(this.roundedCenter, this.currentPoint);
+        const line = new Line(this.startPoint.nearestGridCorner, this.currentPoint);
         const direction4 = line.vector.direction4;
         const direction8 = line.vector.direction8;
         if (direction4 === null || direction8 === null)
@@ -80,30 +80,30 @@ export class ConeTool extends BaseTool {
         // Build a grid of squares to check, in rows.  The first row is nearest the axis.
         let squares: AABB[][] = [];
         if (axis == '+x') {
-            for (let x = this.roundedCenter.x; x < this.roundedCenter.x + this.roundedDistance; x += grid.dpi) {
+            for (let x = this.startPoint.nearestGridCorner.x; x < this.startPoint.nearestGridCorner.x + this.roundedDistance; x += grid.dpi) {
                 let row: AABB[] = [];
-                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += grid.dpi)
+                for (let y = this.startPoint.nearestGridCorner.y - this.roundedDistance; y < this.startPoint.nearestGridCorner.y + this.roundedDistance; y += grid.dpi)
                     row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '-x') {
-            for (let x = this.roundedCenter.x - grid.dpi; x >= this.roundedCenter.x - this.roundedDistance; x -= grid.dpi) {
+            for (let x = this.startPoint.nearestGridCorner.x - grid.dpi; x >= this.startPoint.nearestGridCorner.x - this.roundedDistance; x -= grid.dpi) {
                 let row: AABB[] = [];
-                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += grid.dpi)
+                for (let y = this.startPoint.nearestGridCorner.y - this.roundedDistance; y < this.startPoint.nearestGridCorner.y + this.roundedDistance; y += grid.dpi)
                     row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '+y') {
-            for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += grid.dpi) {
+            for (let y = this.startPoint.nearestGridCorner.y; y < this.startPoint.nearestGridCorner.y + this.roundedDistance; y += grid.dpi) {
                 let row: AABB[] = [];
-                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += grid.dpi)
+                for (let x = this.startPoint.nearestGridCorner.x - this.roundedDistance; x < this.startPoint.nearestGridCorner.x + this.roundedDistance; x += grid.dpi)
                     row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '-y') {
-            for (let y = this.roundedCenter.y - grid.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= grid.dpi) {
+            for (let y = this.startPoint.nearestGridCorner.y - grid.dpi; y >= this.startPoint.nearestGridCorner.y - this.roundedDistance; y -= grid.dpi) {
                 let row: AABB[] = [];
-                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += grid.dpi)
+                for (let x = this.startPoint.nearestGridCorner.x - this.roundedDistance; x < this.startPoint.nearestGridCorner.x + this.roundedDistance; x += grid.dpi)
                     row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }

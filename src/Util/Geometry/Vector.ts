@@ -72,11 +72,11 @@ export class Vector implements Vector2 {
         });
     }
 
-    public roundToGridCorner (): Vector {
+    public get nearestGridCorner (): Vector {
         return this.roundToNearest(grid.dpi);
     }
 
-    public roundToGridCenter (): Vector {
+    public get nearestGridCenter (): Vector {
         const halfDpi = { x: grid.dpi / 2, y: grid.dpi / 2 };
         return this.add(halfDpi).roundToNearest(grid.dpi).sub(halfDpi);
     }

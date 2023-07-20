@@ -59,10 +59,6 @@ export abstract class BaseTool implements ToolMode {
     /** Get a PathCommand for the affected area */
     protected abstract buildAreaPathCommand (shape: Shape): PathCommand[];
 
-    protected get roundedCenter (): Vector {
-        return this.startPoint.roundToNearest(grid.dpi);
-    }
-
     protected get distance (): number {
         return this.currentPoint.distanceTo(this.startPoint);
     }

@@ -24,7 +24,7 @@ export class CubeTool extends BaseTool {
         }
 
         // Calculate the square.
-        return new AABB(this.roundedCenter.x, this.roundedCenter.y, vector.x, vector.y);
+        return new AABB(this.startPoint.nearestGridCorner.x, this.startPoint.nearestGridCorner.y, vector.x, vector.y);
     }
 
     protected buildAreaPathCommand (square: AABB): PathCommand[] {
