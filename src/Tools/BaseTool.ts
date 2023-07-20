@@ -13,7 +13,7 @@ import OBR, {
     ToolMode,
 } from '@owlbear-rodeo/sdk';
 import { getId } from '../Util/getId';
-import { Vector } from '../Util/Vector';
+import { Vector } from '../Util/Geometry/Vector';
 import { roundTo } from '../Util/roundTo';
 import {
     cleanToolMetadata,
@@ -22,10 +22,10 @@ import {
     getRoomMetadata,
     RoomMetadata,
     ToolMetadata,
-} from '../Metadata';
+} from '../Util/Metadata';
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
-import { Shape } from '../Util/Shape';
+import { Shape } from '../Util/Shapes/Shape';
 
 export abstract class BaseTool implements ToolMode {
 

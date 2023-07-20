@@ -1,4 +1,4 @@
-import { Line } from '../src/Util/Line';
+import { Line } from '../src/Util/Geometry/Line';
 
 describe('testing Line', () => {
     test('creation', () => {

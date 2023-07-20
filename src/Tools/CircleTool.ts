@@ -1,9 +1,9 @@
 import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
-import { AABB } from '../Util/AABB';
-import { PathSimplifier } from '../Util/PathSimplifier';
-import { Circle } from '../Util/Circle';
+import { AABB } from '../Util/Shapes/AABB';
+import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
+import { Circle } from '../Util/Shapes/Circle';
 
 export class CircleTool extends BaseTool {
 

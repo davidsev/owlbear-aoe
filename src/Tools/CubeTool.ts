@@ -1,8 +1,8 @@
 import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
-import { AABB } from '../Util/AABB';
-import { Vector } from '../Util/Vector';
+import { AABB } from '../Util/Shapes/AABB';
+import { Vector } from '../Util/Geometry/Vector';
 
 export class CubeTool extends BaseTool {
 

@@ -1,12 +1,12 @@
 import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
-import { Triangle } from '../Util/Triangle';
-import { AABB } from '../Util/AABB';
-import { Direction } from '../Util/Vector';
-import { PathSimplifier } from '../Util/PathSimplifier';
-import { Line } from '../Util/Line';
-import { ConeMode } from '../Metadata';
+import { Triangle } from '../Util/Shapes/Triangle';
+import { AABB } from '../Util/Shapes/AABB';
+import { Direction } from '../Util/Geometry/Vector';
+import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
+import { Line } from '../Util/Geometry/Line';
+import { ConeMode } from '../Util/Metadata';
 
 export class ConeTool extends BaseTool {
 

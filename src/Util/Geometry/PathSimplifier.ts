@@ -1,4 +1,4 @@
-import { AABB } from './AABB';
+import { AABB } from '../Shapes/AABB';
 import { Command, PathCommand } from '@owlbear-rodeo/sdk';
 import { Vector } from './Vector';
 import { Line } from './Line';
