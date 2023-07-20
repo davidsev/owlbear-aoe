@@ -13,13 +13,13 @@ export class CubeTool extends BaseTool {
     protected getShape (): AABB | null {
         // Turn the distance into a direction.
         let vector: Vector = new Vector({ x: 0, y: 0 });
-        if (this.currentPosition.x > this.center.x && this.currentPosition.y > this.center.y) {
+        if (this.currentPoint.x > this.startPoint.x && this.currentPoint.y > this.startPoint.y) {
             vector = new Vector({ x: this.roundedDistance, y: this.roundedDistance });
-        } else if (this.currentPosition.x > this.center.x && this.currentPosition.y < this.center.y) {
+        } else if (this.currentPoint.x > this.startPoint.x && this.currentPoint.y < this.startPoint.y) {
             vector = new Vector({ x: this.roundedDistance, y: -this.roundedDistance });
-        } else if (this.currentPosition.x < this.center.x && this.currentPosition.y > this.center.y) {
+        } else if (this.currentPoint.x < this.startPoint.x && this.currentPoint.y > this.startPoint.y) {
             vector = new Vector({ x: -this.roundedDistance, y: this.roundedDistance });
-        } else if (this.currentPosition.x < this.center.x && this.currentPosition.y < this.center.y) {
+        } else if (this.currentPoint.x < this.startPoint.x && this.currentPoint.y < this.startPoint.y) {
             vector = new Vector({ x: -this.roundedDistance, y: -this.roundedDistance });
         }
 

@@ -15,7 +15,7 @@ export class ConeTool extends BaseTool {
     readonly id = getId('cone');
 
     protected getShape (): Triangle | null {
-        const line = new Line(this.currentPosition, this.roundedCenter);
+        const line = new Line(this.currentPoint, this.roundedCenter);
         const angle = line.vector.angle;
         if (!angle || !this.roundedDistance)
             return null;
@@ -49,7 +49,7 @@ export class ConeTool extends BaseTool {
     private buildAreaPathCommandToken (triangle: Triangle): PathSimplifier {
 
         // Work out which direction to look in.
-        const line = new Line(this.roundedCenter, this.currentPosition);
+        const line = new Line(this.roundedCenter, this.currentPoint);
         const direction4 = line.vector.direction4;
         const direction8 = line.vector.direction8;
         if (direction4 === null || direction8 === null)

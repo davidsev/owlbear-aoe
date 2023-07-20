@@ -34,8 +34,8 @@ export abstract class BaseTool implements ToolMode {
     abstract readonly id: string;
     protected dpi: number = 0;
     protected gridScale: GridScale | null = null;
-    protected center: Vector = new Vector({ x: 0, y: 0 });
-    protected currentPosition: Vector = new Vector({ x: 0, y: 0 });
+    protected startPoint: Vector = new Vector({ x: 0, y: 0 });
+    protected currentPoint: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
     protected toolMetadata: ToolMetadata = defaultToolMetadata;
     protected roomMetadata: RoomMetadata = defaultRoomMetadata;
@@ -65,11 +65,11 @@ export abstract class BaseTool implements ToolMode {
     protected abstract buildAreaPathCommand (shape: Shape): PathCommand[];
 
     protected get roundedCenter (): Vector {
-        return this.center.roundToNearest(this.dpi);
+        return this.startPoint.roundToNearest(this.dpi);
     }
 
     protected get distance (): number {
-        return this.currentPosition.distanceTo(this.center);
+        return this.currentPoint.distanceTo(this.startPoint);
     }
 
     protected get roundedDistance (): number {
@@ -85,8 +85,8 @@ export abstract class BaseTool implements ToolMode {
         // Save the center and DPI that we are going to use for the whole interaction.
         this.dpi = await OBR.scene.grid.getDpi();
         this.gridScale = await OBR.scene.grid.getScale();
-        this.center = new Vector(event.pointerPosition);
-        this.currentPosition = new Vector(event.pointerPosition);
+        this.startPoint = new Vector(event.pointerPosition);
+        this.currentPoint = new Vector(event.pointerPosition);
         this.toolMetadata = cleanToolMetadata(context.metadata);
         this.roomMetadata = await getRoomMetadata();
 
@@ -152,7 +152,7 @@ export abstract class BaseTool implements ToolMode {
         if (this.interaction) {
             const [update] = this.interaction;
             update((items: Item[]) => {
-                this.currentPosition = new Vector(event.pointerPosition);
+                this.currentPoint = new Vector(event.pointerPosition);
                 this.updateItems(...this.getItems(Array.from(items)));
             });
         }
@@ -165,7 +165,7 @@ export abstract class BaseTool implements ToolMode {
             // Do a final update of the shape.
             const [update, stop] = this.interaction;
             const items = update((items: Item[]) => {
-                this.currentPosition = new Vector(event.pointerPosition);
+                this.currentPoint = new Vector(event.pointerPosition);
                 this.updateItems(...this.getItems(Array.from(items)));
             });
 
