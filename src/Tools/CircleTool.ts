@@ -4,6 +4,7 @@ import { PathCommand } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Util/Shapes/AABB';
 import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
 import { Circle } from '../Util/Shapes/Circle';
+import { grid } from '../Util/SyncGridData';
 
 export class CircleTool extends BaseTool {
 
@@ -28,9 +29,9 @@ export class CircleTool extends BaseTool {
 
         // Check every square.
         const path = new PathSimplifier();
-        for (let x = bounds.minX; x < bounds.maxX; x += this.dpi) {
-            for (let y = bounds.minY; y < bounds.maxY; y += this.dpi) {
-                const square = new AABB(x, y, this.dpi, this.dpi);
+        for (let x = bounds.minX; x < bounds.maxX; x += grid.dpi) {
+            for (let y = bounds.minY; y < bounds.maxY; y += grid.dpi) {
+                const square = new AABB(x, y, grid.dpi, grid.dpi);
                 const distance = this.roundedCenter.distanceTo(square.center);
                 if (distance <= this.roundedDistance) {
                     path.addSquare(square);

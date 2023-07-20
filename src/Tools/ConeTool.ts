@@ -7,6 +7,7 @@ import { Direction } from '../Util/Geometry/Vector';
 import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
 import { Line } from '../Util/Geometry/Line';
 import { ConeMode } from '../Util/Metadata';
+import { grid } from '../Util/SyncGridData';
 
 export class ConeTool extends BaseTool {
 
@@ -37,7 +38,7 @@ export class ConeTool extends BaseTool {
         if (!Number.isFinite(threshold))
             threshold = 0;
 
-        for (const square of triangle.getBounds().iterateGrid(this.dpi)) {
+        for (const square of triangle.getBounds().iterateGrid(grid.dpi)) {
             if (triangle.intersectsSquareAmount(square) > threshold) {
                 path.addSquare(square);
             }
@@ -79,31 +80,31 @@ export class ConeTool extends BaseTool {
         // Build a grid of squares to check, in rows.  The first row is nearest the axis.
         let squares: AABB[][] = [];
         if (axis == '+x') {
-            for (let x = this.roundedCenter.x; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi) {
+            for (let x = this.roundedCenter.x; x < this.roundedCenter.x + this.roundedDistance; x += grid.dpi) {
                 let row: AABB[] = [];
-                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '-x') {
-            for (let x = this.roundedCenter.x - this.dpi; x >= this.roundedCenter.x - this.roundedDistance; x -= this.dpi) {
+            for (let x = this.roundedCenter.x - grid.dpi; x >= this.roundedCenter.x - this.roundedDistance; x -= grid.dpi) {
                 let row: AABB[] = [];
-                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '+y') {
-            for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi) {
+            for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += grid.dpi) {
                 let row: AABB[] = [];
-                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '-y') {
-            for (let y = this.roundedCenter.y - this.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= this.dpi) {
+            for (let y = this.roundedCenter.y - grid.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= grid.dpi) {
                 let row: AABB[] = [];
-                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         }

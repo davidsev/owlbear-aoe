@@ -1,7 +1,6 @@
 import OBR, {
     buildLabel,
     buildPath,
-    GridScale,
     InteractionManager,
     Item,
     Label,
@@ -26,14 +25,13 @@ import {
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
 import { Shape } from '../Util/Shapes/Shape';
+import { grid } from '../Util/SyncGridData';
 
 export abstract class BaseTool implements ToolMode {
 
     abstract readonly label: string;
     abstract readonly icon: string;
     abstract readonly id: string;
-    protected dpi: number = 0;
-    protected gridScale: GridScale | null = null;
     protected startPoint: Vector = new Vector({ x: 0, y: 0 });
     protected currentPoint: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
@@ -43,9 +41,6 @@ export abstract class BaseTool implements ToolMode {
     protected areaItem?: Path;
     protected outlineItem?: Path;
     protected labelItem?: Label;
-
-    constructor () {
-    }
 
     /** The icon that will be displayed in the toolbar. */
     get icons (): ToolIcon[] {
@@ -65,7 +60,7 @@ export abstract class BaseTool implements ToolMode {
     protected abstract buildAreaPathCommand (shape: Shape): PathCommand[];
 
     protected get roundedCenter (): Vector {
-        return this.startPoint.roundToNearest(this.dpi);
+        return this.startPoint.roundToNearest(grid.dpi);
     }
 
     protected get distance (): number {
@@ -73,18 +68,12 @@ export abstract class BaseTool implements ToolMode {
     }
 
     protected get roundedDistance (): number {
-        return roundTo(this.distance, this.dpi);
-    }
-
-    protected get roundedDistanceInSquares (): number {
-        return this.roundedDistance / this.dpi;
+        return roundTo(this.distance, grid.dpi);
     }
 
     // When they start drawing, create the shape.
     async onToolDragStart (context: ToolContext, event: ToolEvent) {
         // Save the center and DPI that we are going to use for the whole interaction.
-        this.dpi = await OBR.scene.grid.getDpi();
-        this.gridScale = await OBR.scene.grid.getScale();
         this.startPoint = new Vector(event.pointerPosition);
         this.currentPoint = new Vector(event.pointerPosition);
         this.toolMetadata = cleanToolMetadata(context.metadata);
@@ -140,7 +129,7 @@ export abstract class BaseTool implements ToolMode {
 
         // And the text
         if (label) {
-            label.text.plainText = `${this.roundedDistance / this.dpi * (this.gridScale?.parsed?.multiplier || 0)}${this.gridScale?.parsed?.unit || ''}`;
+            label.text.plainText = `${this.roundedDistance / grid.dpi * (grid.gridScale.parsed.multiplier || 0)}${grid.gridScale.parsed.unit || ''}`;
             label.position = shape.center;
             label.visible = true;
         }

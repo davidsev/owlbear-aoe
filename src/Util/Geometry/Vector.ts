@@ -1,4 +1,5 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
+import { grid } from '../SyncGridData';
 
 export enum Direction {
     UP,
@@ -69,6 +70,15 @@ export class Vector implements Vector2 {
             x: Math.floor(this.x / n) * n,
             y: Math.floor(this.y / n) * n,
         });
+    }
+
+    public roundToGridCorner (): Vector {
+        return this.roundToNearest(grid.dpi);
+    }
+
+    public roundToGridCenter (): Vector {
+        const halfDpi = { x: grid.dpi / 2, y: grid.dpi / 2 };
+        return this.add(halfDpi).roundToNearest(grid.dpi).sub(halfDpi);
     }
 
     public distanceTo (rhs: Vector2): number {
