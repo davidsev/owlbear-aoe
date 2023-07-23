@@ -29,13 +29,9 @@ export class CircleTool extends BaseTool {
 
         // Check every square.
         const path = new PathSimplifier();
-        for (let x = bounds.minX; x < bounds.maxX; x += grid.dpi) {
-            for (let y = bounds.minY; y < bounds.maxY; y += grid.dpi) {
-                const square = new AABB(x, y, grid.dpi, grid.dpi);
-                const distance = this.startPoint.nearestGridCorner.distanceTo(square.center);
-                if (distance <= this.roundedDistance) {
-                    path.addSquare(square);
-                }
+        for (const square of bounds.iterateGrid(grid.dpi)) {
+            if (this.startPoint.nearestGridCorner.distanceTo(square.center) <= this.roundedDistance) {
+                path.addSquare(square);
             }
         }
 
