@@ -20,14 +20,25 @@ export enum ConeMode {
     TOKEN = 'Token',
 }
 
+export enum LineMode {
+    TEMPLATE = 'Template',
+    TOKEN = 'Token',
+}
+
 export interface RoomMetadata extends Metadata {
     coneMode: ConeMode,
     coneOverlapThreshold: number,
+    lineMode: LineMode,
+    lineOverlapThreshold: number,
+    lineWidth: number,
 }
 
 export const defaultRoomMetadata: RoomMetadata = {
     coneMode: ConeMode.TEMPLATE,
     coneOverlapThreshold: 10,
+    lineMode: LineMode.TOKEN,
+    lineOverlapThreshold: 50,
+    lineWidth: 2,
 };
 
 export async function getRoomMetadata (): Promise<RoomMetadata> {
@@ -37,8 +48,9 @@ export async function getRoomMetadata (): Promise<RoomMetadata> {
 }
 
 export async function setRoomMetadata (metadata: Partial<RoomMetadata>): Promise<void> {
+    const currentMetadata = await getRoomMetadata();
     const set: Metadata = {};
-    set[getId()] = metadata;
+    set[getId()] = { ...currentMetadata, ...metadata };
     return OBR.room.setMetadata(set);
 }
 
@@ -82,7 +94,8 @@ export async function getToolMetadata (): Promise<ToolMetadata> {
 }
 
 export async function setToolMetadata (metadata: Partial<RoomMetadata>): Promise<void> {
-    return OBR.tool.setMetadata(getId('tool'), metadata);
+    const currentMetadata = await getToolMetadata();
+    return OBR.tool.setMetadata(getId('tool'), { ...currentMetadata, ...metadata });
 }
 
 export function cleanToolMetadata (metadata: Metadata): ToolMetadata {
