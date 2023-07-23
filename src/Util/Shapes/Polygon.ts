@@ -68,11 +68,48 @@ export class Polygon extends Shape {
     }
 
     public intersectsSquareAmount (square: AABB): number {
-        throw new Error('Not implemented');
+        // Work out the polygon that intersects the two.
+        const newPolygonPoints: Vector2[] = [];
+
+        // Find any points of the polygon that are inside the square.
+        for (const point of this.points) {
+            if (square.containsPoint(point))
+                newPolygonPoints.push(point);
+        }
+        // Ditto for points of the square that are inside the polygon.
+        for (const point of square.points) {
+            if (this.containsPoint(point))
+                newPolygonPoints.push(point);
+        }
+
+        // And find any points where the lines intersect.
+        for (const tLine of this.lines) {
+            for (const sLine of square.lines) {
+                const intersection = tLine.getIntersection(sLine);
+                if (intersection)
+                    newPolygonPoints.push(intersection);
+            }
+        }
+
+        // Then sort our points to be in order.
+        const sortedPoints = sortPointsClockwise(newPolygonPoints);
+
+        // If there's not enough / any overlap, then no intersection.
+        if (sortedPoints.length < 3) {
+            return 0;
+        }
+
+        // Otherwise we need the area of the polygon.
+
+        // If it's a triangle just do that.
+        const newPolygon = new Polygon(sortedPoints);
+
+        // Compare to the area of the square.
+        return newPolygon.area / square.area * 100;
     }
 
     public containsPoint (point: Vector2): boolean {
-        throw new Error('Not implemented');
+        throw new Error('containsPoint not implemented');
     }
 
     public get pathCommand (): PathCommand[] {
