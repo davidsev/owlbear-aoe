@@ -1,7 +1,7 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import { Polygon } from './Polygon';
-import { Vector } from './Vector';
-import { Line } from './Line';
+import { Polygon } from '.';
+import { Vector } from '../Geometry/Vector';
+import { Line } from '../Geometry/Line';
 
 export class Rectangle extends Polygon {
 
@@ -48,6 +48,20 @@ export class Rectangle extends Polygon {
 
     get area (): number {
         return this.lines[0].length * this.lines[1].length;
+    }
+
+    // Formula from https://stackoverflow.com/a/2763387
+    public containsPoint (point: Vector2): boolean {
+        const vec = new Vector(point);
+        const ab = this.p2.sub(this.p1);
+        const am = vec.sub(this.p1);
+        const bc = this.p3.sub(this.p2);
+        const bm = vec.sub(this.p2);
+        const abam = ab.dot(am);
+        const abab = ab.dot(ab);
+        const bcbm = bc.dot(bm);
+        const bcbc = bc.dot(bc);
+        return 0 <= abam && abam <= abab && 0 <= bcbm && bcbm <= bcbc;
     }
 
     public toString (): string {

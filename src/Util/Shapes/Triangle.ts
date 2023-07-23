@@ -1,9 +1,8 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import { rotate } from '../Geometry/rotate';
-import { AABB } from './AABB';
-import { sortPointsClockwise } from '../Geometry/sortPointsClockwise';
-import { Polygon } from './Polygon';
+import { AABB, Polygon } from '.';
 import { Vector } from '../Geometry/Vector';
+import { sortPointsClockwise } from '../Geometry/sortPointsClockwise';
 
 export class Triangle extends Polygon {
 

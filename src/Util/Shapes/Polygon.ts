@@ -2,8 +2,7 @@ import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
 import { Vector } from '../Geometry/Vector';
 import { Line } from '../Geometry/Line';
 import { sortPointsClockwise } from '../Geometry/sortPointsClockwise';
-import { AABB } from './AABB';
-import { Shape } from './Shape';
+import { AABB, Shape } from '.';
 
 /** A convex polygon.
  *  Where possible should be using the more specific classes like Triangle, Rectangle, etc.

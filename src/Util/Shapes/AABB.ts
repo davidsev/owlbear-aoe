@@ -1,6 +1,6 @@
 import { Vector } from '../Geometry/Vector';
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import { Polygon } from './Polygon';
+import { Polygon } from '.';
 import { roundDownTo, roundUpTo } from '../roundTo';
 
 export class AABB extends Polygon {

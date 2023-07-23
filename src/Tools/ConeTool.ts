@@ -1,8 +1,7 @@
 import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
-import { Triangle } from '../Util/Shapes/Triangle';
-import { AABB } from '../Util/Shapes/AABB';
+import { AABB, Triangle } from '../Util/Shapes';
 import { Direction } from '../Util/Geometry/Vector';
 import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
 import { Line } from '../Util/Geometry/Line';

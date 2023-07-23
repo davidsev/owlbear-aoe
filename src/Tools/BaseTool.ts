@@ -24,7 +24,7 @@ import {
 } from '../Util/Metadata';
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
-import { Shape } from '../Util/Shapes/Shape';
+import { Shape } from '../Util/Shapes';
 import { grid } from '../Util/SyncGridData';
 
 export abstract class BaseTool implements ToolMode {
