@@ -1,8 +1,8 @@
 import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
-import { AABB } from '../Util/AABB';
-import { Vector } from '../Util/Vector';
+import { AABB } from '../Util/Shapes/AABB';
+import { Vector } from '../Util/Geometry/Vector';
 
 export class CubeTool extends BaseTool {
 
@@ -13,18 +13,18 @@ export class CubeTool extends BaseTool {
     protected getShape (): AABB | null {
         // Turn the distance into a direction.
         let vector: Vector = new Vector({ x: 0, y: 0 });
-        if (this.currentPosition.x > this.center.x && this.currentPosition.y > this.center.y) {
+        if (this.currentPoint.x > this.startPoint.x && this.currentPoint.y > this.startPoint.y) {
             vector = new Vector({ x: this.roundedDistance, y: this.roundedDistance });
-        } else if (this.currentPosition.x > this.center.x && this.currentPosition.y < this.center.y) {
+        } else if (this.currentPoint.x > this.startPoint.x && this.currentPoint.y < this.startPoint.y) {
             vector = new Vector({ x: this.roundedDistance, y: -this.roundedDistance });
-        } else if (this.currentPosition.x < this.center.x && this.currentPosition.y > this.center.y) {
+        } else if (this.currentPoint.x < this.startPoint.x && this.currentPoint.y > this.startPoint.y) {
             vector = new Vector({ x: -this.roundedDistance, y: this.roundedDistance });
-        } else if (this.currentPosition.x < this.center.x && this.currentPosition.y < this.center.y) {
+        } else if (this.currentPoint.x < this.startPoint.x && this.currentPoint.y < this.startPoint.y) {
             vector = new Vector({ x: -this.roundedDistance, y: -this.roundedDistance });
         }
 
         // Calculate the square.
-        return new AABB(this.roundedCenter.x, this.roundedCenter.y, vector.x, vector.y);
+        return new AABB(this.startPoint.nearestGridCorner.x, this.startPoint.nearestGridCorner.y, vector.x, vector.y);
     }
 
     protected buildAreaPathCommand (square: AABB): PathCommand[] {

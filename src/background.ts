@@ -5,10 +5,14 @@ import { CircleTool } from './Tools/CircleTool';
 import { CubeTool } from './Tools/CubeTool';
 import { SettingsForm } from './SettingsForm';
 import { StyleForm } from './StyleForm';
-import { defaultToolMetadata } from './Metadata';
+import { defaultToolMetadata } from './Util/Metadata';
+import { grid } from './Util/SyncGridData';
 
 export function initBackground () {
-    OBR.onReady(() => {
+    OBR.onReady(async () => {
+
+        await grid.init();
+
         OBR.tool.create({
             id: getId('tool'),
             shortcut: 'A',

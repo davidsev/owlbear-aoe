@@ -1,11 +1,11 @@
-import { loadTemplate } from '../UI/loadTemplate';
+import { loadTemplate } from '../Util/UI/loadTemplate';
 import template from './form.handlebars';
 import OBR, { Metadata } from '@owlbear-rodeo/sdk';
 import 'vanilla-colorful/hex-alpha-color-picker.js';
 import './StyleForm.scss';
-import { findNode } from '../UI/findNode';
+import { findNode } from '../Util/UI/findNode';
 import { HexAlphaBase } from 'vanilla-colorful/lib/entrypoints/hex-alpha';
-import { defaultToolMetadata, getToolMetadata, setToolMetadata, ToolMetadata } from '../Metadata';
+import { defaultToolMetadata, getToolMetadata, setToolMetadata, ToolMetadata } from '../Util/Metadata';
 
 function makeColor (color: string, opacity: number) {
     return `${color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`;

@@ -1,7 +1,7 @@
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
-import { Vector } from './Vector';
-import { Line } from './Line';
-import { sortPointsClockwise } from './sortPointsClockwise';
+import { Vector } from '../Geometry/Vector';
+import { Line } from '../Geometry/Line';
+import { sortPointsClockwise } from '../Geometry/sortPointsClockwise';
 import { AABB } from './AABB';
 import { Shape } from './Shape';
 

@@ -1,4 +1,4 @@
-import { Direction, Vector } from '../src/Util/Vector';
+import { Direction, Vector } from '../src/Util/Geometry/Vector';
 
 describe('testing Vector', () => {
     test('creation', () => {

@@ -1,12 +1,13 @@
 import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
-import { Triangle } from '../Util/Triangle';
-import { AABB } from '../Util/AABB';
-import { Direction } from '../Util/Vector';
-import { PathSimplifier } from '../Util/PathSimplifier';
-import { Line } from '../Util/Line';
-import { ConeMode } from '../Metadata';
+import { Triangle } from '../Util/Shapes/Triangle';
+import { AABB } from '../Util/Shapes/AABB';
+import { Direction } from '../Util/Geometry/Vector';
+import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
+import { Line } from '../Util/Geometry/Line';
+import { ConeMode } from '../Util/Metadata';
+import { grid } from '../Util/SyncGridData';
 
 export class ConeTool extends BaseTool {
 
@@ -15,11 +16,11 @@ export class ConeTool extends BaseTool {
     readonly id = getId('cone');
 
     protected getShape (): Triangle | null {
-        const line = new Line(this.currentPosition, this.roundedCenter);
+        const line = new Line(this.currentPoint, this.startPoint.nearestGridCorner);
         const angle = line.vector.angle;
         if (!angle || !this.roundedDistance)
             return null;
-        return Triangle.fromDirectionAndSize(this.roundedCenter, angle, this.roundedDistance);
+        return Triangle.fromDirectionAndSize(this.startPoint.nearestGridCorner, angle, this.roundedDistance);
     }
 
     protected buildAreaPathCommand (triangle: Triangle): PathCommand[] {
@@ -37,7 +38,7 @@ export class ConeTool extends BaseTool {
         if (!Number.isFinite(threshold))
             threshold = 0;
 
-        for (const square of triangle.getBounds().iterateGrid(this.dpi)) {
+        for (const square of triangle.getBounds().iterateGrid(grid.dpi)) {
             if (triangle.intersectsSquareAmount(square) > threshold) {
                 path.addSquare(square);
             }
@@ -49,7 +50,7 @@ export class ConeTool extends BaseTool {
     private buildAreaPathCommandToken (triangle: Triangle): PathSimplifier {
 
         // Work out which direction to look in.
-        const line = new Line(this.roundedCenter, this.currentPosition);
+        const line = new Line(this.startPoint.nearestGridCorner, this.currentPoint);
         const direction4 = line.vector.direction4;
         const direction8 = line.vector.direction8;
         if (direction4 === null || direction8 === null)
@@ -79,31 +80,31 @@ export class ConeTool extends BaseTool {
         // Build a grid of squares to check, in rows.  The first row is nearest the axis.
         let squares: AABB[][] = [];
         if (axis == '+x') {
-            for (let x = this.roundedCenter.x; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi) {
+            for (let x = this.startPoint.nearestGridCorner.x; x < this.startPoint.nearestGridCorner.x + this.roundedDistance; x += grid.dpi) {
                 let row: AABB[] = [];
-                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let y = this.startPoint.nearestGridCorner.y - this.roundedDistance; y < this.startPoint.nearestGridCorner.y + this.roundedDistance; y += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '-x') {
-            for (let x = this.roundedCenter.x - this.dpi; x >= this.roundedCenter.x - this.roundedDistance; x -= this.dpi) {
+            for (let x = this.startPoint.nearestGridCorner.x - grid.dpi; x >= this.startPoint.nearestGridCorner.x - this.roundedDistance; x -= grid.dpi) {
                 let row: AABB[] = [];
-                for (let y = this.roundedCenter.y - this.roundedDistance; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let y = this.startPoint.nearestGridCorner.y - this.roundedDistance; y < this.startPoint.nearestGridCorner.y + this.roundedDistance; y += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '+y') {
-            for (let y = this.roundedCenter.y; y < this.roundedCenter.y + this.roundedDistance; y += this.dpi) {
+            for (let y = this.startPoint.nearestGridCorner.y; y < this.startPoint.nearestGridCorner.y + this.roundedDistance; y += grid.dpi) {
                 let row: AABB[] = [];
-                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let x = this.startPoint.nearestGridCorner.x - this.roundedDistance; x < this.startPoint.nearestGridCorner.x + this.roundedDistance; x += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         } else if (axis == '-y') {
-            for (let y = this.roundedCenter.y - this.dpi; y >= this.roundedCenter.y - this.roundedDistance; y -= this.dpi) {
+            for (let y = this.startPoint.nearestGridCorner.y - grid.dpi; y >= this.startPoint.nearestGridCorner.y - this.roundedDistance; y -= grid.dpi) {
                 let row: AABB[] = [];
-                for (let x = this.roundedCenter.x - this.roundedDistance; x < this.roundedCenter.x + this.roundedDistance; x += this.dpi)
-                    row.push(new AABB(x, y, this.dpi, this.dpi));
+                for (let x = this.startPoint.nearestGridCorner.x - this.roundedDistance; x < this.startPoint.nearestGridCorner.x + this.roundedDistance; x += grid.dpi)
+                    row.push(new AABB(x, y, grid.dpi, grid.dpi));
                 squares.push(row);
             }
         }

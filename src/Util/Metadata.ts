@@ -1,5 +1,5 @@
 import OBR, { Metadata } from '@owlbear-rodeo/sdk';
-import { getId } from './Util/getId';
+import { getId } from './getId';
 
 // Merge a metadata object with default values into the correct type.
 function cleanMetadata<T extends Metadata> (metadata: Metadata, defaultValues: T): T {

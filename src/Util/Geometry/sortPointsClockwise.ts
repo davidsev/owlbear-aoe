@@ -1,5 +1,5 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import { AABB } from './AABB';
+import { AABB } from '../Shapes/AABB';
 
 // Adapted from https://stackoverflow.com/questions/6989100/sort-points-in-clockwise-order/6989383#6989383
 export function sortPointsClockwise<T extends Vector2> (points: T[]): T[] {
