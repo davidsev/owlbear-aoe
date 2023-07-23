@@ -1,4 +1,4 @@
-import { Triangle } from '../src/Util/Shapes/Triangle';
+import { Triangle } from '../src/Util/Shapes';
 
 describe('testing Triangle', () => {
     test('creation', () => {

@@ -1,5 +1,4 @@
-import '../src/Util/Shapes/AABB';
-import { Polygon } from '../src/Util/Shapes/Polygon';
+import { Polygon } from '../src/Util/Shapes';
 
 describe('testing Polygon', () => {
     test('creation', () => {

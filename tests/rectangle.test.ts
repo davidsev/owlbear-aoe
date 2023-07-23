@@ -1,7 +1,6 @@
-import '../src/Util/Shapes/AABB';
-import { Rectangle } from '../src/Util/Shapes/Rectangle';
+import { Rectangle } from '../src/Util/Shapes';
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import { Line } from '../src/Util/Geometry/Line';
+import { Line } from '../src/Util/Geometry';
 
 describe('testing Rectangle', () => {
     test('creation', () => {
