@@ -1,6 +1,6 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Shapes';
-import { Vector } from './Vector';
+import { Vector } from '.';
 
 export class Line {
     public readonly p1: Vector;

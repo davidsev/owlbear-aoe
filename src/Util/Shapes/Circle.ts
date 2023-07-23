@@ -1,7 +1,6 @@
 import { AABB, Shape } from '.';
-import { Vector } from '../Geometry/Vector';
+import { Line, Vector } from '../Geometry';
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
-import { Line } from '../Geometry/Line';
 import { roundDownTo, roundUpTo } from '../roundTo';
 
 export class Circle extends Shape {

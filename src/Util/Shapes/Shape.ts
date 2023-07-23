@@ -1,5 +1,5 @@
 import { PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
-import { Vector } from '../Geometry/Vector';
+import { Vector } from '../Geometry';
 import { AABB } from '.';
 
 export abstract class Shape {

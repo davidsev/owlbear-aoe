@@ -1,7 +1,6 @@
 import { AABB } from '../Shapes';
 import { Command, PathCommand } from '@owlbear-rodeo/sdk';
-import { Vector } from './Vector';
-import { Line } from './Line';
+import { Line, Vector } from '.';
 
 export class PathSimplifier {
     public readonly squares: AABB[] = [];

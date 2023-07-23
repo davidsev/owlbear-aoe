@@ -2,7 +2,7 @@ import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
 import { AABB, Circle } from '../Util/Shapes';
-import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
+import { PathSimplifier } from '../Util/Geometry';
 import { grid } from '../Util/SyncGridData';
 
 export class CircleTool extends BaseTool {

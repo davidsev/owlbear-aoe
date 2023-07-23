@@ -2,9 +2,7 @@ import { getId } from '../Util/getId';
 import { BaseTool } from './BaseTool';
 import { PathCommand } from '@owlbear-rodeo/sdk';
 import { AABB, Triangle } from '../Util/Shapes';
-import { Direction } from '../Util/Geometry/Vector';
-import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
-import { Line } from '../Util/Geometry/Line';
+import { Direction, Line, PathSimplifier } from '../Util/Geometry';
 import { ConeMode } from '../Util/Metadata';
 import { grid } from '../Util/SyncGridData';
 

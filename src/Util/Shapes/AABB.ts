@@ -1,4 +1,4 @@
-import { Vector } from '../Geometry/Vector';
+import { Vector } from '../Geometry';
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import { Polygon } from '.';
 import { roundDownTo, roundUpTo } from '../roundTo';

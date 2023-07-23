@@ -1,7 +1,5 @@
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
-import { Vector } from '../Geometry/Vector';
-import { Line } from '../Geometry/Line';
-import { sortPointsClockwise } from '../Geometry/sortPointsClockwise';
+import { Line, sortPointsClockwise, Vector } from '../Geometry';
 import { AABB, Shape } from '.';
 
 /** A convex polygon.

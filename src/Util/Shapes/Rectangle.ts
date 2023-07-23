@@ -1,7 +1,6 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import { Polygon } from '.';
-import { Vector } from '../Geometry/Vector';
-import { Line } from '../Geometry/Line';
+import { Line, Vector } from '../Geometry';
 
 export class Rectangle extends Polygon {
 

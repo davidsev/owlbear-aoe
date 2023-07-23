@@ -1,5 +1,5 @@
 import { Vector2 } from '@owlbear-rodeo/sdk';
-import { Vector } from './Vector';
+import { Vector } from '.';
 
 export function rotate (center: Vector2, point2: Vector2, rads: number): Vector {
 
