@@ -2,6 +2,7 @@ import { Vector } from '../Geometry/Vector';
 import { Vector2 } from '@owlbear-rodeo/sdk';
 import { Polygon } from './Polygon';
 import { roundDownTo, roundUpTo } from '../roundTo';
+import { grid } from '../SyncGridData';
 
 export class AABB extends Polygon {
 
@@ -76,12 +77,12 @@ export class AABB extends Polygon {
         return `AABB(${this.x}, ${this.y}, ${this.w}, ${this.h})`;
     }
 
-    public iterateGrid (chunkSize: number): AABB[] {
+    public iterateGrid (): AABB[] {
         const points: AABB[] = [];
-        const box = this.getBounds(chunkSize);
-        for (let x = box.x; x < box.x + box.w; x += chunkSize) {
-            for (let y = box.y; y < box.y + box.h; y += chunkSize) {
-                points.push(new AABB(x, y, chunkSize, chunkSize));
+        const box = this.getBounds(grid.dpi);
+        for (let x = box.x; x < box.x + box.w; x += grid.dpi) {
+            for (let y = box.y; y < box.y + box.h; y += grid.dpi) {
+                points.push(new AABB(x, y, grid.dpi, grid.dpi));
             }
         }
         return points;

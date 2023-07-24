@@ -38,7 +38,7 @@ export class ConeTool extends BaseTool {
         if (!Number.isFinite(threshold))
             threshold = 0;
 
-        for (const square of triangle.getBounds().iterateGrid(grid.dpi)) {
+        for (const square of triangle.getBounds().iterateGrid()) {
             if (triangle.intersectsSquareAmount(square) > threshold) {
                 path.addSquare(square);
             }
