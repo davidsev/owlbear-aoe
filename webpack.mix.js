@@ -32,4 +32,7 @@ mix.ts('src/index.ts', 'dist/app.js')
                 }
             ],
         },
+        resolve: {
+            fallback: { 'buffer': false }
+        }
     });
