@@ -3,7 +3,7 @@ import template from './form.handlebars';
 import { findNode } from '../Util/UI/findNode';
 import OBR, { Item } from '@owlbear-rodeo/sdk';
 import { getId } from '../Util/getId';
-import { ConeMode, getRoomMetadata, setRoomMetadata } from '../Util/Metadata';
+import { ConeMode, roomMetadata } from '../Util/Metadata';
 
 export function initSettingsForm () {
     // Laad the form.
@@ -16,11 +16,11 @@ export function initSettingsForm () {
     const coneOverlapThreshold = findNode(document.body, 'input#coneOverlapThreshold', HTMLInputElement);
     coneOverlapThreshold.addEventListener('change', () => {
         const value = parseInt(coneOverlapThreshold.value, 10);
-        setRoomMetadata({ coneOverlapThreshold: value });
+        roomMetadata.set({ coneOverlapThreshold: value });
     });
     const coneMode = findNode(document.body, 'select#coneMode', HTMLSelectElement);
     coneMode.addEventListener('change', () => {
-        setRoomMetadata({ coneMode: coneMode.value as ConeMode });
+        roomMetadata.set({ coneMode: coneMode.value as ConeMode });
     });
 
     // Delete button
@@ -37,7 +37,7 @@ export function initSettingsForm () {
 }
 
 async function updateForm () {
-    const metadata = await getRoomMetadata();
+    const metadata = await roomMetadata.get();
     if (!metadata)
         return;
 

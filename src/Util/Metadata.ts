@@ -1,5 +1,6 @@
-import OBR, { Metadata } from '@owlbear-rodeo/sdk';
+import { Metadata } from '@owlbear-rodeo/sdk';
 import { getId } from './getId';
+import { RoomMetadataMapper, ToolMetadataMapper } from '@davidsev/owlbear-utils';
 
 // Merge a metadata object with default values into the correct type.
 function cleanMetadata<T extends Metadata> (metadata: Metadata, defaultValues: T): T {
@@ -20,31 +21,13 @@ export enum ConeMode {
     TOKEN = 'Token',
 }
 
-export interface RoomMetadata extends Metadata {
-    coneMode: ConeMode,
-    coneOverlapThreshold: number,
+export class RoomMetadata {
+    coneMode: ConeMode = ConeMode.TEMPLATE;
+    coneOverlapThreshold: number = 10;
 }
 
-export const defaultRoomMetadata: RoomMetadata = {
-    coneMode: ConeMode.TEMPLATE,
-    coneOverlapThreshold: 10,
-};
-
-export async function getRoomMetadata (): Promise<RoomMetadata> {
-    const metadata = await OBR.room.getMetadata() || {};
-    const myMetadata = (metadata[getId()] || {}) as Metadata;
-    return cleanRoomMetadata(myMetadata);
-}
-
-export async function setRoomMetadata (metadata: Partial<RoomMetadata>): Promise<void> {
-    const set: Metadata = {};
-    set[getId()] = metadata;
-    return OBR.room.setMetadata(set);
-}
-
-export function cleanRoomMetadata (metadata: Metadata): RoomMetadata {
-    return cleanMetadata(metadata, defaultRoomMetadata);
-}
+export const roomMetadata = new RoomMetadataMapper(getId(), new RoomMetadata);
+(window as any).roomMetadata = roomMetadata;
 
 //
 // Tool Metadata
@@ -76,15 +59,4 @@ export const defaultToolMetadata: ToolMetadata = {
     labelDisplayMode: 'drawing',
 };
 
-export async function getToolMetadata (): Promise<ToolMetadata> {
-    const metadata = await OBR.tool.getMetadata(getId('tool')) || {};
-    return cleanToolMetadata(metadata);
-}
-
-export async function setToolMetadata (metadata: Partial<RoomMetadata>): Promise<void> {
-    return OBR.tool.setMetadata(getId('tool'), metadata);
-}
-
-export function cleanToolMetadata (metadata: Metadata): ToolMetadata {
-    return cleanMetadata(metadata, defaultToolMetadata);
-}
+export const toolMetadata = new ToolMetadataMapper(getId('tool'), defaultToolMetadata);

@@ -14,14 +14,7 @@ import OBR, {
 import { getId } from '../Util/getId';
 import { Vector } from '../Util/Geometry/Vector';
 import { roundTo } from '../Util/roundTo';
-import {
-    cleanToolMetadata,
-    defaultRoomMetadata,
-    defaultToolMetadata,
-    getRoomMetadata,
-    RoomMetadata,
-    ToolMetadata,
-} from '../Util/Metadata';
+import { roomMetadata, RoomMetadata, toolMetadata, ToolMetadata } from '../Util/Metadata';
 import { PathBuilder } from '@owlbear-rodeo/sdk/lib/builders/PathBuilder';
 import { LabelBuilder } from '@owlbear-rodeo/sdk/lib/builders/LabelBuilder';
 import { Shape } from '../Util/Shapes/Shape';
@@ -35,8 +28,8 @@ export abstract class BaseTool implements ToolMode {
     protected startPoint: Vector = new Vector({ x: 0, y: 0 });
     protected currentPoint: Vector = new Vector({ x: 0, y: 0 });
     private interaction?: InteractionManager<Item[]> = undefined;
-    protected toolMetadata: ToolMetadata = defaultToolMetadata;
-    protected roomMetadata: RoomMetadata = defaultRoomMetadata;
+    protected toolMetadata: ToolMetadata = toolMetadata.defaultValues;
+    protected roomMetadata: RoomMetadata = roomMetadata.defaultValues;
 
     protected areaItem?: Path;
     protected outlineItem?: Path;
@@ -72,8 +65,8 @@ export abstract class BaseTool implements ToolMode {
         // Save the center and DPI that we are going to use for the whole interaction.
         this.startPoint = new Vector(event.pointerPosition);
         this.currentPoint = new Vector(event.pointerPosition);
-        this.toolMetadata = cleanToolMetadata(context.metadata);
-        this.roomMetadata = await getRoomMetadata();
+        this.toolMetadata = toolMetadata.clean(context.metadata);
+        this.roomMetadata = await roomMetadata.get();
 
         // Make the items.
         this.areaItem = this.buildAreaPath().build();
@@ -132,7 +125,7 @@ export abstract class BaseTool implements ToolMode {
     }
 
     async onToolDragMove (context: ToolContext, event: ToolEvent) {
-        this.toolMetadata = cleanToolMetadata(context.metadata);
+        this.toolMetadata = toolMetadata.clean(context.metadata);
 
         if (this.interaction) {
             const [update] = this.interaction;
@@ -144,7 +137,7 @@ export abstract class BaseTool implements ToolMode {
     }
 
     onToolDragEnd (context: ToolContext, event: ToolEvent) {
-        this.toolMetadata = cleanToolMetadata(context.metadata);
+        this.toolMetadata = toolMetadata.clean(context.metadata);
 
         if (this.interaction) {
             // Do a final update of the shape.
