@@ -27,7 +27,6 @@ export class RoomMetadata {
 }
 
 export const roomMetadata = new RoomMetadataMapper(getId(), new RoomMetadata);
-(window as any).roomMetadata = roomMetadata;
 
 //
 // Tool Metadata
