@@ -32,30 +32,19 @@ export const roomMetadata = new RoomMetadataMapper(getId(), new RoomMetadata);
 // Tool Metadata
 //
 
-export interface ToolMetadata extends Metadata {
-    areaFillColor: string,
-    areaFillOpacity: number,
-    areaStrokeColor: string,
-    areaStrokeOpacity: number,
-    shapeFillColor: string,
-    shapeFillOpacity: number,
-    shapeStrokeColor: string,
-    shapeStrokeOpacity: number,
-    shapeDisplayMode: 'always' | 'drawing' | 'never',
-    labelDisplayMode: 'always' | 'drawing' | 'never',
+export class ToolMetadata {
+    areaFillColor: string = '#000000';
+    areaFillOpacity: number = 0.5;
+    areaStrokeColor: string = '#000000';
+    areaStrokeOpacity: number = 0;
+    shapeFillColor: string = '#000000';
+    shapeFillOpacity: number = 0;
+    shapeStrokeColor: string = '#FF0000';
+    shapeStrokeOpacity: number = 1;
+    shapeDisplayMode: 'always' | 'drawing' | 'never' = 'always';
+    labelDisplayMode: 'always' | 'drawing' | 'never' = 'drawing';
+
+    [key: string]: string | number;
 }
 
-export const defaultToolMetadata: ToolMetadata = {
-    areaFillColor: '#000000',
-    areaFillOpacity: 0.5,
-    areaStrokeColor: '#000000',
-    areaStrokeOpacity: 0,
-    shapeFillColor: '#000000',
-    shapeFillOpacity: 0,
-    shapeStrokeColor: '#FF0000',
-    shapeStrokeOpacity: 1,
-    shapeDisplayMode: 'always',
-    labelDisplayMode: 'drawing',
-};
-
-export const toolMetadata = new ToolMetadataMapper(getId('tool'), defaultToolMetadata);
+export const toolMetadata = new ToolMetadataMapper(getId('tool'), new ToolMetadata);

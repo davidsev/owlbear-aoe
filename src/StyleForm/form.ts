@@ -1,6 +1,6 @@
 import { loadTemplate } from '../Util/UI/loadTemplate';
 import template from './form.handlebars';
-import OBR, { Metadata } from '@owlbear-rodeo/sdk';
+import OBR from '@owlbear-rodeo/sdk';
 import 'vanilla-colorful/hex-alpha-color-picker.js';
 import './StyleForm.scss';
 import { findNode } from '../Util/UI/findNode';
@@ -95,10 +95,10 @@ function setupColorField (prefix: string) {
             button.innerText = `${(opacity * 100).toFixed(0)}%`;
 
             // Save it
-            const toSave: Metadata = {};
-            toSave[`${prefix}Color`] = color;
-            toSave[`${prefix}Opacity`] = opacity;
-            toolMetadata.set(toSave);
+            toolMetadata.set({
+                [`${prefix}Color`]: color,
+                [`${prefix}Opacity`]: opacity,
+            });
 
             // Close
             popup.div.style.display = 'none';
@@ -124,8 +124,6 @@ function setupSelect (name: string) {
 
     // Save the value when it changes.
     select.addEventListener('change', () => {
-        const toSave: Metadata = {};
-        toSave[name] = select.value;
-        toolMetadata.set(toSave);
+        toolMetadata.set({ [name]: select.value });
     });
 }
