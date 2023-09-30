@@ -1,16 +1,5 @@
-import { Metadata } from '@owlbear-rodeo/sdk';
 import { getId } from './getId';
 import { RoomMetadataMapper, ToolMetadataMapper } from '@davidsev/owlbear-utils';
-
-// Merge a metadata object with default values into the correct type.
-function cleanMetadata<T extends Metadata> (metadata: Metadata, defaultValues: T): T {
-    // If the metadata is missing any keys, fill them in with the defaults.
-    for (const key in defaultValues)
-        if (metadata[key] === undefined || metadata[key] === null || typeof (metadata[key]) != typeof (defaultValues[key]))
-            metadata[key] = defaultValues[key];
-
-    return metadata as T;
-}
 
 //
 // Room Metadata
