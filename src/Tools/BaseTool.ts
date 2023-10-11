@@ -136,7 +136,7 @@ export abstract class BaseTool implements ToolMode {
         }
     }
 
-    onToolDragEnd (context: ToolContext, event: ToolEvent) {
+    async onToolDragEnd (context: ToolContext, event: ToolEvent) {
         this.toolMetadata = toolMetadata.clean(context.metadata);
 
         if (this.interaction) {
@@ -155,7 +155,15 @@ export abstract class BaseTool implements ToolMode {
                     itemsToKeep.push(outline);
                 if (this.toolMetadata.labelDisplayMode == 'always' && label)
                     itemsToKeep.push(label);
-                OBR.scene.items.addItems(itemsToKeep);
+                await OBR.scene.items.addItems(itemsToKeep);
+
+                // And attach them to eachother.
+                if (itemsToKeep.length > 1) {
+                    await OBR.scene.items.updateItems(itemsToKeep, (items: Item[]) => {
+                        for (let i = 0; i < items.length - 1; i++)
+                            items[i].attachedTo = items[i + 1 % items.length].id;
+                    });
+                }
             }
 
             // Stop the interaction.
@@ -196,7 +204,6 @@ export abstract class BaseTool implements ToolMode {
             .strokeColor(this.toolMetadata.shapeStrokeColor)
             .strokeOpacity(this.toolMetadata.shapeStrokeOpacity)
             .locked(true)
-            .disableHit(true)
             .name('AoE Outline')
             .layer('ATTACHMENT');
     }
@@ -208,7 +215,6 @@ export abstract class BaseTool implements ToolMode {
             .pointerWidth(0)
             .pointerHeight(0)
             .locked(true)
-            .disableHit(true)
             .name('AoE Label')
             .layer('ATTACHMENT');
     }
