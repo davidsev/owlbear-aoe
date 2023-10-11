@@ -182,6 +182,7 @@ export abstract class BaseTool implements ToolMode {
             .fillOpacity(this.toolMetadata.areaFillOpacity)
             .strokeWidth(5)
             .strokeColor(this.toolMetadata.areaStrokeColor)
+            .name('AoE Area')
             .strokeOpacity(this.toolMetadata.areaStrokeOpacity);
     }
 
@@ -196,6 +197,7 @@ export abstract class BaseTool implements ToolMode {
             .strokeOpacity(this.toolMetadata.shapeStrokeOpacity)
             .locked(true)
             .disableHit(true)
+            .name('AoE Outline')
             .layer('ATTACHMENT');
     }
 
@@ -207,6 +209,7 @@ export abstract class BaseTool implements ToolMode {
             .pointerHeight(0)
             .locked(true)
             .disableHit(true)
+            .name('AoE Label')
             .layer('ATTACHMENT');
     }
 }
