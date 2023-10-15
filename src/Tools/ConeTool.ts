@@ -5,7 +5,6 @@ import { Triangle } from '../Util/Shapes/Triangle';
 import { AABB } from '../Util/Shapes/AABB';
 import { Direction } from '../Util/Geometry/Vector';
 import { PathSimplifier } from '../Util/Geometry/PathSimplifier';
-import { Line } from '../Util/Geometry/Line';
 import { ConeMode } from '../Util/Metadata';
 import { grid } from '../Util/SyncGridData';
 
@@ -16,8 +15,7 @@ export class ConeTool extends BaseTool {
     readonly id = getId('cone');
 
     protected getShape (): Triangle | null {
-        const line = new Line(this.currentPoint, this.startPoint.nearestGridCorner);
-        const angle = line.vector.angle;
+        const angle = this.startPoint.nearestGridCorner.sub(this.currentPoint).angle;
         if (!angle || !this.roundedDistance)
             return null;
         return Triangle.fromDirectionAndSize(this.startPoint.nearestGridCorner, angle, this.roundedDistance);
@@ -50,9 +48,9 @@ export class ConeTool extends BaseTool {
     private buildAreaPathCommandToken (triangle: Triangle): PathSimplifier {
 
         // Work out which direction to look in.
-        const line = new Line(this.startPoint.nearestGridCorner, this.currentPoint);
-        const direction4 = line.vector.direction4;
-        const direction8 = line.vector.direction8;
+        const vector = this.currentPoint.nearestGridCorner.sub(this.startPoint);
+        const direction4 = vector.direction4;
+        const direction8 = vector.direction8;
         if (direction4 === null || direction8 === null)
             return new PathSimplifier();
         const isDiagonal = [Direction.UPRIGHT, Direction.UPLEFT, Direction.DOWNRIGHT, Direction.DOWNLEFT].includes(direction8);
@@ -75,7 +73,7 @@ export class ConeTool extends BaseTool {
         if (direction8 == Direction.DOWNLEFT && direction4 == Direction.LEFT) axis = '+y';
 
         if (axis === null)
-            throw new Error(`Axis is null:  direction8: ${direction8}, direction4: ${direction4}, isDiagonal: ${isDiagonal}, line: ${line}`);
+            throw new Error(`Axis is null:  direction8: ${direction8}, direction4: ${direction4}, isDiagonal: ${isDiagonal}, line: ${vector}`);
 
         // Build a grid of squares to check, in rows.  The first row is nearest the axis.
         let squares: AABB[][] = [];

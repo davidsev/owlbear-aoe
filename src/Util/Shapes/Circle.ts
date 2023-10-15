@@ -2,7 +2,7 @@ import { Shape } from './Shape';
 import { Vector } from '../Geometry/Vector';
 import { AABB } from './AABB';
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
-import { Line } from '../Geometry/Line';
+import { LineSegment } from '../Geometry/LineSegment';
 import { roundDownTo, roundUpTo } from '../roundTo';
 
 export class Circle extends Shape {
@@ -21,7 +21,7 @@ export class Circle extends Shape {
     }
 
     containsPoint (point: Vector2): boolean {
-        return (new Line(this.center, point)).length <= this.radius;
+        return (new LineSegment(this.center, point)).length <= this.radius;
     }
 
     getBounds (chunk: number = 1): AABB {

@@ -1,8 +1,8 @@
-import { Line } from '../src/Util/Geometry/Line';
+import { LineSegment } from '../src/Util/Geometry/LineSegment';
 
 describe('testing Line', () => {
     test('creation', () => {
-        const l1 = new Line({ x: 5, y: 10 }, { x: 10, y: 20 });
+        const l1 = new LineSegment({ x: 5, y: 10 }, { x: 10, y: 20 });
         expect(l1.p1).toMatchObject({ x: 5, y: 10 });
         expect(l1.p2).toMatchObject({ x: 10, y: 20 });
     });
@@ -13,90 +13,70 @@ describe('testing Line', () => {
             p2: { x: 10, y: 20 },
             box: { x: 5, y: 10, w: 5, h: 10 },
             length: 11.180,
-            vector: { x: 5, y: 10 },
             midpoint: { x: 7.5, y: 15 },
             string: 'Line(5,10 -> 10,20)',
-            orthogonalVector: { x: -10, y: 5 },
         },
         {
             p1: { x: 10, y: 20 },
             p2: { x: 5, y: 10 },
             box: { x: 5, y: 10, w: 5, h: 10 },
             length: 11.180,
-            vector: { x: -5, y: -10 },
             midpoint: { x: 7.5, y: 15 },
-            string: 'Line(10,20 -> 5,10)',
-            orthogonalVector: { x: 10, y: -5 },
-        },
-        {
-            p1: { x: 5, y: 10 },
-            p2: { x: 5, y: 10 },
-            box: { x: 5, y: 10, w: 0, h: 0 },
-            length: 0,
-            vector: { x: 0, y: 0 },
-            midpoint: { x: 5, y: 10 },
-            string: 'Line(5,10 -> 5,10)',
-            orthogonalVector: { x: -0, y: 0 },
+            string: 'Line(5,10 -> 10,20)',
         },
         {
             p1: { x: 5, y: 10 },
             p2: { x: 5, y: 20 },
             box: { x: 5, y: 10, w: 0, h: 10 },
             length: 10,
-            vector: { x: 0, y: 10 },
             midpoint: { x: 5, y: 15 },
             string: 'Line(5,10 -> 5,20)',
-            orthogonalVector: { x: -10, y: 0 },
         },
         {
             p1: { x: 5, y: 10 },
             p2: { x: 10, y: 10 },
             box: { x: 5, y: 10, w: 5, h: 0 },
             length: 5,
-            vector: { x: 5, y: 0 },
             midpoint: { x: 7.5, y: 10 },
             string: 'Line(5,10 -> 10,10)',
-            orthogonalVector: { x: -0, y: 5 },
         },
         {
             p1: { x: 5, y: 10 },
             p2: { x: 10, y: 20 },
             box: { x: 5, y: 10, w: 5, h: 10 },
             length: 11.180,
-            vector: { x: 5, y: 10 },
             midpoint: { x: 7.5, y: 15 },
             string: 'Line(5,10 -> 10,20)',
-            orthogonalVector: { x: -10, y: 5 },
         },
         {
             p1: { x: 10, y: 20 },
             p2: { x: 5, y: 10 },
             box: { x: 5, y: 10, w: 5, h: 10 },
             length: 11.180,
-            vector: { x: -5, y: -10 },
             midpoint: { x: 7.5, y: 15 },
-            string: 'Line(10,20 -> 5,10)',
-            orthogonalVector: { x: 10, y: -5 },
+            string: 'Line(5,10 -> 10,20)',
         },
         {
             p1: { x: 5, y: 20 },
             p2: { x: 10, y: 10 },
             box: { x: 5, y: 10, w: 5, h: 10 },
             length: 11.180,
-            vector: { x: 5, y: -10 },
             midpoint: { x: 7.5, y: 15 },
             string: 'Line(5,20 -> 10,10)',
-            orthogonalVector: { x: 10, y: 5 },
         },
     ];
     test.each(testCases)('$string', (testCase) => {
-        const line = new Line(testCase.p1, testCase.p2);
+        const line = new LineSegment(testCase.p1, testCase.p2);
         expect(line.boundingBox).toMatchObject(testCase.box);
         expect(line.length).toBeCloseTo(testCase.length);
-        expect(line.vector).toMatchObject(testCase.vector);
         expect(line.midpoint).toMatchObject(testCase.midpoint);
         expect(line.toString()).toBe(testCase.string);
-        expect(line.orthogonalVector).toMatchObject(testCase.orthogonalVector);
+    });
+
+    test('invalid line', () => {
+        expect(() => {
+            new LineSegment({ x: 5, y: 10 }, { x: 5, y: 10 });
+        }).toThrow('Cannot create a line with two identical points');
     });
 
     const intersectionTestCases = [
@@ -153,8 +133,8 @@ describe('testing Line', () => {
     test.each(intersectionTestCases)(
         'intersection(($p1.x, $p1.y),($p2.x,$p2.y),($p3.x,$p3.y),($p4.x,$p4.y)) => ($expected.x, $expected.y)',
         ({ p1, p2, p3, p4, expected }) => {
-            const line1 = new Line(p1, p2);
-            const line2 = new Line(p3, p4);
+            const line1 = new LineSegment(p1, p2);
+            const line2 = new LineSegment(p3, p4);
             expect(line1.getIntersection(line2)).toMatchObject(expected);
         });
 
@@ -162,12 +142,6 @@ describe('testing Line', () => {
         {
             p1: { x: 5, y: -10 },
             p2: { x: -10, y: 20 },
-            p3: { x: 5, y: 20 },
-            p4: { x: 10, y: 10 },
-        },
-        {
-            p1: { x: 5, y: 10 },
-            p2: { x: 5, y: 10 },
             p3: { x: 5, y: 20 },
             p4: { x: 10, y: 10 },
         },
@@ -182,21 +156,8 @@ describe('testing Line', () => {
     test.each(intersectionNullTestCases)(
         'intersection(($p1.x, $p1.y),($p2.x,$p2.y),($p3.x,$p3.y),($p4.x,$p4.y)) => null',
         ({ p1, p2, p3, p4 }) => {
-            const line1 = new Line(p1, p2);
-            const line2 = new Line(p3, p4);
+            const line1 = new LineSegment(p1, p2);
+            const line2 = new LineSegment(p3, p4);
             expect(line1.getIntersection(line2)).toBeNull();
-        });
-
-    const normalizeDirectionTestCases = [
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 } } },
-        { p1: { x: 10, y: 20 }, p2: { x: 5, y: 20 }, expected: { p1: { x: 5, y: 20 }, p2: { x: 10, y: 20 } } },
-        { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 }, expected: { p1: { x: 5, y: 10 }, p2: { x: 5, y: 20 } } },
-        { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 }, expected: { p1: { x: 5, y: 10 }, p2: { x: 10, y: 10 } } },
-    ];
-    test.each(normalizeDirectionTestCases)(
-        'normalizeDirection(($p1.x, $p1.y),($p2.x,$p2.y)) => ($expected.p1.x, $expected.p1.y),($expected.p2.x,$expected.p2.y)',
-        ({ p1, p2, expected }) => {
-            const line = new Line(p1, p2);
-            expect(line.normaliseDirection()).toMatchObject(expected);
         });
 });

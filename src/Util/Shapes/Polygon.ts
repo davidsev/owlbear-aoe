@@ -1,6 +1,6 @@
 import { Command, PathCommand, Vector2 } from '@owlbear-rodeo/sdk';
 import { Vector } from '../Geometry/Vector';
-import { Line } from '../Geometry/Line';
+import { LineSegment } from '../Geometry/LineSegment';
 import { sortPointsClockwise } from '../Geometry/sortPointsClockwise';
 import { AABB } from './AABB';
 import { Shape } from './Shape';
@@ -24,12 +24,12 @@ export class Polygon extends Shape {
         return new Polygon(sortPointsClockwise(points));
     }
 
-    public get lines (): Line[] {
-        const lines: Line[] = [];
+    public get lines (): LineSegment[] {
+        const lines: LineSegment[] = [];
         for (let i = 0; i < this.points.length; i++) {
             const p1 = this.points[i];
             const p2 = this.points[(i + 1) % this.points.length];
-            lines.push(new Line(p1, p2));
+            lines.push(new LineSegment(p1, p2));
         }
         return lines;
     }

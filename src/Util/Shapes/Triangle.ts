@@ -54,26 +54,27 @@ export class Triangle extends Polygon {
             }
         }
 
-        // Then sort our points to be in order.
+        // Then sort our points to be in order, and remove dupes.
         const sortedPoints = sortPointsClockwise(newPolygon);
+        const uniqueSortedPoints = [...new Map(sortedPoints.map(point => [point.toString(), point])).values()];
 
         // If there's not enough / any overlap, then no intersection.
-        if (sortedPoints.length < 3) {
+        if (uniqueSortedPoints.length < 3) {
             return 0;
         }
 
         // Otherwise we need the area of the polygon.
         // If it's a triangle just do that.
         let polygonArea = 0.0;
-        if (sortedPoints.length === 3) {
-            polygonArea = (new Triangle(sortedPoints[0], sortedPoints[1], sortedPoints[2])).area;
+        if (uniqueSortedPoints.length === 3) {
+            polygonArea = (new Triangle(uniqueSortedPoints[0], uniqueSortedPoints[1], uniqueSortedPoints[2])).area;
         }
 
         // Otherwise we need to split it into triangles and add the areas.
-        const center = AABB.boundingBox(sortedPoints).center;
-        for (let i = 0; i < sortedPoints.length; i++) {
-            const p1 = sortedPoints[i];
-            const p2 = sortedPoints[(i + 1) % sortedPoints.length];
+        const center = AABB.boundingBox(uniqueSortedPoints).center;
+        for (let i = 0; i < uniqueSortedPoints.length; i++) {
+            const p1 = uniqueSortedPoints[i];
+            const p2 = uniqueSortedPoints[(i + 1) % uniqueSortedPoints.length];
 
             const triangle = new Triangle(center, p1, p2);
             polygonArea += triangle.area;

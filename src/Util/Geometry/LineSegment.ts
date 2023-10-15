@@ -2,13 +2,23 @@ import { Vector2 } from '@owlbear-rodeo/sdk';
 import { AABB } from '../Shapes/AABB';
 import { Vector } from './Vector';
 
-export class Line {
+export class LineSegment {
     public readonly p1: Vector;
     public readonly p2: Vector;
 
     public constructor (p1: Vector2, p2: Vector2) {
-        this.p1 = new Vector(p1);
-        this.p2 = new Vector(p2);
+        // Make sure the points aren't equal
+        if (p1.x === p2.x && p1.y === p2.y)
+            throw new Error('Cannot create a line with two identical points');
+
+        // Normalize the direction.  We don't really care as long as it's consistent, so smallest X wins, or smallest Y if X is equal.
+        if (p1.x < p2.x || (p1.x === p2.x && p1.y < p2.y)) {
+            this.p1 = new Vector(p1);
+            this.p2 = new Vector(p2);
+        } else {
+            this.p1 = new Vector(p2);
+            this.p2 = new Vector(p1);
+        }
     }
 
     public get points (): Vector[] {
@@ -28,22 +38,6 @@ export class Line {
         return Math.sqrt(Math.pow(this.p2.x - this.p1.x, 2) + Math.pow(this.p2.y - this.p1.y, 2));
     }
 
-    public get vector (): Vector {
-        return new Vector({
-            x: this.p2.x - this.p1.x,
-            y: this.p2.y - this.p1.y,
-        });
-    }
-
-    public get orthogonalVector (): Vector {
-        const vector = this.vector;
-        // noinspection JSSuspiciousNameCombination
-        return new Vector({
-            x: -vector.y,
-            y: vector.x,
-        });
-    }
-
     public get midpoint (): Vector {
         return new Vector({
             x: (this.p1.x + this.p2.x) / 2,
@@ -52,12 +46,12 @@ export class Line {
     }
 
     // algorithm from https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect/565282#565282
-    public getIntersection (line2: Line): Vector | null {
+    public getIntersection (line2: LineSegment): Vector | null {
 
         const p = this.p1;
-        const r = this.vector;
+        const r = this.p2.sub(this.p1);
         const q = line2.p1;
-        const s = line2.vector;
+        const s = line2.p2.sub(line2.p1);
 
         // r × s
         const r_s = r.cross(s);
@@ -111,25 +105,6 @@ export class Line {
 
     public toString (): string {
         return `Line(${this.p1.x},${this.p1.y} -> ${this.p2.x},${this.p2.y})`;
-    }
-
-    /** Returns a new line with the same direction, but pointing up or right.
-     *  Only works for lines that are horizontal or vertical.
-     */
-    public normaliseDirection (): Line {
-        // If it's a horizontal line, make it point right
-        if (this.p1.y === this.p2.y) {
-            if (this.p1.x > this.p2.x) {
-                return new Line(this.p2, this.p1);
-            }
-        }
-
-        // Otherwise, make it point up
-        if (this.p1.y > this.p2.y) {
-            return new Line(this.p2, this.p1);
-        }
-
-        return this;
     }
 }
 
