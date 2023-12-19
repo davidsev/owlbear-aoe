@@ -171,10 +171,26 @@ export abstract class BaseTool implements ToolMode {
         }
 
         // Clean up the references to the shapes we don't need any more.
-        this.onToolDragCancel();
+        this.cleanup();
+
+        // Track the event.
+        if (window._paq)
+            window._paq.push(['trackEvent', 'shape', 'keep_shape', this.getEventName()]);
     }
 
     onToolDragCancel () {
+        this.cleanup();
+
+        // Track the event.
+        if (window._paq)
+            window._paq.push(['trackEvent', 'shape', 'cancel_shape', this.getEventName()]);
+    }
+
+    protected getEventName (): string {
+        return this.label;
+    }
+
+    cleanup () {
         if (this.interaction) {
             const [update, stop] = this.interaction;
             stop();

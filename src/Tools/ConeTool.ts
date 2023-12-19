@@ -136,4 +136,8 @@ export class ConeTool extends BaseTool {
         // Return the top n items.
         return sortedValues.slice(0, count).map(x => x[0]);
     }
+
+    protected getEventName (): string {
+        return 'Cone-' + this.roomMetadata.coneMode;
+    }
 }
